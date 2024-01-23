@@ -4,7 +4,7 @@ function HomePage() {
 console.log("home");
   return (
     <div>
-      <HeaderNav/>
+      <h1>Home</h1>
     </div>
   )
 }
