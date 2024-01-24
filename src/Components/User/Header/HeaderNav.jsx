@@ -12,10 +12,10 @@ function HeaderNav() {
           <Link to='/'>
             <div className="flex items-center">
               <img src={VarletLogo} alt="Logo" className="h-12 w-12" />
-              <span className="ml-2 text-white font-semibold">VARLET</span>
+              <span className="ml-2 text-white font-serif">DILJITH</span>
             </div>
           </Link>
-          <div className="text-white flex items-center gap-x-1 text-md font-semibold leading-6 gap-4 p-3 flex-wrap sm:text-xl">
+          <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
             <Link to="/" className='hover:underline text-white'>Home</Link>
             <Link to="/properties" className='text-white'>Properties</Link>
             <Link to="/blog" className='text-white'>Blog</Link>
