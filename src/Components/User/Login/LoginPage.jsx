@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { userLogin } from '../../../Api/UserApi';
+import { Link } from 'react-router-dom';
 
 function LoginPage() {
     const [loginUser, setLoginUser] = useState({
@@ -38,13 +39,13 @@ function LoginPage() {
                         <img
                             src="/src/assets/Logo/VarletLogo.png"
                             alt="Logo"
-                            className="w-[70%] h-[75%]"
+                            className="w-[70%] h-[75%] animate-pulse"
                         />
                     </div>
                     <div className="w-[50%] text-white flex justify-center items-center ">
                         <div>
                             <form onSubmit={handleSubmit} className="w-[80%]">
-                                <h1 className=" text-center pb-3 font-bold text-4xl pl-5 text-white">LOGIN</h1>
+                                <h1 className=" text-center pb-3 font-bold text-4xl pl-5 text-white animate-pulse">LOGIN</h1>
                                 <input
                                     type="text"
                                     name="Email"
@@ -70,11 +71,11 @@ function LoginPage() {
                                 >
                                     Log in
                                 </button>
-                                <p className="text-center mt-4">
+                                <Link className="text-center " to='/signup'>
                                     <strong>Sign up</strong> for a new account
-                                </p>
-                                <button className='w-full px-4 py-2 mb-4 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
+                                </Link>
                             </form>
+                            <button className='w-[80%] mt-6 px-4 py-2 mb-4 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
                         </div>
                     </div>
                 </div>

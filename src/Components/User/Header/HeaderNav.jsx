@@ -12,7 +12,7 @@ function HeaderNav() {
           <Link to='/'>
             <div className="flex items-center">
               <img src={VarletLogo} alt="Logo" className="h-12 w-12" />
-              <span className="ml-2 text-white font-serif">DILJITH</span>
+              <span className="ml-2 text-white font-bold">MULTIVERSE</span>
             </div>
           </Link>
           <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">

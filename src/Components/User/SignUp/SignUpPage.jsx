@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import { userSignUp } from '../../../Api/UserApi'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import OtpPage from '../OtpPage/OtpPage'
 
 function SignUpPage() {
+    const navigate = useNavigate()
+
     const [SignupUser, setSignupUser] = useState({
         username: '',
         email: '',
+        mobile: '',
         password: '',
-
     })
 
     const handleClick = (e) => {
@@ -18,14 +24,24 @@ function SignUpPage() {
     }
 
     const handleSubmit = async (e) => {
-        console.log(SignupUser,"signup userrrrrrrrrrrrrrrrr");
-        e.preventDefault()
-        const response = await userSignUp(SignupUser)
+        e.preventDefault();
 
-        
-    }
+        try {
+
+            const response = await userSignUp(SignupUser);
+            console.log(response,"response from ");
+            if (response.data.success) {
+                navigate('/OtpPage');
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            toast.error('Something went wrong. Please try again.');
+        }
+    };
     return (
         <>
+
             <div className="relative flex h-screen bg-black justify-center items-center ">
                 <img
                     className="absolute inset-0 w-full h-full object-cover opacity-30"
@@ -37,13 +53,13 @@ function SignUpPage() {
                         <img
                             src="/src/assets/Logo/VarletLogo.png"
                             alt=""
-                            className="w-[70%] h-[75%]"
+                            className="w-[70%] h-[75%] animate-pulse "
                         />
                     </div>
                     <div className="w-[50%] text-white flex justify-center items-center ">
                         <div>
                             <form onSubmit={handleSubmit} className="w-[80%]">
-                                <h1 className=" text-center pb-3 font-bold text-4xl pl-5 text-white">SIGN UP</h1>
+                                <h1 className=" text-center pb-3 font-bold text-4xl pl-5 text-white animate-pulse">SIGN UP</h1>
                                 <input
                                     type="text"
                                     name="username"
@@ -65,6 +81,16 @@ function SignUpPage() {
                                     className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                                 />
                                 <input
+                                    type="text"
+                                    name="mobile"
+                                    value={SignupUser.mobile}
+                                    onChange={handleClick}
+                                    placeholder="Mobile Number"
+                                    required
+                                    autoFocus
+                                    className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
+                                />
+                                <input
                                     type="password"
                                     name="password"
                                     value={SignupUser.password}
@@ -79,11 +105,11 @@ function SignUpPage() {
                                 >
                                     Sign Up
                                 </button>
-                                <p className="text-center mt-4">
+                                <Link className="text-center mt-4" to='/login'>
                                     Already have account? <strong>Login</strong>
-                                </p>
+                                </Link>
                             </form>
-                            <button className='w-[80%] mt-2 px-4 py-2 mb-4 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
+                            <button className='w-[80%] mt-6 px-4 py-2 mb-4 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
                         </div>
                     </div>
                 </div>
