@@ -31,7 +31,7 @@ function SignUpPage() {
             const response = await userSignUp(SignupUser);
             console.log(response,"response from ");
             if (response.data.success) {
-                navigate('/OtpPage');
+                navigate('/otp');
             } else {
                 toast.error(response.message);
             }
