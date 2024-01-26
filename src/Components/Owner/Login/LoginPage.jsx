@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { OwnerLogin } from '../../../Api/OwnerApi.js'
+import { ToastContainer, toast } from 'react-toastify'
 import { setOwnerDetails } from '../../../Redux/OwnerSlice/ownerSlice.jsx'
 
 function LoginPage() {
@@ -14,8 +15,8 @@ function LoginPage() {
     password: "",
   })
 
-  const handleOnclick = (e) =>{
-    const {name, value} = e.target
+  const handleOnclick = (e) => {
+    const { name, value } = e.target
     setOwnerData({
       ...ownerData,
       [name]: value
@@ -23,15 +24,15 @@ function LoginPage() {
     })
   }
 
-  const handleSubmit = async(e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log(ownerData,"ownerdataaaaaa");
+      console.log(ownerData, "ownerdataaaaaa");
       const response = await OwnerLogin(ownerData)
-      const token =response.data.token
-      console.log(token,"tokennnnnn");
-      
-      if(response.data.success){
+      const token = response.data.token
+      console.log(token, "tokennnnnn");
+
+      if (response.data.success) {
         localStorage.setItem("token", token)
         dispatch(
           setOwnerDetails({
@@ -40,16 +41,17 @@ function LoginPage() {
             mobile: response.data.user.mobile,
           })
         )
-
+        navigate("/dashboard")
+        toast.success("Successfully logged in")
       }
     } catch (error) {
-      
+
     }
   }
 
   return (
-    <div>
-      <>
+    <>
+      <div>
         <div className="relative flex h-screen bg-black justify-center items-center">
           <div className='w-full md:w-[40%] lg:w-[30%] '>
             <img
@@ -102,8 +104,9 @@ function LoginPage() {
             </div>
           </div>
         </div>
-      </>
-    </div>
+      </div>
+      <ToastContainer />
+    </>
   )
 }
 
