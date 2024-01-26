@@ -17,7 +17,6 @@ export async function userLogin(LoginData) {
     }
 }
 export async function userSignUp(SignUpData) {
-    console.log(SignUpData, "ppppppppppppp");
     try {
         const SignUpRes = await UserApi.post('/signup', SignUpData)
         console.log(SignUpRes, "pppppppppppllllllll");

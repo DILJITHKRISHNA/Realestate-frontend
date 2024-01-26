@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { userLogin } from '../../../Api/UserApi';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUserDetails } from '../../../Redux/UserSlice/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import {setUserDetails}  from '../../../Redux/UserSlice/userSlice';
 
 function LoginPage() {
 
@@ -10,7 +11,7 @@ function LoginPage() {
     const navigate = useNavigate()
 
     const [loginUser, setLoginUser] = useState({
-        Email: '',
+        email: '',
         password: '',
     })
 
@@ -31,17 +32,33 @@ function LoginPage() {
             const response = await userLogin(loginUser);
             console.log(response, "response from login");
             const token = response.data.token;
-            console.log(token, "token from login");
-            localStorage.setItem('token', token);
-            console.log('Login successful. Token stored in local storage.');
-            if(response.data.success === true){
+            // localStorage.setItem('token', token);
+
+            if (response.data.success === true) {
+
                 localStorage.setItem("token", token)
+
+                console.log(response.data.user.username, "lllllllllllll");
+                dispatch(
+                    setUserDetails({
+                        username: response.data.user.username,
+                        email: response.data.user.email,
+                        mobile: response.data.user.mobile,
+                    })
+                );
+               
+
                 navigate('/')
+                console.log('Login successful. Token stored in local storage.');
+                toast.success("Successfully logged in")
+
             }
+            console.log(response, "responseeeeeeeeeee");
         } catch (error) {
             console.error('Login failed:', error);
         }
     }
+
     return (
         <>
             <div className="relative flex h-screen bg-black justify-center items-center">
@@ -65,8 +82,8 @@ function LoginPage() {
                             <h1 className="text-center pb-3 font-bold text-4xl pl-5 text-white animate-pulse">LOGIN</h1>
                             <input
                                 type="text"
-                                name="Email"
-                                value={loginUser.Email}
+                                name="email"
+                                value={loginUser.email}
                                 onChange={handleOnclick}
                                 placeholder="Email Address"
                                 required
@@ -96,6 +113,7 @@ function LoginPage() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     )
 };

@@ -13,18 +13,18 @@ const initialState = {
 
 }
 
-export const userSlice = createSlice({
-    name: 'user',
+export const OwnerSlice = createSlice({
+    name: 'owner',
     initialState,
     reducers: {
-        setUserDetails: (state, action) => {
+        setOwnerDetails: (state, action) => {
             state.id = action.payload.id,
-                state.username = action.payload.username,
-                state.password = action.payload.password
+            state.username = action.payload.username,
+            state.password = action.payload.password
             state.email = action.payload.email
             state.mobile = action.payload.mobile
         },
-        setLogoutDetails: (state) => {
+        setOwnerLogoutDetails: (state) => {
             state.id = ''
             state.username = ''
             state.password = ''
@@ -35,5 +35,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setUserDetails, setLogoutDetails } = userSlice.actions
-export default userSlice.reducer
+export const { setOwnerDetails, setOwnerLogoutDetails } = OwnerSlice.actions
+export default OwnerSlice.reducer
