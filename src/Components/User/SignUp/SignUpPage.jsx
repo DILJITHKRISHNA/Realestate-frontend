@@ -4,7 +4,6 @@ import HeaderNav from '../../../Components/User/Header/HeaderNav'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import OtpPage from '../OtpPage/OtpPage'
 
 function SignUpPage() {
     const navigate = useNavigate()

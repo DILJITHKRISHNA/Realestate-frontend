@@ -1,9 +1,9 @@
 import React from 'react'
-import UserList from '../../../Components/Admin/UserList/UserList.jsx'
+import ListUser from '../../../Components/Admin/UserList/UserList.jsx'
 function UserList() {
   return (
     <div>
-        <UserList/>
+        <ListUser/>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import userReducer from './UserSlice/userSlice.jsx'
 import ownerReducer from './OwnerSlice/ownerSlice.jsx'
 import adminReducer from './AdminSlice/adminSlice.jsx'
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     user: userReducer,
     owner: ownerReducer,
@@ -14,3 +14,4 @@ export const store = configureStore({
   })
 })
 
+export default store

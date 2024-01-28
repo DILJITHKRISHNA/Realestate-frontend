@@ -1,10 +1,10 @@
 import React from 'react'
-import OwnerList from '../../../Components/Admin/OwnerList/OwnerList'
+import ListOwner from '../../../Components/Admin/OwnerList/OwnerList.jsx'
 
 function OwnerList() {
   return (
     <div>
-      <OwnerList/>
+      <ListOwner/>
     </div>
   )
 }

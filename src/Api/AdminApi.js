@@ -16,3 +16,13 @@ export async function AdminLogin(AdminLoginData){
         console.log(error.message);
     }
 }
+
+export async function FetchUserDetails(userData){
+    try {
+        const result = await AdminApi.get("/users", userData)
+        console.log(result,"response from apiiiii");
+        return result
+    } catch (error) {
+        console.log(error.message);
+    }
+}
