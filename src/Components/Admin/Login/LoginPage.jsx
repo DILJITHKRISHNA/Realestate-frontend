@@ -44,7 +44,7 @@ function LoginPage() {
           })
         )
         navigate('/admin/')
-        toast.success(message)
+        toast.success("login successfull")
       }
 
     } catch (error) {

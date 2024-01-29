@@ -107,7 +107,7 @@ function SignupPage() {
                   type="submit"
                   className="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-black hover:text-white focus:outline-none mb-4"
                 >
-                  Log in
+                 Sign Up
                 </button>
                 <Link className="text-center" to='/owner/login'>
                   Already Have Account? <strong>LOG IN</strong> 

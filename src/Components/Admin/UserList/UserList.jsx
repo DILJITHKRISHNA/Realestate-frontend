@@ -40,12 +40,12 @@ function UserList() {
         <Header />
         <div className="flex">
           <Sidebar />
-
           <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100">
+          <h1 className='flex justify-center font-bold text-2xl mb-4 bg-slate-950 rounded-md text-white'>USER LIST</h1>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                  <tr className="bg-blue-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
                     <th className="px-5 py-3">ID</th>
                     <th className="px-5 py-3">Full Name</th>
                     <th className="px-5 py-3">Email</th>
@@ -65,7 +65,7 @@ function UserList() {
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <div className="flex items-center">
                           <div className="h-10 w-10 flex-shrink-0">
-                            <img className="h-full w-full rounded-full" src="https://i.pinimg.com/474x/a6/58/32/a65832155622ac173337874f02b218fb.jpg" alt="" />
+                            <img className="h-full w-full rounded-full" src="https://cdn-icons-png.freepik.com/512/219/219988.png" alt="" />
                           </div>
                           <div className="ml-3">
                             <p className="whitespace-no-wrap text-grey" key={user.username}>{user.username}</p>
@@ -76,17 +76,17 @@ function UserList() {
                         <p className="whitespace-no-wrap" key={user.email}>{user.email}</p>
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap" key={user.mobile}>{user.mobile}</p>
+                        <p className="whitespace-no-wrap" key={user.mobile}>{user.mobile}</p> 
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap " key={user.is_Active}>{user.is_Active}</p>
+                        <p className="whitespace-no-wrap " key={user.is_Active}>{user.Active}</p>
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                           <button
                             className={`rounded-full ${user.is_block ? 'bg-black' : 'bg-red-900'} px-3 py-1 text-xs font-semibold ${user.is_block ? 'text-white' : 'text-white'}`}
                             onClick={() => userBlockHandle(user)}>
-                            {user.isBlocked ? 'Block' : 'Unblock'}
+                            {user.is_block ? 'Block' : 'Unblock'}
                           </button>
                         </td>
                       </td>

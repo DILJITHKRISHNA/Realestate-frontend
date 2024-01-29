@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../assets/Logo/VarletLogo.png';
 import DarkLight from '../Dark&Light/DarkLight';
 import Sidebar from '../AdminSidebar/Sidebar';
-import { BellIcon, UserCircleIcon } from '@heroicons/react/solid';
+import { BellIcon, UserCircleIcon, LogoutIcon } from '@heroicons/react/solid';
 function Header() {
 
+  const navigate = useNavigate()
+
+  const handleClick = () =>{
+    try {
+      localStorage.removeItem("token")
+      navigate('/admin/login')
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -29,6 +39,13 @@ function Header() {
             </div>
           </Link>
 
+          <button onClick={handleClick}>
+            <div className="mr-4">
+              <LogoutIcon className="h-6 w-6 text-white hover:text-yellow-100" />
+            </div>
+          </button>
+          
+    
         </div>
       </div>
     </>

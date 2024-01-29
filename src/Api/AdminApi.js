@@ -26,3 +26,34 @@ export async function FetchUserDetails(userData){
         console.log(error.message);
     }
 }
+
+export async function fetchOwnerData(ownerData){
+    try {
+        const response = await AdminApi.get('/owners', ownerData)
+        console.log(response,"response from admi apii ownerrr");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function categoryTypes(categoryData){
+    console.log(categoryData,"enter to apiiiii in categoryy");
+    try {
+        const response = await AdminApi.post('/admin/category', categoryData)
+        console.log(response,"response in apiii categoryyyyy");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function FetchCategory(listCat){
+    console.log(listCat,"listcatttttttttttttttttt");
+    try {
+        const res = await AdminApi.get('/category', listCat)
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
