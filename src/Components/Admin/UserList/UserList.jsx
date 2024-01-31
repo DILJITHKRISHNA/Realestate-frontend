@@ -16,24 +16,22 @@ function UserList() {
 
         // Extract UserDetails array from userData
         const userDetailsArray = userData.data.UserDetails || [];
-        console.log(userDetailsArray[0].username);
+        console.log(userDetailsArray[0].is_block,"isbfjfjkhfkhkhhhhhhhhhhhhhh");
         setUsers(userDetailsArray);
       } catch (error) {
         console.log("error got ", error);
       }
     }
-
     getuserInfo();
   }, []);
 
-  const userBlockHandle = () => {
-    try {
-
-    } catch (error) {
-      console.log(error);
-    }
+  const userBlockHandle = async() => {
+  //  try {
+  //     const res = await 
+  //  } catch (error) {
+  //   console.log(error);
+  //  }
   }
-
   return (
     <>
       <div className="flex flex-col w-full">
@@ -79,12 +77,12 @@ function UserList() {
                         <p className="whitespace-no-wrap" key={user.mobile}>{user.mobile}</p> 
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap " key={user.is_Active}>{user.Active}</p>
+                        <p className="whitespace-no-wrap " key={user.is_Active}>{user.is_Active}</p>
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                           <button
-                            className={`rounded-full ${user.is_block ? 'bg-black' : 'bg-red-900'} px-3 py-1 text-xs font-semibold ${user.is_block ? 'text-white' : 'text-white'}`}
+                            className={`rounded-full ${!user.is_block ? 'bg-black' : 'bg-red-900'} px-3 py-1 text-xs font-semibold ${user.is_block ? 'text-white' : 'text-white'}`}
                             onClick={() => userBlockHandle(user)}>
                             {user.is_block ? 'Block' : 'Unblock'}
                           </button>

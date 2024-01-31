@@ -1,12 +1,13 @@
 import React from 'react'
 import { userVerifyOtp } from '../../../Api/UserApi'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function OtpPage() {
     const navigate = useNavigate()
-
-
+    const location = useLocation()
+    const Current = location.state
+    console.log(Current);
     const handleOtp = async (e) => {
         e.preventDefault();
 
@@ -19,14 +20,36 @@ function OtpPage() {
 
         if (otp.length === 4) {
             try {
-                const res = await userVerifyOtp(data);
+                if (Current == 'user') {
+                    const res = await userVerifyOtp(data);
 
-                if (res.data.success) {
-                    toast.success("user  registered successfully");
-                    navigate('/login');
-                } else {
-                    toast.error("Wrong Otp");
+                    if (res.data.success) {
+                        toast.success("user  registered successfully");
+                        setTimeout(() => {
+                            navigate('/login');
+                        }, 1000);
+                    } else {
+                        toast.error("Wrong Otp");
+                    }
+
+                } else if (Current == 'forgot') {
+                    console.log("poooooooooooooooooooooooooo");
+
+                    const res = await userVerifyOtp(data);
+
+                    if (res.data.success) {
+                        console.log("iedddddddddddiiiii");
+
+                        toast.success("Email verified");
+
+                        setTimeout(() => {
+                            navigate('/otp', {state: "otp"});
+                        }, 1000);
+                    } else {
+                        toast.error("Wrong Otp");
+                    }
                 }
+
             } catch (error) {
                 console.error("Error during API call:", error);
                 toast.error("An error occurred. Please try again.");

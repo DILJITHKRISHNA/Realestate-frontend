@@ -24,6 +24,7 @@ export const userSlice = createSlice({
             state.email = action.payload.email
             state.mobile = action.payload.mobile
         },
+
         setLogoutDetails: (state) => {
             state.id = ''
             state.username = ''

@@ -3,13 +3,15 @@ import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
 import { FetchCategory } from '../../../Api/AdminApi'
 import { categoryTypes } from '../../../Api/AdminApi';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function CategoryPage() {
   const [categorys, setCategorys] = useState([])
   const [open, setOpen] = useState(false);
+  const [managePage, setManagePage] = useState(false)
+
   const [category, SetCategory] = useState({
-
-
     category: ""
   })
 
@@ -28,32 +30,43 @@ function CategoryPage() {
 
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      const res = await categoryTypes(category)
-      console.log(res, "response from property pageeeeeeeee");
-      if (res.data.success) {
-        console.log("got the response");
-      } else {
-        console.log("error in property page");
-      }
-    } catch (error) {
+    e.preventDefault();
 
-    }
-  }
+      try {
+        const res = await categoryTypes(category);
+
+        if (categoryTypes) {
+          console.log("Category added successfully");
+          toast.success("Category added successfully");
+
+          // Refetch categories to update the list
+          handleOpen()
+          setManagePage(true); // Trigger the useEffect to fetch categories
+        } else {
+          console.log("Error adding category");
+        }
+      } catch (error) {
+        console.error("Error adding category:", error);
+      }
+  };
 
   useEffect(() => {
+    setManagePage(false);
     const handleCategory = async () => {
       try {
-        const result = await FetchCategory()
-        const categoryData = result.data.categoryData || []
-        setCategorys(categoryData)
+        const result = await FetchCategory();
+        setCategorys(result.data.categoryData || []);
+
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching categories:", error);
       }
-    }
-    handleCategory()
-  }, [])
+    };
+    handleCategory();
+  }, [managePage]);
+
+
+
+  console.log(managePage, '==================ER>>>>>>>>>>>>>>>>>');
 
   return (
 
@@ -75,7 +88,7 @@ function CategoryPage() {
             </thead>
             <tbody>
               {Array.isArray(categorys) && categorys.map((category, index) => (
-                <tr>
+                <tr key={index}>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>{index + 1}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>
@@ -136,7 +149,6 @@ function CategoryPage() {
                 </button>
                 <button
                   type="submit"
-                  onClick={handleOpen}
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-slate-950 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Confirm
@@ -149,6 +161,7 @@ function CategoryPage() {
       </form>
 
       {/* modal */}
+      <ToastContainer />
     </div>
   )
 }

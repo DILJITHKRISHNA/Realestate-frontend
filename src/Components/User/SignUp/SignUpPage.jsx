@@ -28,27 +28,31 @@ function SignUpPage() {
 
         try {
 
-            const response = await userSignUp(SignupUser);
-            console.log(response, "response from ");
-            if (response.data.success) {
-                const userMail = { email: SignupUser.email }
-                console.log(userMail, "usermaillllllllllllllllllllll");
-                await ManageUserOtp(userMail).then((res) => console.log(res))
-                navigate('/otp');
+            
+            if(SignupUser.email.trim() === '' && SignupUser.mobile.trim() === '' && SignupUser.password.trim() === '' && SignupUser.username.trim() === ''){
+                toast.error("All Fields Are Required")
+            }else if(SignupUser.password.length !==8){
+                toast.error("password should have atleast 8 characters");
+            }else{
 
-              
+                const response = await userSignUp(SignupUser);
+                console.log(response, "response from ");
                 
-            } else {
-                toast.error(response.message);
+                if (response.data.success) {
+                    const userMail = { email: SignupUser.email }
+                    console.log(userMail, "usermaillllllllllllllllllllll");
+                    await ManageUserOtp(userMail).then((res) => console.log(res))
+                    navigate('/otp',{state : 'user'});
+                } else {
+                    toast.error(response.message);
+                }
             }
-        } catch (error) {
-            toast.error('Something went wrong. Please try again.');
+            } catch (error) {
+            console.log(error);
         }
     };
     return (
         <>
-            <HeaderNav />
-
             <div className="relative flex h-screen bg-black justify-center items-center">
                 <div className='w-full md:w-[40%] lg:w-[30%] '>
                     <img
@@ -74,7 +78,6 @@ function SignUpPage() {
                                 value={SignupUser.username}
                                 onChange={handleClick}
                                 placeholder="Fullname"
-                                required
                                 autoFocus
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
@@ -84,7 +87,6 @@ function SignUpPage() {
                                 value={SignupUser.email}
                                 onChange={handleClick}
                                 placeholder="Email Address"
-                                required
                                 autoFocus
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
@@ -94,7 +96,6 @@ function SignUpPage() {
                                 value={SignupUser.mobile}
                                 onChange={handleClick}
                                 placeholder="Mobile number"
-                                required
                                 autoFocus
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
@@ -104,7 +105,6 @@ function SignUpPage() {
                                 value={SignupUser.password}
                                 onChange={handleClick}
                                 placeholder="Password"
-                                required
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
                             <button
@@ -121,7 +121,7 @@ function SignUpPage() {
                     </div>
                 </div>
             </div>
-            <ToastContainer/>
+            <ToastContainer />
         </>
     )
 }

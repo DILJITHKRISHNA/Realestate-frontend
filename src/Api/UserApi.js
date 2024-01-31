@@ -46,3 +46,25 @@ export async function ManageUserOtp(userMail) {
     }
 
 }
+
+export async function userPass(forgotData){
+    console.log(forgotData,"forgot dataaaaaaaa");
+    try {
+        const result = await UserApi.post('/forgotPassword', forgotData)
+        console.log(result,'resultttttttt');
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function NewPassword(newPass){
+    console.log(newPass,"ppppppppppppp apiiii");
+    try {
+        const result = await UserApi.post("/resetpassword", newPass)
+        console.log(result,"resuuuu");
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}

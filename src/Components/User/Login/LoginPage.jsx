@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { userLogin } from '../../../Api/UserApi';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import {setUserDetails}  from '../../../Redux/UserSlice/userSlice';
+import { setUserDetails } from '../../../Redux/UserSlice/userSlice';
+import ForgotPass from '../ForgotPassword/ForgotPass';
+
 
 function LoginPage() {
+    const [isOpn,setOpn]=useState(false)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -15,6 +18,7 @@ function LoginPage() {
         password: '',
     })
 
+
     const handleOnclick = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
@@ -23,19 +27,26 @@ function LoginPage() {
             [name]: value
         })
     }
-
+    const handlechange=()=>{
+        setOpn(true)
+    }
 
     const handleSubmit = async (e) => {
         console.log("hiiiiiiiiiiiiiiiiiiiiiiii uuuu");
         e.preventDefault();
         try {
-            const response = await userLogin(loginUser);
-            console.log(response, "response from login");
-            const token = response.data.token;
-            // localStorage.setItem('token', token);
 
+            if (loginUser.email.trim() === '' || loginUser.password.trim() === '') {
+                toast.error("Username or Password is empty")
+                
+            }
+            
+                const response = await userLogin(loginUser);
+                console.log(response, "response from login");
+                const token = response.data.token;
+           
             if (response.data.success === true) {
-
+                console.log("toastttt");
                 localStorage.setItem("token", token)
 
                 console.log(response.data.user.username, "lllllllllllll");
@@ -46,11 +57,13 @@ function LoginPage() {
                         mobile: response.data.user.mobile,
                     })
                 );
-               
 
-                navigate('/')
-                console.log('Login successful. Token stored in local storage.');
                 toast.success("Successfully logged in")
+                setTimeout(() => {
+                    navigate('/')
+                }, 1000);
+
+                console.log('Login successful. Token stored in local storage.');
 
             }
             console.log(response, "responseeeeeeeeeee");
@@ -59,8 +72,9 @@ function LoginPage() {
         }
     }
 
+
     return (
-        <>
+        <>  {!isOpn?(
             <div className="relative flex h-screen bg-black justify-center items-center">
                 <div className='w-full md:w-[40%] lg:w-[30%] '>
                     <img
@@ -86,7 +100,6 @@ function LoginPage() {
                                 value={loginUser.email}
                                 onChange={handleOnclick}
                                 placeholder="Email Address"
-                                required
                                 autoFocus
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
@@ -96,7 +109,6 @@ function LoginPage() {
                                 value={loginUser.password}
                                 onChange={handleOnclick}
                                 placeholder="Password"
-                                required
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
                             <button
@@ -105,18 +117,28 @@ function LoginPage() {
                             >
                                 Log in
                             </button>
-                            <Link className="text-center" to='/signup'>
-                                <strong>Sign up</strong> for a new account
-                            </Link>
+                            <div className='' onClick={handlechange}>
+                               
+                                    <strong>Forgot Password?</strong>
+                            
+                            </div>
+                            <div className='mt-2'>
+                                <Link className="text-center" to='/signup'>
+                                    <strong>Sign up</strong> for a new account
+                                </Link>
+                            </div>
                         </form>
-                        
+
                         <button className='w-full md:w-[70%] mt-4 md:mt-6 px-4 py-2 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
                     </div>
                 </div>
-            </div>
-            <ToastContainer />
+                <ToastContainer />
+                </div>
+            ) : (
+                <ForgotPass />
+            )}
         </>
-    )
-};
+    );
+}
 
 export default LoginPage
