@@ -27,12 +27,11 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log(ownerData, "ownerdataaaaaa");
+      console.log(ownerData, "ownerdataaaaaassss");
       const response = await OwnerLogin(ownerData)
       const token = response.data.token
-      console.log(token, "tokennnnnn");
 
-      if (response.data.success) {
+      if (response.data.success && response.data.user.is_block !== true) {
         localStorage.setItem("token", token)
         dispatch(
           setOwnerDetails({
@@ -41,11 +40,15 @@ function LoginPage() {
             mobile: response.data.user.mobile,
           })
         )
-        navigate("/owner/")
         toast.success("Successfully logged in")
+        setTimeout(() => {
+          navigate("/owner/")
+        }, 1000);
+      }else{
+        toast.error("You are blocked by admin")
       }
     } catch (error) {
-
+      console.log(error);
     }
   }
 
@@ -104,8 +107,8 @@ function LoginPage() {
             </div>
           </div>
         </div>
-      </div>
       <ToastContainer />
+      </div>
     </>
   )
 }

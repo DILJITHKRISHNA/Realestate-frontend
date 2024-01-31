@@ -12,49 +12,49 @@ function UserList() {
   useEffect(() => {
     const getuserInfo = async () => {
       try {
-        const userData = await FetchUserDetails();
-        console.log(userData, "userdata from get userinfo userlist");
+          const userData = await FetchUserDetails();
+          console.log(userData, "userdata from get userinfo userlist");
 
-        const userDetailsArray = userData.data.UserDetails || [];
-        // console.log(userDetailsArray[0]._id, "iddddddd");
-        setUsers(userDetailsArray);
-      } catch (error) {
-        console.log("error got ", error);
-      }
-    }
-    getuserInfo();
-  }, []);
-
-  useEffect(() => {
-    if (users.length > 0) {
-      SetState(users[0].is_block);
-    }
-  }, [users]);
-
-  const userBlockHandle = async (id, is_block) => {
-    console.log(id, "iddddddddddddd enter to userblock handleeeeee");
-    try {
-      const res = await UserBlockUnBlock(id);
-
-      console.log(res, "ressssssssss in useblockHandle in userlist");
-
-      const updatedUsers = users.map((user) => {
-        if (user._id === id) {
-          return { ...user, is_block: !is_block };
+          const userDetailsArray = userData.data.UserDetails || [];
+          // console.log(userDetailsArray[0]._id, "iddddddd");
+          setUsers(userDetailsArray);
+        } catch (error) {
+          console.log("error got ", error);
         }
-        return user;
-      });
-
-      setUsers(updatedUsers);
-
-      if (!is_block) {
-        console.log(is_block, "blocked status 1");
-        toast.success("User blocked");
-        localStorage.removeItem('token');
-      } else {
-        console.log(is_block, "blocked status 2");
-        toast.success("User unblocked");
       }
+      getuserInfo();
+    }, []);
+
+    useEffect(() => {
+      if (users.length > 0) {
+        SetState(users[0].is_block);
+      }
+    }, [users]);
+
+    const userBlockHandle = async (id, is_block) => {
+      console.log(id, "iddddddddddddd enter to userblock handleeeeee");
+      try {
+        const res = await UserBlockUnBlock(id);
+
+        console.log(res, "ressssssssss in useblockHandle in userlist");
+
+        const updatedUsers = users.map((user) => {
+          if (user._id === id) {
+            return { ...user, is_block: !is_block };
+          }
+          return user;
+        });
+
+        setUsers(updatedUsers);
+
+        if (!is_block) {
+          console.log(is_block, "blocked status 1");
+          toast.success("User blocked");
+          localStorage.removeItem('token');
+        } else {
+          console.log(is_block, "blocked status 2");
+          toast.success("User unblocked");
+        }
     } catch (error) {
       console.log("Error during user blocking:", error);
     }

@@ -70,3 +70,14 @@ export async function UserBlockUnBlock(id) {
     }
 }
 
+export async function OwnerBlockUnBlock(id) {
+    console.log(id,"id in apiiii");
+    try {
+        console.log(id,"owneriddddddddddssssssssss");
+        const result = await AdminApi.post(`/admin/ownerlist/${id}`)
+        console.log(result,"resukltttttttttttttttt");
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}

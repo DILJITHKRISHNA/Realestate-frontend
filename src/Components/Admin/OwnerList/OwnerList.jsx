@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
-import { fetchOwnerData } from '../../../Api/AdminApi'
+import { ToastContainer, toast } from 'react-toastify'
+import { OwnerBlockUnBlock, fetchOwnerData } from '../../../Api/AdminApi'
 
 function OwnerList() {
 
+  const [state, SetState] = useState(false)
   const [owners, setOwners] = useState([])
 
 useEffect(()=>{
@@ -23,13 +25,39 @@ useEffect(()=>{
   OwnerData()
 },[])
   
-
-const userBlockHandle = () => {
-  try {
-    
-  } catch (error) {
-    
+useEffect(() => {
+  if (owners.length > 0) {
+    SetState(owners[0].is_block);
   }
+}, [owners]);
+
+const OwnerBlockHandle = async(id, is_block) => {
+  console.log(id, "iddddddddddddd enter to owner handleeeeee");
+  try {
+    const res = await OwnerBlockUnBlock(id);
+
+    console.log(res, "ressssssssss in ownerBlock in ownerlist");
+
+    const updatedOwners = owners.map((owner) => {
+      if (owner._id === id) {
+        return { ...owner, is_block: !is_block };
+      }
+      return owner;
+    });
+
+    setOwners(updatedOwners);
+
+    if (!is_block == true) {
+      console.log(is_block, "blocked status 1");
+      localStorage.removeItem('token');
+      toast.success("Owner blocked");
+    } else {
+      console.log(is_block, "blocked status 2");
+      toast.success("Owner unblocked");
+    }
+} catch (error) {
+  console.log("Error during Owner blocking:", error);
+}
 }
 
   return (
@@ -80,12 +108,20 @@ const userBlockHandle = () => {
                         <p className="whitespace-no-wrap ">{owner.is_Active}</p>
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
-                          <button
-                            className={`rounded-full ${owner.is_block ? 'bg-black' : 'bg-red-900'} px-3 py-1 text-xs font-semibold ${owner.is_block ? 'text-white' : 'text-white'}`}
-                            onClick={() => userBlockHandle(owner)}>
-                            {owner.is_block ? 'Block' : 'Unblock'}
-                          </button>
+                      <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
+                          {!state ? (
+                            <button
+                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-red-700 text-white `}
+                              onClick={() => OwnerBlockHandle(owner._id, owner.is_block)}>
+                              Block
+                            </button>
+                          ) : (
+                            <button
+                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-black text-white `}
+                              onClick={() => OwnerBlockHandle(owner._id, owner.is_block)}>
+                              Unblock
+                            </button>
+                          )}
                         </td>
                       </td>
                     </tr>
@@ -99,6 +135,7 @@ const userBlockHandle = () => {
             </div>
           </div>
         </div>
+        <ToastContainer/>
       </div>
     </>
   )
