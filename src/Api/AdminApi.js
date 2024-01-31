@@ -58,3 +58,15 @@ export async function FetchCategory() {
         console.log(error);
     }
 }
+
+export async function UserBlockUnBlock(id) {
+    try {
+        console.log(id,"iddddddddddssssssssss");
+        const result = await AdminApi.post(`/admin/userlist/${id}`)
+        console.log(result,"resukltttttttttttttttt");
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
+

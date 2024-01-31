@@ -7,7 +7,7 @@ import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 function HeaderNav() {
 
   const userSelector = useSelector((state) => state.user)
-  console.log(userSelector.username, "use selectorrrrrrfgdfgrrrrrr");
+  console.log(userSelector.userInfo, "use selectorrrrrrfgdfgrrrrrr");
 
   const [storedToken, setStoredToken] = useState('')
 
@@ -34,7 +34,7 @@ function HeaderNav() {
             <Link to="/blog" className='hover:underline text-white hover:text-yellow-100'>Blog</Link>
             {localStorage.getItem("token") ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
-                {userSelector.username}
+                {userSelector.userInfo.username}
               </Link>
             ) : (
               <>

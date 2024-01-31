@@ -45,7 +45,7 @@ function LoginPage() {
                 console.log(response, "response from login");
                 const token = response.data.token;
            
-            if (response.data.success === true) {
+            if (response.data.success === true && response.data.user.is_block !== true) {
                 console.log("toastttt");
                 localStorage.setItem("token", token)
 
@@ -65,6 +65,8 @@ function LoginPage() {
 
                 console.log('Login successful. Token stored in local storage.');
 
+            }else if(response.data.user.is_block === true){
+                toast.error("You are blocked by Admin")
             }
             console.log(response, "responseeeeeeeeeee");
         } catch (error) {

@@ -1,17 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit'
-import userReducer from './UserSlice/userSlice.jsx'
-import ownerReducer from './OwnerSlice/ownerSlice.jsx'
-import adminReducer from './AdminSlice/adminSlice.jsx'
+import { configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import userSlice from './UserSlice/userSlice';
+import ownerSlice from './OwnerSlice/ownerSlice';
+import adminSlice from './AdminSlice/adminSlice';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const rootReducer = {
+  user: persistReducer(persistConfig, userSlice),
+  owner: persistReducer(persistConfig, ownerSlice),
+  admin: persistReducer(persistConfig, adminSlice),
+};
 
 const store = configureStore({
-  reducer: {
-    user: userReducer,
-    owner: ownerReducer,
-    admin: adminReducer
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-    serializableCheck: false
-  })
-})
+  reducer: rootReducer,
+});
 
-export default store
+const persistor = persistStore(store);
+
+export { store, persistor };
