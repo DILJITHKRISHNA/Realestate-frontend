@@ -8,6 +8,7 @@ import ProfilePage from '../../pages/Admin/ProfilePage/Profile.jsx'
 import AdminLayout from '../../Layouts/AdminLayout/AdminLayout'
 import Property from '../../pages/Admin/Propertypage/Property.jsx'
 import CategoryPage from '../../pages/Admin/CategoryPage/CategoryPage.jsx'
+import Kyc from '../../pages/Admin/OwnerKyc/Kyc.jsx'
 
 function AdminRoute() {
   return (
@@ -15,13 +16,14 @@ function AdminRoute() {
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path="/" element={<Home/>}></Route>
-          <Route path="/profile" element={<ProfilePage />}></Route>
         </Route>
+          <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/property" element={<Property />}></Route>
           <Route path="/ownerlist" element={<OwnerList/>}></Route>
           <Route path="/userlist" element={<UserList />}></Route>
+          <Route path="/kyclist" element={<Kyc />}></Route>
       </Routes>
     </div>
   )

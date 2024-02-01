@@ -1,12 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ManageUserOtp, userSignUp } from '../../../Api/UserApi'
 import HeaderNav from '../../../Components/User/Header/HeaderNav'
 import { Link, useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
+// import {useGoogleLogin } from "@react-oauth/google";
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
 
 function SignUpPage() {
     const navigate = useNavigate()
+    // const [user, SetUser] = useState([])
+
+    // const GoogleLogin = useGoogleLogin({
+    //     onSuccess: (codeResponse) => SetUser(codeResponse),
+    //     onError: () => toast.error("Google Authentication Failed")
+    // })
+
+    // useEffect(()=>{
+
+    //     const Googleauth = async() => {
+    //         try {
+    //             if(user){
+    //                 const response = await axios.get()
+    //             }
+    //         } catch (error) {
+                
+    //         }
+    //     }
+    // },[])
 
     const [SignupUser, setSignupUser] = useState({
         username: '',

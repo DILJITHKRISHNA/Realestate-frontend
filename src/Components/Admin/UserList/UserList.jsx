@@ -72,12 +72,11 @@ function UserList() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-blue-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                  <tr className="bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
                     <th className="px-5 py-3">ID</th>
                     <th className="px-5 py-3">Full Name</th>
                     <th className="px-5 py-3">Email</th>
                     <th className="px-5 py-3">Mobile</th>
-                    <th className="px-5 py-3">Verified</th>
                     <th className="px-5 py-3">Status</th>
                   </tr>
                 </thead>
@@ -105,9 +104,7 @@ function UserList() {
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <p className="whitespace-no-wrap">{user.mobile}</p>
                       </td>
-                      <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap ">{user.is_Active}</p>
-                      </td>
+                     
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                           {!state ? (

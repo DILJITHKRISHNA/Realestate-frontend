@@ -50,4 +50,11 @@ export async function OwnerverifyOtp(ownerOtp) {
     }
 
 }
-
+export async function AddKyc(kycData){
+    try {
+        const data = await OwnerApi.post('/owner/profile',kycData)
+        return data
+    } catch (error) {
+        console.log(error);
+    }
+}

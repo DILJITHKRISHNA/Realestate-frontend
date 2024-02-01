@@ -6,59 +6,52 @@ import { OwnerBlockUnBlock, fetchOwnerData } from '../../../Api/AdminApi'
 
 function OwnerList() {
 
-  const [state, SetState] = useState(false)
-  const [owners, setOwners] = useState([])
+  const [owners, setOwners] = useState([]);
 
-useEffect(()=>{
-
-  const OwnerData = async() =>{
-    try {
-      const ownerData = await fetchOwnerData()
-      console.log(ownerData," ownerdataaaaaaaaaaaaaaaaaaa");
-      const ownerDetails = ownerData.data.OwnerDetails || []
-      setOwners(ownerDetails)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  OwnerData()
-},[])
-  
-useEffect(() => {
-  if (owners.length > 0) {
-    SetState(owners[0].is_block);
-  }
-}, [owners]);
-
-const OwnerBlockHandle = async(id, is_block) => {
-  console.log(id, "iddddddddddddd enter to owner handleeeeee");
-  try {
-    const res = await OwnerBlockUnBlock(id);
-
-    console.log(res, "ressssssssss in ownerBlock in ownerlist");
-
-    const updatedOwners = owners.map((owner) => {
-      if (owner._id === id) {
-        return { ...owner, is_block: !is_block };
+  useEffect(() => {
+    const OwnerData = async () => {
+      try {
+        const ownerData = await fetchOwnerData();
+        console.log(ownerData, " ownerdataaaaaaaaaaaaaaaaaaa");
+        const ownerDetails = ownerData.data.OwnerDetails || [];
+        setOwners(ownerDetails);
+      } catch (error) {
+        console.log(error);
       }
-      return owner;
-    });
+    };
 
-    setOwners(updatedOwners);
+    OwnerData();
+  }, []);
 
-    if (!is_block == true) {
-      console.log(is_block, "blocked status 1");
-      localStorage.removeItem('token');
-      toast.success("Owner blocked");
-    } else {
-      console.log(is_block, "blocked status 2");
-      toast.success("Owner unblocked");
+  const OwnerBlockHandle = async (id, is_block) => {
+    console.log(id, "iddddddddddddd enter to owner handleeeeee");
+    try {
+      const res = await OwnerBlockUnBlock(id);
+
+      console.log(res, "ressssssssss in ownerBlock in ownerlist");
+
+      const updatedOwners = owners.map((owner) => {
+        if (owner._id === id) {
+          return { ...owner, is_block: !is_block };
+        }
+        return owner;
+      });
+
+      setOwners(updatedOwners);
+
+      if (!is_block) {
+        console.log(is_block, "blocked status 1");
+        localStorage.removeItem('token');
+        toast.success("Owner blocked");
+      } else {
+        console.log(is_block, "blocked status 2");
+        toast.success("Owner unblocked");
+      }
+    } catch (error) {
+      console.log("Error during Owner blocking:", error);
     }
-} catch (error) {
-  console.log("Error during Owner blocking:", error);
-}
-}
+  };
+
 
   return (
     <>
@@ -66,23 +59,22 @@ const OwnerBlockHandle = async(id, is_block) => {
         <Header />
         <div className="flex">
           <Sidebar />
-          <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100">
-          <h1 className='flex justify-center font-bold text-2xl mb-4 bg-slate-950 rounded-md text-white'>Owner LIST</h1>
+          <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100" >
+            <h1 className='flex justify-center font-bold text-2xl mb-4 bg-slate-950 rounded-md text-white'>Owner LIST</h1>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-blue-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                  <tr className="bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-white">
                     <th className="px-5 py-3">ID</th>
                     <th className="px-5 py-3">Full Name</th>
                     <th className="px-5 py-3">Email</th>
                     <th className="px-5 py-3">Mobile</th>
-                    <th className="px-5 py-3">Verified</th>
                     <th className="px-5 py-3">Status</th>
                   </tr>
                 </thead>
 
                 <tbody className="text-gray-500">
-                  { Array.isArray(owners) && owners.map((owner, index) => (
+                  {Array.isArray(owners) && owners.map((owner, index) => (
 
                     <tr >
                       <td className=" border-gray-200 bg-white px-5 py-5 text-sm">
@@ -102,30 +94,29 @@ const OwnerBlockHandle = async(id, is_block) => {
                         <p className="whitespace-no-wrap">{owner.email}</p>
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap">{owner.mobile}</p> 
+                        <p className="whitespace-no-wrap">{owner.mobile}</p>
                       </td>
+                    
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap ">{owner.is_Active}</p>
-                      </td>
-                      <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                      <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
-                          {!state ? (
+                        <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
+                          {!owner.is_block ? (
                             <button
-                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-red-700 text-white `}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-red-700 text-white`}
                               onClick={() => OwnerBlockHandle(owner._id, owner.is_block)}>
                               Block
                             </button>
                           ) : (
                             <button
-                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-black text-white `}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-black text-white`}
                               onClick={() => OwnerBlockHandle(owner._id, owner.is_block)}>
                               Unblock
                             </button>
                           )}
+
                         </td>
                       </td>
                     </tr>
-                   ))} 
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -135,7 +126,7 @@ const OwnerBlockHandle = async(id, is_block) => {
             </div>
           </div>
         </div>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </>
   )

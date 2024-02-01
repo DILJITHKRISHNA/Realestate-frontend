@@ -6,6 +6,7 @@ import Login from '../../pages/Owner/LoginPage/Login.jsx'
 import OTP from '../../Components/Owner/OtpPage/OTP.jsx'
 import OwnerLayout from '../../Layouts/OwnerLayout/OwnerLayout.jsx'
 import ProtectRoute from './Protect/ProtectRoutes.jsx'
+import Profile from '../../pages/Admin/ProfilePage/Profile.jsx'
 
 function ownerRoute() {
   return (
@@ -13,6 +14,7 @@ function ownerRoute() {
       <Route element={<ProtectRoute/>}></Route>
       <Route element={<OwnerLayout />}>
         <Route path='/' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
       </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/otp' element={<OTP />} />

@@ -81,3 +81,14 @@ export async function OwnerBlockUnBlock(id) {
         console.log(error);
     }
 }
+
+export async function CatEdit(id) {
+    try {
+        const result = await AdminApi.post(`/admin/category/${id}`)
+        console.log(result,"result of cat edittt apiii");
+        return result
+    } catch (error) {
+        console.log(error);
+    }
+}
+

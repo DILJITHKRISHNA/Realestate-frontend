@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
-import { FetchCategory } from '../../../Api/AdminApi'
+import { CatEdit, FetchCategory } from '../../../Api/AdminApi'
 import { categoryTypes } from '../../../Api/AdminApi';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -32,22 +32,22 @@ function CategoryPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-      try {
-        const res = await categoryTypes(category);
+    try {
+      const res = await categoryTypes(category);
 
-        if (categoryTypes) {
-          console.log("Category added successfully");
-          toast.success("Category added successfully");
+      if (categoryTypes) {
+        console.log("Category added successfully");
+        toast.success("Category added successfully");
 
-          // Refetch categories to update the list
-          handleOpen()
-          setManagePage(true); // Trigger the useEffect to fetch categories
-        } else {
-          console.log("Error adding category");
-        }
-      } catch (error) {
-        console.error("Error adding category:", error);
+        // Refetch categories to update the list
+        handleOpen()
+        setManagePage(true); // Trigger the useEffect to fetch categories
+      } else {
+        console.log("Error adding category");
       }
+    } catch (error) {
+      console.error("Error adding category:", error);
+    }
   };
 
   useEffect(() => {
@@ -64,9 +64,16 @@ function CategoryPage() {
     handleCategory();
   }, [managePage]);
 
+  const editCategory = async(id) => {
+    console.log(id,"idddd from edit categoryyyy");
+    try {
+      const response =  await CatEdit(id)
+      console.log(response,"Resss inside cat edit page");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-
-  console.log(managePage, '==================ER>>>>>>>>>>>>>>>>>');
 
   return (
 
@@ -93,14 +100,15 @@ function CategoryPage() {
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>
                     <button
+                      onClick={()=>editCategory(category._id)}
                       className={`rounded-md px-3 py-1 text-xs font-semibold bg-green-600 text-white `}>
                       Edit
                     </button>
                   </td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
-                      className={`rounded-md px-3 py-1 text-xs font-semibold bg-green-600 text-white `}>
-                      Delete
+                      className={`rounded-md px-3 py-1 text-xs font-semibold bg-red-600 text-white `}>
+                      Block
                     </button>
                   </td>
                 </tr>
@@ -109,7 +117,7 @@ function CategoryPage() {
           </table>
         </div>
       </div>
-      {/* modal */}
+      {/* Add category modal */}
       <form onSubmit={handleSubmit}>
 
         <div className={`fixed z-10 inset-0 overflow-y-auto ${open ? 'block' : 'hidden'}`}>
@@ -160,7 +168,7 @@ function CategoryPage() {
 
       </form>
 
-      {/* modal */}
+      {/* add category modal */}
       <ToastContainer />
     </div>
   )

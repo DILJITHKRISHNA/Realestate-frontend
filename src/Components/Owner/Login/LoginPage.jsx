@@ -27,9 +27,14 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+
+      
       console.log(ownerData, "ownerdataaaaaassss");
       const response = await OwnerLogin(ownerData)
       const token = response.data.token
+      if(ownerData.email!==response.data.user.email && ownerData.password!==response.data.user.password){
+        toast.error("incorrect email or password")
+      }
 
       if (response.data.success && response.data.user.is_block !== true) {
         localStorage.setItem("token", token)
@@ -48,6 +53,7 @@ function LoginPage() {
         toast.error("You are blocked by admin")
       }
     } catch (error) {
+
       console.log(error);
     }
   }
