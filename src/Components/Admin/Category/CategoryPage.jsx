@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
-import { CatEdit, FetchCategory } from '../../../Api/AdminApi'
+import { FetchCategory } from '../../../Api/AdminApi'
 import { categoryTypes } from '../../../Api/AdminApi';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -10,6 +10,7 @@ function CategoryPage() {
   const [categorys, setCategorys] = useState([])
   const [open, setOpen] = useState(false);
   const [managePage, setManagePage] = useState(false)
+  const [state, SetState] = useState()
 
   const [category, SetCategory] = useState({
     category: ""
@@ -64,16 +65,6 @@ function CategoryPage() {
     handleCategory();
   }, [managePage]);
 
-  const editCategory = async(id) => {
-    console.log(id,"idddd from edit categoryyyy");
-    try {
-      const response =  await CatEdit(id)
-      console.log(response,"Resss inside cat edit page");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
 
   return (
 
@@ -86,10 +77,9 @@ function CategoryPage() {
 
           <table className='mt-2 w-full'>
             <thead>
-              <tr className='bg-blue-400 text-left text-xs font-semibold uppercase tracking-widest text-black'>
+              <tr className='bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-black'>
                 <th className='px-5 py-3'>Index</th>
                 <th className='px-5 py-3'>Category Type</th>
-                <th className='px-5 py-3'>Edit</th>
                 <th className='px-5 py-3'>Delete</th>
               </tr>
             </thead>
@@ -98,13 +88,6 @@ function CategoryPage() {
                 <tr key={index}>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>{index + 1}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
-                  <td className='border-gray-200 bg-white px-5 py-5 text-sm'>
-                    <button
-                      onClick={()=>editCategory(category._id)}
-                      className={`rounded-md px-3 py-1 text-xs font-semibold bg-green-600 text-white `}>
-                      Edit
-                    </button>
-                  </td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
                       className={`rounded-md px-3 py-1 text-xs font-semibold bg-red-600 text-white `}>
@@ -118,7 +101,7 @@ function CategoryPage() {
         </div>
       </div>
       {/* Add category modal */}
-      <form onSubmit={handleSubmit}>
+      <form {...state=="edit"?onSubmit={handleSubmit}:''}>
 
         <div className={`fixed z-10 inset-0 overflow-y-auto ${open ? 'block' : 'hidden'}`}>
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -135,7 +118,7 @@ function CategoryPage() {
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white">
                 <div className="px-4 py-5 sm:p-6">
-                  <h2 className="text-lg font-bold leading-6 text-gray-900 mb-3" name='category'>Add Category</h2>
+                  <h2 className="text-lg font-bold leading-6 text-gray-900 mb-3" name='category' >Add Category</h2>
                   <label className=''>Category</label>
                   <div className="mt-2 flex flex-col  justify-center ">
 

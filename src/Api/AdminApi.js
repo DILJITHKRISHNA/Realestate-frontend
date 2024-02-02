@@ -82,13 +82,25 @@ export async function OwnerBlockUnBlock(id) {
     }
 }
 
-export async function CatEdit(id) {
+
+export async function kycList(){
+    console.log("apiiiiiiiiiii");
     try {
-        const result = await AdminApi.post(`/admin/category/${id}`)
-        console.log(result,"result of cat edittt apiii");
-        return result
+        const res = await AdminApi.get('/kyclist')
+        console.log(res,"responseeeeeeeeeeee");
+        console.log(res,"response from kyclist apiii");
+        return res
     } catch (error) {
         console.log(error);
     }
 }
 
+
+export async function approveOwner(kycId){
+    try {
+        const res = await AdminApi.get(`/approveKyc/${kycId}`)
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

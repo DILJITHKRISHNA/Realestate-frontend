@@ -58,3 +58,13 @@ export async function AddKyc(kycData){
         console.log(error);
     }
 }
+
+export async function ownerRegisterGoogle(userData) {
+    console.log(userData,"dtataaa apiii");
+    try {
+      const response = await UserApi.post("/userRegisterWithGoogle", userData);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }

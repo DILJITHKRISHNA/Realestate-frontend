@@ -68,7 +68,7 @@ function OwnerList() {
                     <th className="px-5 py-3">ID</th>
                     <th className="px-5 py-3">Full Name</th>
                     <th className="px-5 py-3">Email</th>
-                    <th className="px-5 py-3">Mobile</th>
+                    <th className="px-2 py-3">City</th>
                     <th className="px-5 py-3">Status</th>
                   </tr>
                 </thead>
@@ -94,7 +94,7 @@ function OwnerList() {
                         <p className="whitespace-no-wrap">{owner.email}</p>
                       </td>
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                        <p className="whitespace-no-wrap">{owner.mobile}</p>
+                        <p className="whitespace-no-wrap">{owner.city}</p>
                       </td>
                     
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">

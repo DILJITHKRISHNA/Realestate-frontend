@@ -56,11 +56,11 @@ function Profile() {
         try {
 
             await validationSchema.validate(kyc, { abortEarly: false });
-
+            
             console.log(kyc, "datasssss");
             const response = await AddKyc(kyc);
             console.log(response);
-
+            toast.error("Your KYC has been received. Admin review is in progress. Please await confirmation.")
         } catch (error) {
             console.log(error);
         }

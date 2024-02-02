@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { manageOwnerOtp, signUpOwner } from '../../../Api/OwnerApi.js'
+import { FcGoogle } from 'react-icons/fc'
+import { useGoogleLogin } from "@react-oauth/google";
 
 function SignupPage() {
 
@@ -30,11 +32,11 @@ function SignupPage() {
     try {
       const response = await signUpOwner(ownerSignup)
       console.log(response, "response ffrom handlesubmit in ownersignup");
-      if(response.data.success){
-        const ownerMail = {email: ownerSignup.email} 
-        console.log(ownerMail,"owner mail from handle submit");
+      if (response.data.success) {
+        const ownerMail = { email: ownerSignup.email }
+        console.log(ownerMail, "owner mail from handle submit");
         await manageOwnerOtp(ownerMail)
-        .then((res)=>console.log(res,"ressss inside then in handlesubmit"))
+          .then((res) => console.log(res, "ressss inside then in handlesubmit"))
         navigate('/owner/otp')
       }
     } catch (error) {
@@ -107,13 +109,21 @@ function SignupPage() {
                   type="submit"
                   className="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-black hover:text-white focus:outline-none mb-4"
                 >
-                 Sign Up
+                  Sign Up
                 </button>
                 <Link className="text-center" to='/owner/login'>
-                  Already Have Account? <strong>LOG IN</strong> 
+                  Already Have Account? <strong>LOG IN</strong>
                 </Link>
               </form>
-              <button className='w-full md:w-[70%] mt-4 md:mt-6 px-4 py-2 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
+              <div
+                onClick={() => GoogleLogin()}
+                className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
+              >
+                <FcGoogle />
+                <div className=''>
+                  sign in with Google
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ function HeaderNav() {
             <Link to="/dashboard" className='hover:underline text-white hover:text-yellow-100'>Home</Link>
             <Link to="/properties" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
             <Link to="/blog" className='hover:underline text-white hover:text-yellow-100'>Blog</Link>
-            {localStorage.getItem("token") ? (
+            {storedToken ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
                 {userSelector.userInfo.username}
               </Link>

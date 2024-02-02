@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice';
 import ForgotPass from '../ForgotPassword/ForgotPass';
+import { FcGoogle } from 'react-icons/fc'
 
 
 function LoginPage() {
-    const [isOpn,setOpn]=useState(false)
+    const [isOpn, setOpn] = useState(false)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ function LoginPage() {
             [name]: value
         })
     }
-    const handlechange=()=>{
+    const handlechange = () => {
         setOpn(true)
     }
 
@@ -38,13 +39,13 @@ function LoginPage() {
 
             if (loginUser.email.trim() === '' || loginUser.password.trim() === '') {
                 toast.error("Username or Password is empty")
-                
+
             }
-            
-                const response = await userLogin(loginUser);
-                console.log(response, "response from login");
-                const token = response.data.token;
-           
+
+            const response = await userLogin(loginUser);
+            console.log(response, "response from login");
+            const token = response.data.token;
+
             if (response.data.success === true && response.data.user.is_block !== true) {
                 console.log("toastttt");
                 localStorage.setItem("token", token)
@@ -65,7 +66,7 @@ function LoginPage() {
 
                 console.log('Login successful. Token stored in local storage.');
 
-            }else if(response.data.user.is_block === true){
+            } else if (response.data.user.is_block === true) {
                 toast.error("You are blocked by Admin")
             }
             console.log(response, "responseeeeeeeeeee");
@@ -76,7 +77,7 @@ function LoginPage() {
 
 
     return (
-        <>  {!isOpn?(
+        <>  {!isOpn ? (
             <div className="relative flex h-screen bg-black justify-center items-center">
                 <div className='w-full md:w-[40%] lg:w-[30%] '>
                     <img
@@ -120,9 +121,9 @@ function LoginPage() {
                                 Log in
                             </button>
                             <div className='' onClick={handlechange}>
-                               
-                                    <strong>Forgot Password?</strong>
-                            
+
+                                <strong>Forgot Password?</strong>
+
                             </div>
                             <div className='mt-2'>
                                 <Link className="text-center" to='/signup'>
@@ -130,15 +131,22 @@ function LoginPage() {
                                 </Link>
                             </div>
                         </form>
-
-                        <button className='w-full md:w-[70%] mt-4 md:mt-6 px-4 py-2 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
+                        <div
+                            //   onClick={() => GoogleLogin()}
+                            className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
+                        >
+                            <FcGoogle />
+                            <div className=''>
+                                sign in with Google
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <ToastContainer />
-                </div>
-            ) : (
-                <ForgotPass />
-            )}
+            </div>
+        ) : (
+            <ForgotPass />
+        )}
         </>
     );
 }

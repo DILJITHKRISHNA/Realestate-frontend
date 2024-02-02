@@ -15,7 +15,7 @@ function PropertyPage() {
           
           <table className='mt-2 w-full'>
             <thead>
-              <tr className='bg-blue-400 text-left text-xs font-semibold uppercase tracking-widest text-black'>
+              <tr className='bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-black'>
                 <th className='px-5 py-3'>Index</th>
                 <th className='px-5 py-3'>Property ID</th>
                 <th className='px-5 py-3'>Property type</th>

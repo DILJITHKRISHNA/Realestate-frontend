@@ -1,33 +1,53 @@
 import React, { useEffect, useState } from 'react'
-import { ManageUserOtp, userSignUp } from '../../../Api/UserApi'
+import { ManageUserOtp, userRegisterGoogle, userSignUp } from '../../../Api/UserApi'
 import HeaderNav from '../../../Components/User/Header/HeaderNav'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-// import {useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
+import { FcGoogle } from 'react-icons/fc'
+import { useDispatch } from 'react-redux'
+import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 
 function SignUpPage() {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-    // const [user, SetUser] = useState([])
+    const [profile, setProfile] = useState()
+    const [user, SetUser] = useState([])
 
-    // const GoogleLogin = useGoogleLogin({
-    //     onSuccess: (codeResponse) => SetUser(codeResponse),
-    //     onError: () => toast.error("Google Authentication Failed")
-    // })
+    const GoogleLogin = useGoogleLogin({
+        onSuccess: (codeResponse) => SetUser(codeResponse),
+        onError: () => toast.error("Google Authentication Failed")
 
-    // useEffect(()=>{
+    })
+    console.log(user, 'kjhghjgh');
 
-    //     const Googleauth = async() => {
-    //         try {
-    //             if(user){
-    //                 const response = await axios.get()
-    //             }
-    //         } catch (error) {
-                
-    //         }
-    //     }
-    // },[])
+    useEffect(() => {
+        const FetchData = async () => {
+            try {
+                if (user) {
+                    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                        headers: {
+                            Authorization: `Bearer ${user.access_token}`,
+                            Accept: 'application/json'
+                        }
+                    })
+                    console.log(response.data,"laaaaaaaaaaa");
+                    const result = await userRegisterGoogle(response.data)
+                    dispatch(setUserDetails({
+                        email: response.data.email,
+                        username: response.data.name,
+                        id: response.data.id
+                    }))
+                    console.log(result.token,"tokkkk");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        FetchData()
+    }, [user]);
 
     const [SignupUser, setSignupUser] = useState({
         username: '',
@@ -35,6 +55,10 @@ function SignUpPage() {
         mobile: '',
         password: '',
     })
+
+    if(SignupUser.username === Number){
+        toast.error("username should be characters")
+    }
 
     const handleClick = (e) => {
         const { name, value } = e.target
@@ -49,26 +73,26 @@ function SignUpPage() {
 
         try {
 
-            
-            if(SignupUser.email.trim() === '' && SignupUser.mobile.trim() === '' && SignupUser.password.trim() === '' && SignupUser.username.trim() === ''){
+
+            if (SignupUser.email.trim() === '' && SignupUser.mobile.trim() === '' && SignupUser.password.trim() === '' && SignupUser.username.trim() === '') {
                 toast.error("All Fields Are Required")
-            }else if(SignupUser.password.length !==8){
+            } else if (SignupUser.password.length < 8) {
                 toast.error("password should have atleast 8 characters");
-            }else{
+            } else {
 
                 const response = await userSignUp(SignupUser);
                 console.log(response, "response from ");
-                
+
                 if (response.data.success) {
                     const userMail = { email: SignupUser.email }
                     console.log(userMail, "usermaillllllllllllllllllllll");
                     await ManageUserOtp(userMail).then((res) => console.log(res))
-                    navigate('/otp',{state : 'user'});
+                    navigate('/otp', { state: 'user' });
                 } else {
                     toast.error(response.message);
                 }
             }
-            } catch (error) {
+        } catch (error) {
             console.log(error);
         }
     };
@@ -138,7 +162,15 @@ function SignUpPage() {
                                 Already Have Account? <strong>LOGIN</strong>
                             </Link>
                         </form>
-                        <button className='w-full md:w-[70%] mt-4 md:mt-6 px-4 py-2 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
+                        <div
+                            onClick={() => GoogleLogin()}
+                            className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
+                        >
+                            <FcGoogle />
+                            <div className=''>
+                                sign in with Google
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

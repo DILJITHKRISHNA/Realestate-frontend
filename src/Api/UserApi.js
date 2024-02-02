@@ -68,3 +68,13 @@ export async function NewPassword(newPass){
         console.log(error);
     }
 }
+
+export async function userRegisterGoogle(userData) {
+    console.log(userData,"dtataaa apiii");
+    try {
+      const response = await UserApi.post("/userRegisterWithGoogle", userData);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
