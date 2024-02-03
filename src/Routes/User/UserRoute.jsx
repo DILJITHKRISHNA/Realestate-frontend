@@ -12,11 +12,12 @@ function UserRoute() {
 
   return (
     <Routes>  
+
       <Route element={<UserLayout />}>
         <Route path='/' element={<HomePage />} />
-        {/* <Route element={<ProtectRoutes />}> */}
+        <Route element={<ProtectRoutes />}>
           <Route path='/profile' element={<ProfilePage />} />
-        {/* </Route> */}
+        </Route>
       </Route>
       <Route path='/otp' element={<Otp />} />
       <Route path='/signup' element={<SignUpPage />} />

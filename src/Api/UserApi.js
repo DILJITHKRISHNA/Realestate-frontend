@@ -78,3 +78,13 @@ export async function userRegisterGoogle(userData) {
       console.log(error);
     }
   }
+export async function userLoginGoogle(userData) {
+    console.log(userData,"dtataaa apiii");
+    try {
+      const response = await UserApi.post("/userLoginWithGoogle", userData);
+      console.log(response,"rip");
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }

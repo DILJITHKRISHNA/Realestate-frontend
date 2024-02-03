@@ -6,15 +6,17 @@ import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 
 function HeaderNav() {
 
+
   const userSelector = useSelector((state) => state.user)
-  console.log(userSelector.userInfo, "use selectorrrrrrfgdfgrrrrrr");
+  console.log(userSelector.userInfo.username, "use selectorrrrrrfgdfgrrrrrr");
 
   const [storedToken, setStoredToken] = useState('')
 
   useEffect(() => {
     let localStore = localStorage.getItem("token")
     setStoredToken(localStore)
-  }, [storedToken])
+    console.log(localStore," localstore");
+  }, [setStoredToken])
 
 
 
@@ -32,7 +34,7 @@ function HeaderNav() {
             <Link to="/dashboard" className='hover:underline text-white hover:text-yellow-100'>Home</Link>
             <Link to="/properties" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
             <Link to="/blog" className='hover:underline text-white hover:text-yellow-100'>Blog</Link>
-            {storedToken ? (
+            {storedToken && userSelector.userInfo ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
                 {userSelector.userInfo.username}
               </Link>

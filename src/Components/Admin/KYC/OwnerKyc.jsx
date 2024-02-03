@@ -7,6 +7,11 @@ import { approveOwner, kycList } from '../../../Api/AdminApi'
 function OwnerKyc() {
     const [kycData, SetKycData] = useState([])
     const [state, SetState] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+
+    const handleOpen = () => {
+        setShowModal(!showModal)
+    }
 
     useEffect(() => {
 
@@ -27,20 +32,23 @@ function OwnerKyc() {
     const ApproveKyc = async (kycId) => {
         try {
             const res = await approveOwner(kycId);
-            console.log(res,"Rsicicccoppp");
-            if (res.data.success === true) {
-                toast.success("Approved Successfully");
+            console.log(res, "Rsicicccoppp");
 
+            if (res.data.success) {
+                toast.success("Action Successful");
                 SetKycData(prevData =>
                     prevData.map(item =>
                         item._id === kycId ? { ...item, is_approve: !item.is_approve } : item
                     )
                 );
-            } 
+            } else {
+                toast.error("Action Failed");
+            }
         } catch (error) {
             console.log(error);
         }
     };
+
 
 
     return (
@@ -59,6 +67,7 @@ function OwnerKyc() {
                                         <th className="px-5 py-3">Full Name</th>
                                         <th className="px-5 py-3">PAN</th>
                                         <th className="px-5 py-3">Photo</th>
+                                        <th className="px-5 py-3">Approval</th>
                                         <th className="px-5 py-3">Status</th>
                                     </tr>
                                 </thead>
@@ -86,11 +95,16 @@ function OwnerKyc() {
                                                 <p className="whitespace-no-wrap">photo</p>
                                             </td>
 
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <p className={`whitespace-no-wrap font-bold ${kyc.is_approve? "text-green-500" : "text-red-500"}` }>{kyc.is_approve?"Approved":"Rejected"}</p>
+                                            </td>
+
                                             <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm ">
                                                 <button
-                                                    className={` rounded-full px-3 py-1 text-xs font-semibold ${kyc.is_approve ? " bg-green-700" : "bg-red-700"} text-white`}
-                                                    onClick={() => ApproveKyc(kyc._id)}>
-                                                    {!kyc.is_approve ? "Reject" : "Approved"}
+                                                    onClick={setShowModal}
+                                                    className="bg-gradient-to-r bg-black rounded-full text-white px-3 py-1 text-xs font-semibold"
+                                                >
+                                                    Status
                                                 </button>
                                             </td>
                                         </tr>
@@ -106,6 +120,36 @@ function OwnerKyc() {
                     </div>
                 </div>
             </div>
+            {Array.isArray(kycData) && kycData.map((kyc) => (
+
+                <form onClick={handleOpen}>
+
+                    <div className={`fixed inset-0 ${showModal ? 'visible' : 'hidden'}`}>
+                        <div className="flex items-center justify-center min-h-screen">
+                            <div className="bg-white w-full max-w-md p-6 rounded shadow-md">
+                                <h2 className="text-xl font-bold mb-4">Confirmation!</h2>
+                                <p className="mb-4">
+                                    "Please confirm your decision: Do you want to approve or reject this request?"
+                                </p>
+                                <div className="flex justify-end gap-4">
+                                    <button
+                                        onClick={() => ApproveKyc(kyc._id,kyc.is_approve === true)}
+                                        className="bg-gradient-to-r bg-green-700 rounded-full text-white px-3 py-1 text-xs font-semibold"
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        onClick={() => ApproveKyc(kyc._id,kyc.is_approve === false)}
+                                        className="bg-gradient-to-r bg-red-700 rounded-full text-white px-4 py-2 text-xs font-semibold"
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>;
+                </form>
+            ))}
             <ToastContainer />
         </div>
     )

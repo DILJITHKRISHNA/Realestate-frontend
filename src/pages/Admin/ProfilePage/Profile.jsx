@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfilePage from '../../../Components/Owner/ProfilePage/Profile.jsx'
+import ProfilePage from '../../../Components/Admin/Profile/ProfilePage.jsx'
 
 function Profile() {
   return (

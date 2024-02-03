@@ -61,7 +61,6 @@ export async function FetchCategory() {
 
 export async function UserBlockUnBlock(id) {
     try {
-        console.log(id,"iddddddddddssssssssss");
         const result = await AdminApi.post(`/admin/userlist/${id}`)
         console.log(result,"resukltttttttttttttttt");
         return result
@@ -70,11 +69,10 @@ export async function UserBlockUnBlock(id) {
     }
 }
 
-export async function OwnerBlockUnBlock(id) {
-    console.log(id,"id in apiiii");
+export async function OwnerBlockUnBlock(OwnerId) {
+    console.log(OwnerId,"id in apiiii")
     try {
-        console.log(id,"owneriddddddddddssssssssss");
-        const result = await AdminApi.post(`/admin/ownerlist/${id}`)
+        const result = await AdminApi.post(`/admin/ownerlist/${OwnerId}`)
         console.log(result,"resukltttttttttttttttt");
         return result
     } catch (error) {

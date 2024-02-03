@@ -5,25 +5,29 @@ import Home from '../../pages/Admin/HomePage/Home.jsx'
 import UserList from '../../pages/Admin/UserList/UserList.jsx'
 import OwnerList from '../../pages/Admin/OwnerList/OwnerList.jsx'
 import ProfilePage from '../../pages/Admin/ProfilePage/Profile.jsx'
-import AdminLayout from '../../Layouts/AdminLayout/AdminLayout'
+import AdminLayout from '../../Layouts/AdminLayout/AdminLayout.jsx'
 import Property from '../../pages/Admin/Propertypage/Property.jsx'
 import CategoryPage from '../../pages/Admin/CategoryPage/CategoryPage.jsx'
 import Kyc from '../../pages/Admin/OwnerKyc/Kyc.jsx'
+import AdminProtect from './Protect/AdminProtect.jsx'
 
 function AdminRoute() {
   return (
     <div>
       <Routes>
-        <Route element={<AdminLayout />}>
-          <Route path="/" element={<Home/>}></Route>
-        </Route>
+        <Route element={<AdminProtect />}>
+
+          <Route element={<AdminLayout />}>
+            <Route path="/" element={<Home />}></Route>
+          </Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/property" element={<Property />}></Route>
-          <Route path="/ownerlist" element={<OwnerList/>}></Route>
+          <Route path="/ownerlist" element={<OwnerList />}></Route>
           <Route path="/userlist" element={<UserList />}></Route>
           <Route path="/kyclist" element={<Kyc />}></Route>
+        </Route>
       </Routes>
     </div>
   )

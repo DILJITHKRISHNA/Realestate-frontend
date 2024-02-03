@@ -6,51 +6,55 @@ import { OwnerBlockUnBlock, fetchOwnerData } from '../../../Api/AdminApi'
 
 function OwnerList() {
 
-  const [owners, setOwners] = useState([]);
+  const [owners, setOwners] = useState([]);  
 
   useEffect(() => {
     const OwnerData = async () => {
       try {
-        const ownerData = await fetchOwnerData();
-        console.log(ownerData, " ownerdataaaaaaaaaaaaaaaaaaa");
-        const ownerDetails = ownerData.data.OwnerDetails || [];
-        setOwners(ownerDetails);
+        const storedOwners = JSON.parse(localStorage.getItem('owners'));
+        if (storedOwners) {
+          setOwners(storedOwners);
+        } else {
+          const ownerData = await fetchOwnerData();
+          const ownerDetails = ownerData.data.OwnerDetails || [];
+          setOwners(ownerDetails);
+        }
       } catch (error) {
         console.log(error);
       }
     };
-
+  
     OwnerData();
   }, []);
+  
 
   const OwnerBlockHandle = async (id, is_block) => {
-    console.log(id, "iddddddddddddd enter to owner handleeeeee");
     try {
       const res = await OwnerBlockUnBlock(id);
-
-      console.log(res, "ressssssssss in ownerBlock in ownerlist");
-
+  
       const updatedOwners = owners.map((owner) => {
         if (owner._id === id) {
           return { ...owner, is_block: !is_block };
         }
         return owner;
       });
-
+  
       setOwners(updatedOwners);
-
+  
+      // Update localStorage
+      localStorage.setItem('owners', JSON.stringify(updatedOwners));
+  
       if (!is_block) {
-        console.log(is_block, "blocked status 1");
         localStorage.removeItem('token');
         toast.success("Owner blocked");
       } else {
-        console.log(is_block, "blocked status 2");
         toast.success("Owner unblocked");
       }
     } catch (error) {
       console.log("Error during Owner blocking:", error);
     }
   };
+  
 
 
   return (
@@ -99,7 +103,7 @@ function OwnerList() {
                     
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
-                          {!owner.is_block ? (
+                          {owner.is_block ? (
                             <button
                               className={`rounded-full px-3 py-1 text-xs font-semibold bg-red-700 text-white`}
                               onClick={() => OwnerBlockHandle(owner._id, owner.is_block)}>
@@ -112,7 +116,6 @@ function OwnerList() {
                               Unblock
                             </button>
                           )}
-
                         </td>
                       </td>
                     </tr>

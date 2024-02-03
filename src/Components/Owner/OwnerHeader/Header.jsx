@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 function Header() {
     const userSelector = useSelector((state) => state.owner)
+    console.log(userSelector,"userererererer");
     return (
         <div>
             <>

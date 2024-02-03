@@ -1,18 +1,60 @@
 import React, { useEffect, useState } from 'react'
-import { userLogin } from '../../../Api/UserApi';
+import { userLogin, userLoginGoogle } from '../../../Api/UserApi';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { useGoogleLogin } from "@react-oauth/google";
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice';
 import ForgotPass from '../ForgotPassword/ForgotPass';
 import { FcGoogle } from 'react-icons/fc'
+import axios from 'axios';
 
 
 function LoginPage() {
     const [isOpn, setOpn] = useState(false)
+    const [user, SetUser] = useState([])
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+
+
+
+    const GoogleLogin = useGoogleLogin({
+        onSuccess: (codeResponse) => SetUser(codeResponse),
+        onError: () => toast.error("Google Authentication Failed")
+
+    })
+    console.log(user, 'inside ');
+
+    useEffect(() => {
+        const FetchData = async () => {
+            try {
+                if (user) {
+                    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                        headers: {
+                            Authorization: `Bearer ${user.access_token}`,
+                            Accept: 'application/json'
+                        }
+                    })
+                    console.log(response.data,"laaaaaaaaaaa");
+                    const result = await userLoginGoogle(response.data)
+                    dispatch(setUserDetails({
+                        email: response.data.email,
+                        username: response.data.name,
+                        id: response.data.id,
+                        is_google: true
+                    }))
+                    navigate('/')
+                    console.log(result.token,"tokkkk");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        FetchData()
+    }, [user]);
+
 
     const [loginUser, setLoginUser] = useState({
         email: '',
@@ -132,7 +174,7 @@ function LoginPage() {
                             </div>
                         </form>
                         <div
-                            //   onClick={() => GoogleLogin()}
+                              onClick={() => GoogleLogin()}
                             className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
                         >
                             <FcGoogle />

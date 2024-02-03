@@ -11,12 +11,10 @@ import { useDispatch } from 'react-redux'
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 
 function SignUpPage() {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [profile, setProfile] = useState()
     const [user, SetUser] = useState([])
 
-    const GoogleLogin = useGoogleLogin({
+    const GoogleRegister = useGoogleLogin({
         onSuccess: (codeResponse) => SetUser(codeResponse),
         onError: () => toast.error("Google Authentication Failed")
 
@@ -35,11 +33,8 @@ function SignUpPage() {
                     })
                     console.log(response.data,"laaaaaaaaaaa");
                     const result = await userRegisterGoogle(response.data)
-                    dispatch(setUserDetails({
-                        email: response.data.email,
-                        username: response.data.name,
-                        id: response.data.id
-                    }))
+        
+                    navigate('/')
                     console.log(result.token,"tokkkk");
                 }
             } catch (error) {
@@ -163,7 +158,7 @@ function SignUpPage() {
                             </Link>
                         </form>
                         <div
-                            onClick={() => GoogleLogin()}
+                            onClick={() => GoogleRegister()}
                             className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
                         >
                             <FcGoogle />
