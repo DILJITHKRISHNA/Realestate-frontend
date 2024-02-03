@@ -8,14 +8,14 @@ function HeaderNav() {
 
 
   const userSelector = useSelector((state) => state.user)
-  console.log(userSelector.userInfo.username, "use selectorrrrrrfgdfgrrrrrr");
-
+  console.log(userSelector.userInfo, "use selectorrrrrrfgdfgrrrrrr");
+  const UserGoogleData = userSelector.userInfo
   const [storedToken, setStoredToken] = useState('')
 
   useEffect(() => {
     let localStore = localStorage.getItem("token")
     setStoredToken(localStore)
-    console.log(localStore," localstore");
+    console.log(localStore, " localstore");
   }, [setStoredToken])
 
 
@@ -34,10 +34,13 @@ function HeaderNav() {
             <Link to="/dashboard" className='hover:underline text-white hover:text-yellow-100'>Home</Link>
             <Link to="/properties" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
             <Link to="/blog" className='hover:underline text-white hover:text-yellow-100'>Blog</Link>
-            {storedToken && userSelector.userInfo ? (
+            {storedToken && UserGoogleData ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
-                {userSelector.userInfo.username}
-              </Link>
+                {UserGoogleData.is_google ? (
+                  <h1>{UserGoogleData.username}</h1>
+                ) : (
+                  <h1>{userSelector.username}</h1>
+                )}              </Link>
             ) : (
               <>
                 <Link to="/login" className='hover:underline text-white hover:text-yellow-100'>Login</Link>

@@ -6,7 +6,11 @@ import { useSelector } from 'react-redux';
 
 function Header() {
     const userSelector = useSelector((state) => state.owner)
-    console.log(userSelector,"userererererer");
+    console.log(userSelector.userInfo.username,"88888888888");
+    console.log(userSelector.OwnerInfo.username,"666666666666");
+    const OwnerGoogleData = userSelector.OwnerInfo;
+    const OwnerData = userSelector.userInfo;
+
     return (
         <div>
             <>
@@ -18,25 +22,32 @@ function Header() {
                                 <span className="ml-2 text-white font-bold animate-pulse">AURORA</span>
                             </div>
                         </Link>
-                        <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
-                            <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Dashboard</Link>
-                            <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
-                            <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Bookings</Link>
-                            <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Enquiry</Link>
-                            {localStorage.getItem("token") ? (
-                                <Link to="/owner/profile" className='hover:underline text-white hover:text-yellow-100'>
-                                    {userSelector.username}
-                                </Link>
-                            ) : (
-                                <>
-                                    <Link to="/owner/login" className='hover:underline text-white hover:text-yellow-100'>Login</Link>
-                                    <Link to="/owner/signup">
-                                        <button className='bg-white h-8 border-collapse text-black rounded-lg'>SignUp</button>
-                                    </Link>
-                                </>
 
-                            )}
-                        </div>
+                        {/* Check if UserGoogleData exists before using it */}
+                        {userSelector && (
+                            <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
+                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Dashboard</Link>
+                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
+                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Bookings</Link>
+                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Enquiry</Link>
+                                <Link to="/owner/profile" className='hover:underline text-white hover:text-yellow-100'>
+                                    {!OwnerGoogleData.is_google ? (
+                                        <h1>{OwnerGoogleData.username}</h1>
+                                    ) : (
+                                        <h1>{OwnerData.username}</h1>
+                                    )}
+                                </Link>
+                            </div>
+                        )}
+
+                        {!userSelector && (
+                            <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
+                                <Link to="/owner/login" className='hover:underline text-white hover:text-yellow-100'>Login</Link>
+                                <Link to="/owner/signup">
+                                    <button className='bg-white h-8 border-collapse text-black rounded-lg'>SignUp</button>
+                                </Link>
+                            </div>
+                        )}
                     </nav>
                 </div>
             </>
@@ -44,4 +55,5 @@ function Header() {
     )
 }
 
-export default Header
+export default Header;
+

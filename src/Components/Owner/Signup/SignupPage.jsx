@@ -1,12 +1,52 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { manageOwnerOtp, signUpOwner } from '../../../Api/OwnerApi.js'
+import { manageOwnerOtp, ownerRegisterGoogle, signUpOwner } from '../../../Api/OwnerApi.js'
 import { FcGoogle } from 'react-icons/fc'
 import { useGoogleLogin } from "@react-oauth/google";
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setOwnerDetails } from '../../../Redux/OwnerSlice/ownerSlice.jsx';
 
 function SignupPage() {
-
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [owner, SetOwner] = useState([])
+
+
+  const GoogleRegister = useGoogleLogin({
+    onSuccess: (codeResponse) => SetOwner(codeResponse),
+    onError: () => toast.error("Google Authentication Failed")
+
+  })
+
+  useEffect(() => {
+    const FetchData = async () => {
+      try {
+        if (owner) {
+          const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${owner.access_token}`, {
+            headers: {
+              Authorization: `Bearer ${owner.access_token}`,
+              Accept: 'application/json'
+            }
+          })
+          console.log(response.data.name, "laaaaaaaaaaa");
+          const result = await ownerRegisterGoogle(response.data)
+          dispatch(
+            setOwnerDetails({
+              username: response.data.name,
+              is_google: true
+            }
+          ))
+          navigate('/owner/')
+          console.log(result.token, "tokkkk");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    FetchData()
+  }, [owner]);
+
 
   const [ownerSignup, setOwnerSignup] = useState({
     username: "",
@@ -116,7 +156,7 @@ function SignupPage() {
                 </Link>
               </form>
               <div
-                onClick={() => GoogleLogin()}
+                onClick={() => GoogleRegister()}
                 className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
               >
                 <FcGoogle />

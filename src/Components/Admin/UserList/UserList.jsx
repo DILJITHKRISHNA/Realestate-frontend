@@ -131,7 +131,7 @@ function UserList() {
             </div>
             {users.map((userData)=>(
               <div className="flex flex-col items-center   bg-white px-5 py-5 sm:flex-row sm:justify-center">
-              <span className="text-xs  text-gray-600 sm:text-sm"> Showing 1 to {userData?.length || 0} of Entries </span>
+              {/* <span className="text-xs  text-gray-600 sm:text-sm"> Showing 1 to {userData?.length || 0} of Entries </span> */}
             </div>
             ))}
           </div>
