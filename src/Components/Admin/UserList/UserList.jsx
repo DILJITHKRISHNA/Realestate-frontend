@@ -16,7 +16,7 @@ function UserList() {
           console.log(userData, "userdata from get userinfo userlist");
 
           const userDetailsArray = userData.data.UserDetails || [];
-          // console.log(userDetailsArray[0]._id, "iddddddd");
+          console.log(userDetailsArray, "iddddddd");
           setUsers(userDetailsArray);
         } catch (error) {
           console.log("error got ", error);
