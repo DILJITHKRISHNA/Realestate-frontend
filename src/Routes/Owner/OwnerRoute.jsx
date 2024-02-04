@@ -18,11 +18,11 @@ function ownerRoute() {
       </Route>
       <Route element={<OwnerLayout />}>
         <Route path='/' element={<Home />} />
+        <Route path='/property' element={<Property />} />
       </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/otp' element={<OTP />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/property' element={<Property />} />
     </Routes>
   )
 }

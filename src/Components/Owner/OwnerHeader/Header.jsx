@@ -27,7 +27,7 @@ function Header() {
                         {userSelector && (
                             <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
                                 <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Dashboard</Link>
-                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
+                                <Link to="/owner/property" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
                                 <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Bookings</Link>
                                 <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Enquiry</Link>
                                 <Link to="/owner/profile" className='hover:underline text-white hover:text-yellow-100'>

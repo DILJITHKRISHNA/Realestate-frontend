@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
-import { FetchCategory } from '../../../Api/AdminApi'
-import { categoryTypes } from '../../../Api/AdminApi';
+import { FetchCategory, blockCategory, categoryTypes } from '../../../Api/AdminApi';
 import { ToastContainer, toast } from 'react-toastify';
 
 
@@ -35,8 +34,8 @@ function CategoryPage() {
 
     try {
       const res = await categoryTypes(category);
-
-      if (categoryTypes) {
+      console.log(res,"101010101010");
+      if (res) {
         console.log("Category added successfully");
         toast.success("Category added successfully");
 
@@ -65,6 +64,30 @@ function CategoryPage() {
     handleCategory();
   }, [managePage]);
 
+  const catBlockHandle = async(id,  is_block) => {
+    try {
+      const res = await blockCategory(id)
+      console.log(res,"suiiii");
+      const updatedCategory = categorys.map((category) => {
+        if (category._id === id) {
+          return { ...category, is_block: !is_block };
+        }
+        return category;
+      });
+      setCategorys(updatedCategory)
+
+      localStorage.setItem('category', JSON.stringify(updatedCategory));
+
+      if (!is_block) {
+        toast.success("category blocked");
+      } else {
+        toast.success("category unblocked");
+      }
+
+    } catch (error) { 
+      console.log(error);
+    }
+  }
 
   return (
 
@@ -90,8 +113,9 @@ function CategoryPage() {
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
-                      className={`rounded-md px-3 py-1 text-xs font-semibold bg-red-600 text-white `}>
-                      Block
+                    onClick={()=>catBlockHandle(category._id, category.is_block)}
+                      className={`rounded-md px-3 py-1 text-xs font-semibold ${category.is_block? "bg-green-700 text-white": "bg-red-700 text-white"} `}>
+                      {category.is_block? "Unblock": "Block"}
                     </button>
                   </td>
                 </tr>
@@ -101,7 +125,7 @@ function CategoryPage() {
         </div>
       </div>
       {/* Add category modal */}
-      <form {...state=="edit"?onSubmit={handleSubmit}:''}>
+      <form onSubmit={handleSubmit}>
 
         <div className={`fixed z-10 inset-0 overflow-y-auto ${open ? 'block' : 'hidden'}`}>
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

@@ -40,7 +40,7 @@ export async function fetchOwnerData(ownerData) {
 }
 
 export async function categoryTypes(categoryData) {
-
+    console.log(categoryData,"yyyyyyyyyy");
     try {
         const ResApi = await AdminApi.post('/admin/category', categoryData)
         return ResApi
@@ -98,6 +98,16 @@ export async function approveOwner(kycId){
     try {
         const res = await AdminApi.get(`/approveKyc/${kycId}`)
         return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function blockCategory(id){
+    try {
+        const result = await AdminApi.post(`/admin/category/${id}`)
+        console.log(result,"rstttt");
+        return result
     } catch (error) {
         console.log(error);
     }
