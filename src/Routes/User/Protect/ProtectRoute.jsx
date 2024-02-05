@@ -10,6 +10,6 @@ const ProtectRoutes = () =>{
     console.log(UserInfo,"infotokkk");
     return UserInfo ? <Outlet/> : <Navigate to={'/login'} replace/> 
 }
-
+//    return UserInfo ? <Outlet/> : <Navigate to={'/login'} replace/> why here we giving replace?
 export default ProtectRoutes
 

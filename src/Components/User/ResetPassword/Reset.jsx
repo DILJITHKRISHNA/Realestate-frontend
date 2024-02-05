@@ -11,6 +11,7 @@ function Reset() {
 
     const [reset, setReset] = useState({
         password: "",
+        confirmPassword: ""
     })
 
     const handleOnclick = (e) => {
@@ -63,7 +64,16 @@ console.log(reset.password,"newwwwwwwwwwwww");
                                 name="password"
                                 value={reset.password}
                                 onChange={handleOnclick}
-                                placeholder="New Password"
+                                placeholder="Password"
+                                autoFocus
+                                className=" mt-2 w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
+                            />
+                            <input
+                                type="text"
+                                name="confirmPassword"
+                                value={reset.confirmPassword}
+                                onChange={handleOnclick}
+                                placeholder="Confirm Password"
                                 autoFocus
                                 className=" mt-2 w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />

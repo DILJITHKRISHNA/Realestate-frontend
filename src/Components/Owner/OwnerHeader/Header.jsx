@@ -31,7 +31,7 @@ function Header() {
                                 <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Bookings</Link>
                                 <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Enquiry</Link>
                                 <Link to="/owner/profile" className='hover:underline text-white hover:text-yellow-100'>
-                                    {!OwnerGoogleData.is_google ? (
+                                    {OwnerGoogleData.is_google ? (
                                         <h1>{OwnerGoogleData.username}</h1>
                                     ) : (
                                         <h1>{OwnerData.username}</h1>

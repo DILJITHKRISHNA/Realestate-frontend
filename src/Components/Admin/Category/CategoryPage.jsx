@@ -35,14 +35,14 @@ function CategoryPage() {
     try {
       const res = await categoryTypes(category);
       console.log(res,"101010101010");
-      if (res) {
+      if (res.data.success == true) {
         console.log("Category added successfully");
         toast.success("Category added successfully");
 
-        // Refetch categories to update the list
         handleOpen()
-        setManagePage(true); // Trigger the useEffect to fetch categories
+        setManagePage(true); 
       } else {
+        toast.error(res.data.message)
         console.log("Error adding category");
       }
     } catch (error) {
