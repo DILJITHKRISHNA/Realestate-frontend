@@ -12,13 +12,11 @@ function OwnerList() {
     const OwnerData = async () => {
       try {
         const storedOwners = JSON.parse(localStorage.getItem('owners'));
-        if (storedOwners) {
-          setOwners(storedOwners);
-        } else {
+       
           const ownerData = await fetchOwnerData();
           const ownerDetails = ownerData.data.OwnerDetails || [];
           setOwners(ownerDetails);
-        }
+        
       } catch (error) {
         console.log(error);
       }
@@ -103,7 +101,7 @@ function OwnerList() {
                     
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
-                          {owner.is_block ? (
+                          {!owner.is_block ? (
                             <button
                               className={`rounded-full px-3 py-1 text-xs font-semibold bg-red-700 text-white`}
                               onClick={() => OwnerBlockHandle(owner._id, owner.is_block)}>

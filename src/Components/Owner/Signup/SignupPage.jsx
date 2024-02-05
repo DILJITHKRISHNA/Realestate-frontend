@@ -6,6 +6,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setOwnerDetails } from '../../../Redux/OwnerSlice/ownerSlice.jsx';
+import { ToastContainer, toast } from 'react-toastify';
 
 function SignupPage() {
   const dispatch = useDispatch()
@@ -36,7 +37,7 @@ function SignupPage() {
               username: response.data.name,
               is_google: true
             }
-          ))
+            ))
           navigate('/owner/')
           console.log(result.token, "tokkkk");
         }
@@ -68,21 +69,39 @@ function SignupPage() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    if (!ownerSignup.username || !ownerSignup.email || !ownerSignup.mobile || !ownerSignup.password) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (ownerSignup.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
     try {
-      const response = await signUpOwner(ownerSignup)
-      console.log(response, "response ffrom handlesubmit in ownersignup");
+      const response = await signUpOwner(ownerSignup);
+      console.log(response, "response from handlesubmit in ownersignup");
+
       if (response.data.success) {
-        const ownerMail = { email: ownerSignup.email }
+        const ownerMail = { email: ownerSignup.email };
         console.log(ownerMail, "owner mail from handle submit");
-        await manageOwnerOtp(ownerMail)
-          .then((res) => console.log(res, "ressss inside then in handlesubmit"))
-        navigate('/owner/otp')
+
+        await manageOwnerOtp(ownerMail).then((res) =>
+          console.log(res, "response inside then in handlesubmit")
+        );
+        navigate('/owner/otp');
+      } else {
+        toast.error("Signup failed. Please check your information and try again.");
       }
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
+
+
 
   return (
     <div>
@@ -112,7 +131,6 @@ function SignupPage() {
                   value={ownerSignup.username}
                   onChange={handleClick}
                   placeholder="Fullname"
-                  required
                   autoFocus
                   className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                 />
@@ -122,7 +140,6 @@ function SignupPage() {
                   value={ownerSignup.email}
                   onChange={handleClick}
                   placeholder="Email Address"
-                  required
                   autoFocus
                   className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                 />
@@ -132,7 +149,6 @@ function SignupPage() {
                   value={ownerSignup.mobile}
                   onChange={handleClick}
                   placeholder="Mobile number"
-                  required
                   autoFocus
                   className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                 />
@@ -142,7 +158,6 @@ function SignupPage() {
                   value={ownerSignup.password}
                   onChange={handleClick}
                   placeholder="Password"
-                  required
                   className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                 />
                 <button
@@ -168,6 +183,7 @@ function SignupPage() {
           </div>
         </div>
       </>
+      <ToastContainer/>
     </div>
   )
 }

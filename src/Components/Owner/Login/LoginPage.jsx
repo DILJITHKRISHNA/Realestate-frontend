@@ -25,38 +25,51 @@ function LoginPage() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+  
+    // Basic validations
+    if (!ownerData.email || !ownerData.password) {
+      toast.error("Please provide both email and password");
+      return;
+    }
+  
+    if (ownerData.password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+  
     try {
-
-      
       console.log(ownerData, "ownerdataaaaaassss");
-      const response = await OwnerLogin(ownerData)
-      const token = response.data.token
-      if(ownerData.email!==response.data.user.email && ownerData.password!==response.data.user.password){
-        toast.error("incorrect email or password")
+      const response = await OwnerLogin(ownerData);
+      const token = response.data.token;
+  
+      if (!response.data.success) {
+        toast.error("Owner not found. Please sign up.");
+        return;
       }
+  
+      if (response.data.user.is_block !== true) {
 
-      if (response.data.success && response.data.user.is_block !== true) {
-        localStorage.setItem("token", token)
+        localStorage.setItem("token", token);
         dispatch(
           setOwnerDetails({
             username: response.data.user.username,
             email: response.data.user.email,
             mobile: response.data.user.mobile,
           })
-        )
-        toast.success("Successfully logged in")
+        );
+        toast.success("Successfully logged in");
         setTimeout(() => {
-          navigate("/owner/")
+          navigate("/owner/");
         }, 1000);
-      }else{
-        toast.error("You are blocked by admin")
+      } else {
+        toast.error("You are blocked by admin");
       }
     } catch (error) {
-
       console.log(error);
     }
-  }
+  };
+  
 
   return (
     <>
@@ -113,7 +126,7 @@ function LoginPage() {
             </div>
           </div>
         </div>
-      <ToastContainer />
+        <ToastContainer />
       </div>
     </>
   )

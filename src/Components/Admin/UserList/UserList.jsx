@@ -12,49 +12,52 @@ function UserList() {
   useEffect(() => {
     const getuserInfo = async () => {
       try {
-          const userData = await FetchUserDetails();
-          console.log(userData, "userdata from get userinfo userlist");
+        const userData = await FetchUserDetails();
+        console.log(userData, "userdata from get userinfo userlist");
 
-          const userDetailsArray = userData.data.UserDetails || [];
-          console.log(userDetailsArray, "iddddddd");
-          setUsers(userDetailsArray);
-        } catch (error) {
-          console.log("error got ", error);
-        }
+        const userDetailsArray = userData.data.UserDetails || [];
+        console.log(userDetailsArray, "iddddddd");
+        setUsers(userDetailsArray);
+      } catch (error) {
+        console.log("error got ", error);
       }
-      getuserInfo();
-    }, []);
+    }
+    getuserInfo();
+  }, []);
+  useEffect(() => {
+    if (users.length > 0) {
+      console.log(users,']]]]');
+      console.log(users.is_block,'=========');
+      const data=users.find((item)=>SetState(item.is_block))
+  
+    }
+  }, [users]);
 
-    useEffect(() => {
-      if (users.length > 0) {
-        SetState(users[0].is_block);
-      }
-    }, [users]);
+  const userBlockHandle = async (id, is_block) => {
+    console.log(id, "iddddddddddddd enter to userblock handleeeeee");
+    try {
 
-    const userBlockHandle = async (id, is_block) => {
-      console.log(id, "iddddddddddddd enter to userblock handleeeeee");
-      try {
-        const res = await UserBlockUnBlock(id);
+    
+      const res = await UserBlockUnBlock(id);
+      console.log(res, "ressssssssss in useblockHandle in userlist");
 
-        console.log(res, "ressssssssss in useblockHandle in userlist");
-
-        const updatedUsers = users.map((user) => {
-          if (user._id === id) {
-            return { ...user, is_block: !is_block };
-          }
-          return user;
-        });
-
-        setUsers(updatedUsers);
-
-        if (!is_block) {
-          console.log(is_block, "blocked status 1");
-          toast.success("User blocked");
-          localStorage.removeItem('token');
-        } else {
-          console.log(is_block, "blocked status 2");
-          toast.success("User unblocked");
+      const updatedUsers = users.map((user) => {
+        if (user._id === id) {
+          return { ...user, is_block: !is_block };
         }
+        return user;
+      });
+
+      setUsers(updatedUsers);
+
+      if (!is_block) {
+        console.log(is_block, "blocked status 1");
+        toast.success("User blocked");
+        localStorage.removeItem('token');
+      } else {
+        console.log(is_block, "blocked status 2");
+        toast.success("User unblocked");
+      }
     } catch (error) {
       console.log("Error during user blocking:", error);
     }
@@ -104,7 +107,7 @@ function UserList() {
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <p className="whitespace-no-wrap">{user.mobile}</p>
                       </td>
-                     
+
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                           {!state ? (
@@ -129,11 +132,11 @@ function UserList() {
                 </tbody>
               </table>
             </div>
-            {users.map((userData)=>(
-              <div className="flex flex-col items-center   bg-white px-5 py-5 sm:flex-row sm:justify-center">
+            {/* {users.map((userData)=>( */}
+            <div className="flex flex-col items-center   bg-white px-5 py-5 sm:flex-row sm:justify-center">
               {/* <span className="text-xs  text-gray-600 sm:text-sm"> Showing 1 to {userData?.length || 0} of Entries </span> */}
             </div>
-            ))}
+            {/* ))} */}
           </div>
         </div>
         <ToastContainer />

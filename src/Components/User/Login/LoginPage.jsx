@@ -113,6 +113,7 @@ function LoginPage() {
             }
             console.log(response, "responseeeeeeeeeee");
         } catch (error) {
+            toast.error("invalid credential, please signup")
             console.error('Login failed:', error);
         }
     }
