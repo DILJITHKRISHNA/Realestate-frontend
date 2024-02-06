@@ -3,6 +3,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AddKyc } from '../../../Api/OwnerApi';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import ViewKycModal from './ViewKycModal';
+import { LogoutIcon } from '@heroicons/react/solid';
 
 
 function Profile() {
@@ -29,10 +31,15 @@ function Profile() {
         })
     }
     const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const openModal = () => {
         setIsOpen(true);
     };
+
+    const KycModal = () => {
+        setOpen(true)
+    }
 
     const closeModal = () => {
         setIsOpen(false);
@@ -56,7 +63,7 @@ function Profile() {
         try {
 
             await validationSchema.validate(kyc, { abortEarly: false });
-            
+
             console.log(kyc, "datasssss");
             const response = await AddKyc(kyc);
             console.log(response);
@@ -78,13 +85,20 @@ function Profile() {
                 <div className='border-2 border-black mt-5 w-[80%] h-[550px]'>
                     <div className='flex items-center justify-between p-4 text-black relative border-b-2 border-black ml-4 w-[95%]'>
                         <h1 className='font-bold text-xl relative'>Profile</h1>
+
                         <button
                             className='bg-black text-white rounded-lg  w-20 h-10'
-                            onClick={openModal}>
+                            onClick={openModal} state={"kyc"}>
                             Add KYC
                         </button>
-                        <button className='bg-black rounded-lg text-white font-bold w-20 h-10' onClick={handleLogout}>Logout</button>
-
+                        <button
+                            className='bg-black text-white rounded-lg  w-20 h-10'
+                            onClick={KycModal}>
+                            View KYC
+                        </button>
+                        <button className='bg-black rounded-lg text-white font-bold w-16 h-10' onClick={handleLogout}>
+                            <LogoutIcon className='w-16 h-6 flex'/>
+                        </button>
                     </div>
                     <div className=' '>
                         {/* other contents */}
@@ -102,7 +116,7 @@ function Profile() {
                                     <div className=" overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100 ">
                                         <div className="overflow-x-auto border-2 border-black h-full ">
                                             <h1 className='mt-2 ml-4 font-bold text-lg border-b-2 border-black pb-4 w-[95%]'>ADD KYC</h1>
-                                            
+
                                             <form onClick={handleSubmit}>
                                                 <div className='ml-6 mt-6 flex flex-col justify-center items uppercase'>
                                                     <label className='font-medium'>Fullname</label>
@@ -249,6 +263,12 @@ function Profile() {
 
             </div >
             {/* add kyc modal */}
+
+            {/* view kyc modal */}
+            {open ?
+                <ViewKycModal setOpen={setOpen}/>
+                : ""}
+            {/* view kyc modal */}
         </>
 
     )

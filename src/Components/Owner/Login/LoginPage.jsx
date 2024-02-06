@@ -48,14 +48,15 @@ function LoginPage() {
         return;
       }
   
+      console.log(response.data.user.is_Kyc,"{}}}}}}}}}}}}}}}}}}}}}}}}");
       if (response.data.user.is_block !== true) {
-
         localStorage.setItem("token", token);
         dispatch(
           setOwnerDetails({
             username: response.data.user.username,
             email: response.data.user.email,
             mobile: response.data.user.mobile,
+            is_kyc: response.data.user.is_Kyc
           })
         );
         toast.success("Successfully logged in");

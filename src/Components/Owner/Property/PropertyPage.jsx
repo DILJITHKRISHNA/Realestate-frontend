@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { HomeIcon, SearchIcon } from '@heroicons/react/solid';
 import { useLocation } from 'react-router-dom';
+import { AddProperty } from '../../../Api/OwnerApi';
 
 function PropertyPage() {
 
 // const [open, SetOpen] = useState(state)  
 
-const handleOpen = () => {
-  
+const handleClick = async() => {
+  try {
+    const res = await AddProperty(propertyData)
+  } catch (error) {
+    console.log(error);
+  }
 }
 
   return (
@@ -23,7 +28,7 @@ const handleOpen = () => {
             <SearchIcon className='absolute w-4 h-8 ml-2 text-black'/>
             <input type='text' placeholder='Search Properties' className='border-2 text-center border-black p-2 rounded-lg h-[80%] ' />
           </div>
-          <button onClick={handleOpen} className='flex items-center uppercase bg-black text-white hover:text-black rounded-lg py-2 px-6 h-8 hover:bg-white border-2'>
+          <button onClick={handleClick} className='flex items-center uppercase bg-black text-white hover:text-black rounded-lg py-2 px-6 h-8 hover:bg-white border-2'>
             <HomeIcon className='w-6 h-6 text-white hover:text-black' />
             Add New Property
           </button>

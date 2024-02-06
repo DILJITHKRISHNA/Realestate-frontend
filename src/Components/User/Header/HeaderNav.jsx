@@ -24,7 +24,7 @@ function HeaderNav() {
   return (
     <>
       <div className="app">
-        <nav className="bg-black h-auto flex justify-between items-center shadow-md p-2">
+        <nav className="fixed top-0 bg-black h-auto w-full flex justify-between items-center shadow-md p-2 z-10">
           <Link to='/'>
             <div className="flex items-center">
               <img src={VarletLogo} alt="Logo" className="h-12 w-12 animate-pulse" />
@@ -41,7 +41,8 @@ function HeaderNav() {
                   <h1>{OwnerGoogleData.username}</h1>
                 ) : (
                   <h1>{UserGoogleData.username}</h1>
-                )}              </Link>
+                )}
+              </Link>
             ) : (
               <>
                 <Link to="/login" className='hover:underline text-white hover:text-yellow-100'>Login</Link>
@@ -49,13 +50,11 @@ function HeaderNav() {
                   <button className='bg-white w-[100%] h-8 border-collapse text-black rounded-lg'>SignUp</button>
                 </Link>
               </>
-
             )}
-
-
           </div>
         </nav>
       </div>
+      
     </>
   )
 }

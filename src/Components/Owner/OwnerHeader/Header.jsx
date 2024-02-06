@@ -6,10 +6,11 @@ import { useSelector } from 'react-redux';
 
 function Header() {
     const userSelector = useSelector((state) => state.owner)
-    console.log(userSelector.userInfo.username,"88888888888");
-    console.log(userSelector.OwnerInfo.username,"666666666666");
+    console.log(userSelector.userInfo.username, "88888888888");
+    console.log(userSelector.OwnerInfo.username, "666666666666");
     const OwnerGoogleData = userSelector.OwnerInfo;
     const OwnerData = userSelector.userInfo;
+    console.log(OwnerGoogleData, "datttttteewaaaaaaaa");
 
     return (
         <div>

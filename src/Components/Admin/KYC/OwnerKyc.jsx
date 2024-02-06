@@ -66,6 +66,11 @@ function OwnerKyc() {
                                         <th className="px-5 py-3">KYC ID</th>
                                         <th className="px-5 py-3">Full Name</th>
                                         <th className="px-5 py-3">PAN</th>
+                                        <th className="px-5 py-3">Email</th>
+                                        <th className="px-5 py-3">Occupation</th>
+                                        <th className="px-5 py-3">City</th>
+                                        <th className="px-5 py-3">Country</th>
+                                        <th className="px-5 py-3">State</th>
                                         <th className="px-5 py-3">Photo</th>
                                         <th className="px-5 py-3">Approval</th>
                                         <th className="px-5 py-3">Status</th>
@@ -92,11 +97,26 @@ function OwnerKyc() {
                                                 <p className="whitespace-no-wrap">{kyc.panCard}</p>
                                             </td>
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <p className="whitespace-no-wrap">{kyc.email}</p>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <p className="whitespace-no-wrap">{kyc.occupation}</p>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <p className="whitespace-no-wrap">{kyc.city}</p>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <p className="whitespace-no-wrap">{kyc.country}</p>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <p className="whitespace-no-wrap">{kyc.state}</p>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <p className="whitespace-no-wrap">photo</p>
                                             </td>
 
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <p className={`whitespace-no-wrap font-bold ${kyc.is_approve? "text-green-500" : "text-red-500"}` }>{kyc.is_approve?"Approved":"Rejected"}</p>
+                                                <p className={`whitespace-no-wrap font-bold ${kyc.is_approve ? "text-green-500" : "text-red-500"}`}>{kyc.is_approve ? "Approved" : "Rejected"}</p>
                                             </td>
 
                                             <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm ">
@@ -133,13 +153,13 @@ function OwnerKyc() {
                                 </p>
                                 <div className="flex justify-end gap-4">
                                     <button
-                                        onClick={() => ApproveKyc(kyc._id,kyc.is_approve === true)}
+                                        onClick={() => ApproveKyc(kyc._id, kyc.is_approve === true)}
                                         className="bg-gradient-to-r bg-green-700 rounded-full text-white px-3 py-1 text-xs font-semibold"
                                     >
                                         Approve
                                     </button>
                                     <button
-                                        onClick={() => ApproveKyc(kyc._id,kyc.is_approve === false)}
+                                        onClick={() => ApproveKyc(kyc._id, kyc.is_approve === false)}
                                         className="bg-gradient-to-r bg-red-700 rounded-full text-white px-4 py-2 text-xs font-semibold"
                                     >
                                         Reject
