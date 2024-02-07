@@ -27,6 +27,9 @@ function Reset() {
         try {
             const res = await NewPassword(reset)
             console.log(res, "resssssss");
+            if(reset.password !== reset.confirmPassword ){
+                toast.error("Both password fields must be same")
+            }
             if(res.data.success){
                 toast.success("Password Reset Successfull")
                 setTimeout(() => {

@@ -5,15 +5,23 @@ import { AddProperty } from '../../../Api/OwnerApi';
 
 function PropertyPage() {
 
-// const [open, SetOpen] = useState(state)  
+  const [open, SetOpen] = useState(false)  
 
-const handleClick = async() => {
-  try {
-    const res = await AddProperty(propertyData)
-  } catch (error) {
-    console.log(error);
+  const handleOpen = () => {
+    SetOpen(true)
   }
-}
+
+  
+
+  const handleClick = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await AddProperty(propertyData)
+      console.log(res, "resssssponn in property page");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -25,13 +33,15 @@ const handleClick = async() => {
             Property List
           </h1>
           <div className='mb-4'>
-            <SearchIcon className='absolute w-4 h-8 ml-2 text-black'/>
+            <SearchIcon className='absolute w-4 h-8 ml-2 text-black' />
             <input type='text' placeholder='Search Properties' className='border-2 text-center border-black p-2 rounded-lg h-[80%] ' />
           </div>
-          <button onClick={handleClick} className='flex items-center uppercase bg-black text-white hover:text-black rounded-lg py-2 px-6 h-8 hover:bg-white border-2'>
-            <HomeIcon className='w-6 h-6 text-white hover:text-black' />
-            Add New Property
-          </button>
+          <form action="">
+            <button onClick={handleOpen} className='flex items-center uppercase bg-black text-white hover:text-black rounded-lg py-2 px-6 h-8 hover:bg-white border-2'>
+              <HomeIcon className='w-6 h-6 text-white hover:text-black' />
+              Add New Property
+            </button>
+          </form>
         </div>
 
         <div className='flex mb-4 w-[80%]'>
@@ -43,7 +53,9 @@ const handleClick = async() => {
         </div>
 
       </div>
-
+      {/* property modal */}
+      {/* {open?} */}
+      {/* property modal */}
 
     </>
   )

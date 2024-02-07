@@ -5,14 +5,16 @@ import { Outlet, useNavigate } from 'react-router-dom'
 function ProfilePage() {
     const navigate = useNavigate()
 
-    const handleClick = () =>{
+    const handleClick = () => {
         localStorage.removeItem("token")
         navigate('/login')
     }
     return (
-        <div>
-            <h1>Profile</h1>
-            <button onClick={handleClick}>Log Out</button>
+        <div className=' mt-[80px]'>
+            <div className='flex gap-6'>
+                <h1>Profile</h1>
+                <button className='bg-black text-white rounded-lg w-16' onClick={handleClick}>Log Out</button>
+            </div>
         </div>
     )
 }
