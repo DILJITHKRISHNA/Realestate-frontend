@@ -6,7 +6,8 @@ import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 import { useSelector } from 'react-redux'
 
 function Reset() {
-    console.log("jiiiiiiiiiiiiiiiiii");
+    const emailSelector = useSelector((state) => state.user)
+    const email = emailSelector.userInfo.email.email
     const navigate = useNavigate()
 
     const [reset, setReset] = useState({
@@ -23,24 +24,25 @@ function Reset() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(reset, "new passs");
+
         try {
-            const res = await NewPassword(reset)
+            const res = await NewPassword({ password:reset.password, email });
+            console.log(email, "llllllllll");
             console.log(res, "resssssss");
-            if(reset.password !== reset.confirmPassword ){
+            if (reset.password !== reset.confirmPassword) {
                 toast.error("Both password fields must be same")
             }
-            if(res.data.success){
+            if (res.data.success) {
                 toast.success("Password Reset Successfull")
                 setTimeout(() => {
-                    navigate('/login', {state:"reset"})
+                    navigate('/login', { state: "reset" })
                 }, 1000);
             }
         } catch (error) {
             console.log(error);
         }
     }
-console.log(reset.password,"newwwwwwwwwwwww");
+    console.log(reset.password, "newwwwwwwwwwwww");
     return (
         <>
             <div className="relative flex h-screen bg-black justify-center items-center">

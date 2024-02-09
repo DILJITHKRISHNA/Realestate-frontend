@@ -59,7 +59,6 @@ export async function userPass(forgotData){
 }
 
 export async function NewPassword(newPass){
-    console.log(newPass,"ppppppppppppp apiiii");
     try {
         const result = await UserApi.post("/resetpassword", newPass)
         console.log(result,"resuuuu");

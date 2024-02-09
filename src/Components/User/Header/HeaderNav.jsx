@@ -38,8 +38,10 @@ function HeaderNav() {
             {storedToken && userSelector ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
                 {UserGoogleData.is_google ? (
+                  // <img src="" alt="" />
                   <h1>{OwnerGoogleData.username}</h1>
                 ) : (
+                  // <img src="" alt="" />
                   <h1>{UserGoogleData.username}</h1>
                 )}
               </Link>

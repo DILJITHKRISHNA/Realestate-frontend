@@ -4,7 +4,6 @@ import { GetKyc } from '../../../Api/OwnerApi'
 
 function ViewKycModal({setOpen}) {
 const [data, SetData] = useState([])
-const [open, SetOpen] = useState(true)
 
     useEffect(() => {
 

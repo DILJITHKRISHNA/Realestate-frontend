@@ -8,7 +8,9 @@ export default {
     extend: {
       fontFamily: {
         custom: ['CustomFont', 'sans-serif'],
-        'jaldi': ['Jaldi', 'sans-serif'],
+        jaldi: ['Jaldi', 'sans-serif'],
+        'league-spartan': ['League Spartan', 'sans-serif'],
+        jura: ['Jura', 'sans-serif'],
       },
     },
   },

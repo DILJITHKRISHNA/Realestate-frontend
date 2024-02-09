@@ -5,10 +5,9 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 
 const ProtectRoutes = () => {
-    const userSelector = useSelector((state)=>state.user)
-    const UserInfo = userSelector.userInfo
-    console.log(UserInfo,"infotokkk");
-    return UserInfo ? <Outlet/> : <Navigate to={'/login'} replace/> 
+    const token = localStorage.getItem("token")
+    console.log(token,'tkkkkkkkkkk');
+    return token ? <Outlet/> : <Navigate to={'/login'}/> 
 }
 export default ProtectRoutes
 

@@ -3,9 +3,10 @@ import { ToastContainer, toast } from 'react-toastify'
 import { ManageUserOtp, userPass } from '../../../Api/UserApi'
 import { useNavigate } from 'react-router-dom'
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
+import { useDispatch } from 'react-redux'
 
 function ForgotPass() {
-
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [forgot, setForgot] = useState({
     email: ''
@@ -23,9 +24,12 @@ function ForgotPass() {
     try {
       const res = await userPass(forgot)
       const mail = {email: forgot.email}
-      await ManageUserOtp(mail).then((res)=>console.log(res));
+      await ManageUserOtp(mail).then((res)=>console.log(res,"345834583485[[[[[[["));
+      console.log(mail,"Resssititittii");
       if(res.data.success){
-
+        dispatch(setUserDetails({
+          email: mail
+        }))
         toast.success("Please Verify Your OTP")
 
         setTimeout(() => {

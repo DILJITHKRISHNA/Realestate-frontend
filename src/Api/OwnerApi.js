@@ -79,7 +79,7 @@ export async function GetKyc() {
     }
 }  
 export async function AddProperty(addProperty) {
-    console.log('[[[[[[[[[[[]]]]]]]]]]]');
+    console.log(addProperty,'[[[[[[[[[[[]]]]]]]]]]]');
     try {
         const response = await OwnerApi.post('/owner/property',addProperty)
         console.log(response, "response in add property");

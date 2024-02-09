@@ -37,7 +37,7 @@ function LoginPage() {
                             Accept: 'application/json'
                         }
                     })
-                    console.log(response.data,"laaaaaaaaaaa");
+                    console.log(response.data, "laaaaaaaaaaa");
                     const result = await userLoginGoogle(response.data)
                     dispatch(setUserDetails({
                         email: response.data.email,
@@ -46,7 +46,7 @@ function LoginPage() {
                         is_google: true
                     }))
                     navigate('/')
-                    console.log(result.token,"tokkkk");
+                    console.log(result.token, "tokkkk");
                 }
             } catch (error) {
                 console.log(error);
@@ -75,24 +75,24 @@ function LoginPage() {
     }
 
     const handleSubmit = async (e) => {
-        console.log("hiiiiiiiiiiiiiiiiiiiiiiii uuuu");
+        console.log("Starting login process...");
         e.preventDefault();
+
         try {
-
             if (loginUser.email.trim() === '' || loginUser.password.trim() === '') {
-                toast.error("Username or Password is empty")
-
+                toast.error("Username or Password is empty");
+                console.log("Empty username or password");
+                return;
             }
-
-            const response = await userLogin(loginUser);
-            console.log(response, "response from login");
+            const response = await userLogin(loginUser)
+                console.log(response,'=========');
+        
+            
+            
             const token = response.data.token;
-
             if (response.data.success === true && response.data.user.is_block !== true) {
-                console.log("toastttt");
-                localStorage.setItem("token", token)
-
-                console.log(response.data.user.username, "lllllllllllll");
+                console.log("Successful login!");
+                localStorage.setItem("token", token);
                 dispatch(
                     setUserDetails({
                         username: response.data.user.username,
@@ -100,23 +100,21 @@ function LoginPage() {
                         mobile: response.data.user.mobile,
                     })
                 );
-
-                toast.success("Successfully logged in")
+                toast.success("Successfully logged in");
                 setTimeout(() => {
-                    navigate('/')
+                    navigate('/');
                 }, 1000);
-
-                console.log('Login successful. Token stored in local storage.');
-
-            } else if (response.data.user.is_block === true) {
-                toast.error("You are blocked by Admin")
+            } else if (response.data.success === false && response.data.user.is_block === true) {
+                toast.error("You are blocked by Admin");
+            // } else {
+            //     toast.error("Invalid credentials. Please try again.");
             }
-            console.log(response, "responseeeeeeeeeee");
         } catch (error) {
-            toast.error("invalid credential, please signup")
             console.error('Login failed:', error);
+            toast.error("Error during login. Please try again.");
         }
-    }
+    };
+
 
 
     return (
@@ -175,7 +173,7 @@ function LoginPage() {
                             </div>
                         </form>
                         <div
-                              onClick={() => GoogleLogin()}
+                            onClick={() => GoogleLogin()}
                             className="mt-4 flex justify-center border items-center gap-5 rounded-md p-1 w-[70%] shadow-md transition duration-500 hover:scale-105 cursor-pointer"
                         >
                             <FcGoogle />
