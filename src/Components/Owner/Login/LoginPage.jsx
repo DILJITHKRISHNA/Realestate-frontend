@@ -48,11 +48,12 @@ function LoginPage() {
         return;
       }
   
-      console.log(response.data.user.is_Kyc,"{}}}}}}}}}}}}}}}}}}}}}}}}");
+      console.log(response,"{}}}}}}}}}}}}}}}}}}}}}}}}");
       if (response.data.user.is_block !== true) {
         localStorage.setItem("token", token);
         dispatch(
           setOwnerDetails({
+            id: response.data.user._id,
             username: response.data.user.username,
             email: response.data.user.email,
             mobile: response.data.user.mobile,

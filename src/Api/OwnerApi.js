@@ -78,11 +78,11 @@ export async function GetKyc() {
         console.log(error);
     }
 }  
-export async function AddProperty(addProperty) {
-    console.log(addProperty,'[[[[[[[[[[[]]]]]]]]]]]');
+export async function AddProperty(addProperty, id) {
+    console.log(addProperty,id,'[[[[[[[[[[[]]]]]]]]]]]-------------------------------');
     try {
-        const response = await OwnerApi.post('/owner/property',addProperty)
-        console.log(response, "response in add property");
+        const response = await OwnerApi.post(`/owner/property/${id}`, addProperty);
+        console.log(response," response in oowner apiiiiii");
         return response
     } catch (error) {
         console.log(error);

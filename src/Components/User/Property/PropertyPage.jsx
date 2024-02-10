@@ -1,18 +1,17 @@
 import React from 'react'
+import PropertyList from './PropertyList'
 
 function PropertyPage() {
   return (
     <>
-      <div className='flex mt-10'>
-        <div className='absolute w-[64%] h-[80%] mt-20 ml-10 border-2 border-black rounded-2xl'>
-          <div className='p-6 mt-2'>
-            <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
-          </div>
+      <div className='flex mt-16 h-[20%]'>
+        <div className=' absolute w-[66%] h-[100%] mt-8 ml-10  rounded-2xl p-2'>
+          <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
           {/* contents here */}
-          <h1 className='text-white font-league-spartan text-lg font-bold ml-6'>Property list here</h1>
+          <PropertyList />
         </div>
         <div className='absolute w-screen h-screen flex justify-end'>
-          <div className='w-[30%] h-[80%] mt-20 mr-10 bg-black rounded-2xl'>
+          <div className='w-[28%] h-[80%] mt-16 mr-10 bg-black rounded-2xl'>
             <div className='p-6 mt-2'>
               <h1 className='text-white font-league-spartan text-lg font-bold'>Find Your  <span className='bg-white text-black px-1 '>Property</span></h1>
             </div>
@@ -35,8 +34,9 @@ function PropertyPage() {
             <div className='ml-6 flex flex-col mt-2'>
               <label className='text-white font-jura'>Budget</label>
               <section className='flex flex-row gap-2'>
-                <input type="text" className='mt-4 h-8 rounded-lg p-2' placeholder='Minimum' />
-                <input type="text" className='mt-4 h-8 rounded-lg p-2' placeholder='Maximum' />
+                <input type="text" className='mt-4 h-8 w-28 rounded-lg p-2' placeholder='Minimum' />
+                <span className='text-white mt-5'>to</span>
+                <input type="text" className='mt-4 h-8 w-28 rounded-lg p-2' placeholder='Maximum' />
               </section>
             </div>
           </div>

@@ -26,23 +26,31 @@ function Reset() {
         e.preventDefault()
 
         try {
-            const res = await NewPassword({ password:reset.password, email });
+            const res = await NewPassword({ password: reset.password, email });
             console.log(email, "llllllllll");
             console.log(res, "resssssss");
             if (reset.password !== reset.confirmPassword) {
                 toast.error("Both password fields must be same")
-            }
-            if (res.data.success) {
-                toast.success("Password Reset Successfull")
-                setTimeout(() => {
-                    navigate('/login', { state: "reset" })
-                }, 1000);
+            } else {
+
+                if (res.data.success) {
+                    toast.success("Password Reset Successfull")
+                    setTimeout(() => {
+                        navigate('/login', { state: "reset" })
+                    }, 1000);
+                }
             }
         } catch (error) {
             console.log(error);
         }
     }
-    console.log(reset.password, "newwwwwwwwwwwww");
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <>
             <div className="relative flex h-screen bg-black justify-center items-center">
@@ -63,9 +71,11 @@ function Reset() {
                     </div>
                     <div className="w-full md:w-[50%] text-white flex flex-col justify-center items-center p-4">
                         <form onSubmit={handleSubmit} className="w-full sm:w-[80%] lg:w-[70%]">
-                            <h2 className="pb-3 pl-6 justify-center font-bold text-2xl  text-white animate-pulse w-96">Reset Your Password</h2>
+                            <h2 className="pb-3 pl-6 justify-center font-bold text-2xl  text-white animate-pulse w-96">
+                                Reset Your Password
+                            </h2>
                             <input
-                                type="text"
+                                type={showPassword ? 'text' : 'password'}
                                 name="password"
                                 value={reset.password}
                                 onChange={handleOnclick}
@@ -74,7 +84,7 @@ function Reset() {
                                 className=" mt-2 w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
                             <input
-                                type="text"
+                                type={showPassword ? 'text' : 'password'}
                                 name="confirmPassword"
                                 value={reset.confirmPassword}
                                 onChange={handleOnclick}
@@ -82,6 +92,17 @@ function Reset() {
                                 autoFocus
                                 className=" mt-2 w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
+                            <div className="flex items-center mb-4">
+                                <input
+                                    type="checkbox"
+                                    id="showPassword"
+                                    onChange={handleTogglePassword}
+                                    className="mr-2"
+                                />
+                                <label htmlFor="showPassword" className="text-white">
+                                    Show Password
+                                </label>
+                            </div>
                             <button
                                 type="submit"
                                 className="w-full px-4 py-2 bg-white text-black rounded-md hover:bg-black hover:text-white focus:outline-none mb-4"
