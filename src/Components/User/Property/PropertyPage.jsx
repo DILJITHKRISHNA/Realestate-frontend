@@ -4,8 +4,8 @@ import PropertyList from './PropertyList'
 function PropertyPage() {
   return (
     <>
-      <div className='flex mt-16 h-[20%]'>
-        <div className=' absolute w-[66%] h-[100%] mt-8 ml-10  rounded-2xl p-2'>
+      <div className='flex flex-wrap mt-16 h-[20%]'>
+        <div className='z-10 absolute w-[66%] h-[100%] mt-8 ml-10 rounded-2xl p-2'>
           <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
           {/* contents here */}
           <PropertyList />

@@ -20,11 +20,10 @@ function HeaderNav() {
   }, [setStoredToken])
 
 
-
   return (
     <>
       <div className="app">
-        <nav className="fixed top-0 bg-black h-auto w-full flex justify-between items-center shadow-md p-2 z-10">
+        <nav className="z-20 fixed top-0 bg-black h-auto w-full flex justify-between items-center shadow-md p-2">
           <Link to='/'>
             <div className="flex items-center">
               <img src={VarletLogo} alt="Logo" className="h-12 w-12 animate-pulse" />

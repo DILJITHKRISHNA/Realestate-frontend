@@ -123,12 +123,16 @@ export async function ListProperty(){
     }
 }
 
-export async function PropertyStatus(id){
+export async function PropertyStatus(id, action) {
     try {
-        const response = await AdminApi.post(`/propertystatus/${id}`)
-        console.log(response,"res in status property admin apiii");
-        return response
+      console.log(id, 'ppppppppppp');
+      const response = await AdminApi.post(`/propertystatus/${id}`, { action }); 
+      console.log(response, "res in status property admin apiii");
+      return response;
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
+  }
+  
+
+

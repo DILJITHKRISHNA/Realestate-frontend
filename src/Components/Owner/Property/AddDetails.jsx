@@ -38,14 +38,35 @@ function AddDetails({ SetOpen }) {
     }
 
     const handleSubmit = async (e) => {
-        console.log("handleSubmit add edtailssssss");
+        console.log("handleSubmit add detailssssss");
         e.preventDefault();
         console.log(details,"datassss");
+
+        if (
+            !details.title ||
+            !details.type ||
+            !details.rent ||
+            !details.additionalDetails ||
+            !details.bedroom ||
+            !details.bathroom ||
+            !details.buildUpArea ||
+            !details.FloorCount ||
+            !details.location ||
+            !details.country ||
+            !details.city
+          ) {
+            // Display an error message or handle the validation failure accordingly
+            toast.error("Please fill in all required fields.");
+            return;
+          }
+
         try {
             const res = await AddProperty(details, OwnerId);
             console.log(res, "ressssssssssssssssst in pieceeee");
             if(res.data.success){
-                toast.success("Successfully added new Property")
+                toast.success("Your property is in the verification process; we appreciate your patience and will notify you upon approval.")
+            }else{
+                toast.error("Failed to add property. Please try again.");
             }
         } catch (error) {
             console.log(error);
