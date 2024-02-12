@@ -112,3 +112,23 @@ export async function blockCategory(id){
         console.log(error);
     }
 }
+
+export async function ListProperty(){
+    try {
+        const response = await AdminApi.get(`/propertylist`)
+        console.log(response,"res in list property admin apiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function PropertyStatus(id){
+    try {
+        const response = await AdminApi.post(`/propertystatus/${id}`)
+        console.log(response,"res in status property admin apiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
