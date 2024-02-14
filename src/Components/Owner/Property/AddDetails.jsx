@@ -23,6 +23,7 @@ function AddDetails({ SetOpen }) {
         balconies: "",
         location: "",
         country: "",
+        imageUrls: [],
         city: "",
         state: "",
     });
@@ -56,6 +57,7 @@ function AddDetails({ SetOpen }) {
             !details.location ||
             !details.country ||
             !details.city||
+            !details.imageUrls||
             !details.balconies
           ) {
             // Display an error message or handle the validation failure accordingly
@@ -115,15 +117,16 @@ function AddDetails({ SetOpen }) {
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                 />
                             </div>
-                            <div className="mb-4">
+                            <div className="mb-4 flex flex-col">
                                 <label className="block text-sm font-medium text-gray-700">Property Image</label>
                                 <input
                                     type="file"
                                     name="image"
-                                    // value={details.image}
+                                    value={details.imageUrls}
                                     onChange={handleClick}
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                />
+                                    />
+                                    <button className='border-2 border-black hover:bg-black hover:text-white'>Upload Image(s)</button>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Property Details</label>
@@ -137,7 +140,7 @@ function AddDetails({ SetOpen }) {
                                 />
                             </div>
 
-                            <div className='flex flex-row w-6 h-auto mb-2 gap-3 items-center'>
+                            <div className='flex lg:flex-row xs:flex-wrap w-6 h-auto mb-2 gap-3 items-center'>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700">Bedroom</label>
                                     <input

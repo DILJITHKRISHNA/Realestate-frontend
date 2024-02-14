@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { faBed, faCoffee, faCode, faBath, faBriefcaseClock, faChair } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faCoffee, faCode, faBath, faBriefcaseClock, faChair, faParking, faDownLeftAndUpRightToCenter, faHouseFloodWater } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FetchData } from '../../../Api/UserApi';
 import { useLocation, useParams } from 'react-router-dom';
@@ -88,19 +88,19 @@ function EachProperty() {
                 <div className='text-lime-400'>
                   <FontAwesomeIcon icon={faBed} size='2x' />
                 </div>
-                <span className='ml-2 text-lg font-thin'>Bedrooms 0{property.bedrooms}</span>
+                <span className='ml-2 text-lg font-thin'>Bedrooms <span className='text-lime-700 font-mono'>0{property.bedrooms}</span></span>
               </div>
               <div className='flex items-center ml-4 mt-6'>
                 <div className='text-lime-400'>
                   <FontAwesomeIcon icon={faBath} size='2x' />
                 </div>
-                <span className='ml-2 text-lg font-thin'>Bathrooms 0{property.bathrooms}</span>
+                <span className='ml-2 text-lg font-thin'>Bathrooms <span className='text-lime-700 font-mono'>0{property.bathrooms}</span></span>
               </div>
               <div className='flex items-center mt-6'>
                 <div className='text-lime-400'>
-                  <FontAwesomeIcon icon={faFloor} size='2x' />
+                  <FontAwesomeIcon icon={faHouseFloodWater} size='2x' />
                 </div>
-                <span className='ml-2 text-lg font-thin'>Total Floor 0{property.FloorCount}</span>
+                <span className='ml-2 text-lg font-thin'>Total Floor <span className='text-lime-700 font-mono'>0{property.FloorCount}</span></span>
               </div>
             </div>
             <div className='mt-8 border-b-2 border-black'></div>
@@ -109,19 +109,19 @@ function EachProperty() {
                 <div className='text-lime-400 mr-4'>
                   <FontAwesomeIcon icon={faChair} size='2x' />
                 </div>
-                <span className=' text-lg font-thin'>Balconies {property.balcony}</span>
+                <span className=' text-lg font-thin'>Balconies <span className='text-lime-700 font-mono'>0{property.balcony}</span></span>
               </div>
               <div className='flex items-center ml-14'>
                 <div className='text-lime-400'>
-                  <FontAwesomeIcon icon={faCode} size='2x' />
+                  <FontAwesomeIcon icon={faParking} size='2x' />
                 </div>
-                <span className='ml-2 text-lg font-thin'>Parking: {property.parking === false ? "Available" : "No"}</span>
+                <span className='ml-2 text-lg font-thin'>Parking: <span className='text-lime-700 font-mono'>{property.parking === false ? "Available" : "No"}</span></span>
               </div>
               <div className='flex items-center ml-4'>
                 <div className='text-lime-400'>
-                  <FontAwesomeIcon icon={faCode} size='2x' />
+                  <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} size='2x' />
                 </div>
-                <span className='ml-2 text-lg font-thin'>Furnished: {property.furnished ? 'Yes' : 'No'}</span>
+                <span className='ml-2 text-lg font-thin'>Furnished: <span className='text-lime-700 font-mono'>{property.furnished ? 'Yes' : 'No'}</span></span>
               </div>
             </div>
             <div className='mt-12 border-b-2 border-black'></div>
