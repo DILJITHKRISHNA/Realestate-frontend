@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { faBed, faCoffee, faCode, faBath, faBriefcaseClock, faChair, faParking, faDownLeftAndUpRightToCenter, faHouseFloodWater } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBath, faChair, faParking, faDownLeftAndUpRightToCenter, faHouseFloodWater } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FetchData } from '../../../Api/UserApi';
+import { FetchData, GetImages } from '../../../Api/UserApi';
 import { useLocation, useParams } from 'react-router-dom';
 
 function EachProperty() {
@@ -9,7 +9,24 @@ function EachProperty() {
   const location = useLocation()
   const { id } = location.state
   const [property, setProperty] = useState([]);
+  const [imageId, setImageId] = useState([])
 
+
+  useEffect(() => {
+    const getImages = async () => {
+      console.log("getImages ");
+      try {
+        const ImageData = await GetImages()
+        console.log(ImageData, "images dataa res in frontednddndnd");
+        if (ImageData) {
+          setImageId(ImageData)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getImages()
+  }, [])
 
   useEffect(() => {
 
@@ -23,7 +40,8 @@ function EachProperty() {
       console.log(dateObject, "datee");
       const propertyData = Details.find((item) => item._id === id)
       console.log(propertyData, "got propertyyy dataaaaa");
-      setProperty(propertyData)
+      
+      setProperty(propertyData )
     }
     getPropertyData()
   }, [])

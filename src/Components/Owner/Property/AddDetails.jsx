@@ -1,14 +1,51 @@
-import React, { useState } from 'react';
-import { AddProperty } from '../../../Api/OwnerApi';
+import React, { useEffect, useState } from 'react';
+import { AddProperty, UploadImages } from '../../../Api/OwnerApi';
 import { useSelector } from 'react-redux';
-import { ToastContainer, toast} from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
 
 function AddDetails({ SetOpen }) {
-    const selector = useSelector((state)=>state.owner)
-    console.log(selector.OwnerInfo.id,"selectorrrrrr")
+    const selector = useSelector((state) => state.owner)
+    console.log(selector.OwnerInfo.id, "selectorrrrrr")
     const OwnerId = selector.OwnerInfo.id
 
+
+
+    const [previewSource, setPreviewSource] = useState('')
+    const [fileInputState, setFileInputState] = useState('')
+
+    const handleFileInputChange = (e) => {
+        const file = e.target.files[0]
+        previewFile(file)
+    }
+    const previewFile = (file) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setPreviewSource(reader.result)
+        }
+    }
+
+    const handleUploadImage = (e) => {
+        console.log("submitting...");
+        e.preventDefault()
+        if (!previewSource) {
+            return
+        }
+        uploadImage(previewSource)
+    }
+
+    const uploadImage = async (base64EncodedImage) => {
+        // console.log(base64EncodedImage, "baseer6444");
+        try {
+            const res = await UploadImages({ data: base64EncodedImage})
+            const url = res.data.uploadedResponse.url
+            console.log(res.data.uploadedResponse.url,"resssssss");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
     const [details, SetDetails] = useState({
         title: "",
         type: "",
@@ -23,7 +60,6 @@ function AddDetails({ SetOpen }) {
         balconies: "",
         location: "",
         country: "",
-        imageUrls: [],
         city: "",
         state: "",
     });
@@ -43,7 +79,7 @@ function AddDetails({ SetOpen }) {
     const handleSubmit = async (e) => {
         console.log("handleSubmit add detailssssss");
         e.preventDefault();
-        console.log(details,"datassss");
+        console.log(details, "datassss");
 
         if (
             !details.title ||
@@ -56,30 +92,37 @@ function AddDetails({ SetOpen }) {
             !details.FloorCount ||
             !details.location ||
             !details.country ||
-            !details.city||
-            !details.imageUrls||
+            !details.city ||
             !details.balconies
-          ) {
-            // Display an error message or handle the validation failure accordingly
-            toast.error("Please fill in all required fields.");
-            return;
-          }
-
-        try {
+            ) {
+                // Display an error message or handle the validation failure accordingly
+                toast.error("Please fill in all required fields.");
+                return;
+            }
+            
+            try {
             const res = await AddProperty(details, OwnerId);
             console.log(res, "ressssssssssssssssst in pieceeee");
-            if(res.data.success){
+            if (res.data.success) {
                 toast.success("Your property is in the verification process; we appreciate your patience and will notify you upon approval.")
-            }else{
+            } else {
                 toast.error("Failed to add property. Please try again.");
             }
         } catch (error) {
             console.log(error);
         }
     };
+    
+    const handleCombinedSubmit = (e) => {
+        e.preventDefault();
+
+        handleSubmit(e);
+        handleUploadImage(e);
+    }
+
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleCombinedSubmit}>
                 <div className="fixed inset-0 backdrop-blur-sm overflow-y-auto flex items-center justify-center">
                     <div className="relative w-[80%] bg-gray-200 p-8 max-w-4xl max-h-2xl h-[100%] mx-auto rounded-lg shadow-black">
                         <h1 className="text-2xl font-bold mb-6">Add Property</h1>
@@ -117,17 +160,7 @@ function AddDetails({ SetOpen }) {
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                 />
                             </div>
-                            <div className="mb-4 flex flex-col">
-                                <label className="block text-sm font-medium text-gray-700">Property Image</label>
-                                <input
-                                    type="file"
-                                    name="image"
-                                    value={details.imageUrls}
-                                    onChange={handleClick}
-                                    className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                    />
-                                    <button className='border-2 border-black hover:bg-black hover:text-white'>Upload Image(s)</button>
-                            </div>
+
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Property Details</label>
                                 <input
@@ -139,7 +172,17 @@ function AddDetails({ SetOpen }) {
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                 />
                             </div>
-
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">Built Up Area</label>
+                                <input
+                                    type="text"
+                                    name="buildUpArea"
+                                    value={details.buildUpArea}
+                                    onChange={handleClick}
+                                    placeholder="Total Square Feet"
+                                    className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                />
+                            </div>
                             <div className='flex lg:flex-row xs:flex-wrap w-6 h-auto mb-2 gap-3 items-center'>
                                 <div className="mb-4">
                                     <label className="block text-sm font-medium text-gray-700">Bedroom</label>
@@ -190,7 +233,7 @@ function AddDetails({ SetOpen }) {
                                 <input
                                     type="checkbox"
                                     name="parking"
-                                    value={details.parking ? false: true}
+                                    value={details.parking ? false : true}
                                     onChange={handleClick}
                                     className="mt-2 border rounded-md w-full focus:outline-none focus:border-blue-500 "
                                 />
@@ -203,17 +246,7 @@ function AddDetails({ SetOpen }) {
                                     className="mt-2 border rounded-md w-full focus:outline-none focus:border-blue-500 "
                                 />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">Built Up Area</label>
-                                <input
-                                    type="text"
-                                    name="buildUpArea"
-                                    value={details.buildUpArea}
-                                    onChange={handleClick}
-                                    placeholder="Total Square Feet"
-                                    className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                />
-                            </div>
+
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">No. Of Floors</label>
                                 <input
@@ -247,6 +280,26 @@ function AddDetails({ SetOpen }) {
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                 />
                             </div>
+                            <div className="mb-4 flex flex-col">
+                                <label className="block text-sm font-medium text-gray-700">Property Image</label>
+                                <div className='flex flex-row'>
+                                    <input
+                                        type="file"
+                                        name="imageUrls"
+                                        value={fileInputState}
+                                        onChange={handleFileInputChange}
+                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                    />
+                                    {previewSource && (
+                                        <img
+                                            src={previewSource}
+                                            alt="chosen"
+                                            className='h-[50px] w-[50px] rounded-full '
+                                        />
+                                    )}
+                                </div>
+                                <button className='mt-1 border-2 border-black hover:bg-black hover:text-white' type='submit'>Upload Image</button>
+                            </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">City</label>
                                 <input
@@ -258,6 +311,7 @@ function AddDetails({ SetOpen }) {
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                 />
                             </div>
+
                             <div className="mt-2 p-4 flex justify-center gap-10">
                                 <div className='flex justify-end gap-10'>
                                     <button
@@ -279,8 +333,8 @@ function AddDetails({ SetOpen }) {
                         </div>
                     </div>
                 </div>
-                <ToastContainer/>
-            </form>
+                <ToastContainer />
+            </form >
         </>
     )
 }

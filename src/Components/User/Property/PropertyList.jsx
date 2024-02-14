@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { FetchData } from '../../../Api/UserApi'
+import { FetchData, GetImages } from '../../../Api/UserApi'
 import { Link, useNavigate } from 'react-router-dom'
+import { Image } from 'cloudinary-react';
 
 function PropertyList() {
     const navigate = useNavigate()
-    const [Id, SetId] = useState(null)
     const [loadData, SetLoadData] = useState([])
+    const [imageId, setImageId] = useState([])
 
     useEffect(() => {
         const FetchProperty = async () => {
@@ -23,30 +24,50 @@ function PropertyList() {
     }, [])
 
     const handleClick = async (id) => {
-        SetId(id)
-        navigate(`/propertyeach`,{state:{id}})
+        navigate(`/propertyeach`, { state: { id } })
     }
 
+    useEffect(() => {
+        const getImages = async () => {
+            console.log("getImages ");
+            try {
+                const ImageData = await GetImages();
+                console.log(ImageData, "images dataa res in frontednddndnd");
+                const data = ImageData.data.publicids
+                if (ImageData) {
+                    setImageId(data);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getImages();
+    }, []);
     return (
         <>
             <div className='flex flex-wrap gap-16'>
                 {loadData.map((data) => (
                     <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer" onClick={() => handleClick(data._id)}  >
                         <div  >
-                            <div className="relative " >
-                                <img
-                                    className="w-full h-full p-4 object-cover rounded-3xl"
-                                    src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                                    alt="ui/ux review check"
-                                />
-                                <div className="absolute inset-0 h-full w-full" />
-                                <button className="absolute top-4 right-24 mt-2 mr-2 rounded-full bg-black border-2 shadow-md shadow-black text-white p-2">
-                                    For Rent
-                                </button>
-                                <button className="absolute top-4 right-4 rounded-full border-2 shadow-md mt-2 mr-2 bg-green-700  shadow-green-700 text-white p-2">
-                                    verified
-                                </button>
-                            </div>
+                            {Array.isArray(imageId) && imageId.map((imageIds, index) => (
+
+                                <div className="relative " >
+                                    <Image
+                                        key={index}
+                                        public_id={imageIds}
+                                        className="w-full h-full p-4 object-cover rounded-3xl"
+                                        cloudName="dqewi7vjr"
+                                        alt="ui/ux review check"
+                                    />
+                                    <div className="absolute inset-0 h-full w-full" />
+                                    <button className="absolute top-4 right-24 mt-2 mr-2 rounded-full bg-black border-2 shadow-md shadow-black text-white p-2">
+                                        For Rent
+                                    </button>
+                                    <button className="absolute top-4 right-4 rounded-full border-2 shadow-md mt-2 mr-2 bg-green-700  shadow-green-700 text-white p-2">
+                                        verified
+                                    </button>
+                                </div>
+                            ))}
                             <input type="radio" className="ml-5 appearance-none bg-green-700 border-2 border-white w-4 h-4 rounded-full checked:bg-green-500 checked:border-green-500" />
                             <span className='ml-2 font-bold p-1'>{data.type}</span>
                             <div className="p-6">

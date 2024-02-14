@@ -109,3 +109,13 @@ export async function SingleData(id) {
         console.log(error);
     }
 }
+
+export async function GetImages() {
+    try {
+        const response = await UserApi.get('/owner/images');
+        console.log(response," response in oowner image get apiiiiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  
