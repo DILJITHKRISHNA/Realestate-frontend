@@ -25,7 +25,7 @@ function UserRoute() {
           }
         />
         <Route path="/property" element={<Property />} />
-        <Route path="/property/:id" element={<SingleProperty />} />
+        <Route path="/propertyeach" element={<SingleProperty />} />
       </Route>
       <Route path="/otp" element={<Otp />} />
       <Route path="/signup" element={<SignUpPage />} />

@@ -88,12 +88,23 @@ export async function userLoginGoogle(userData) {
     }
 }
 
-export async function FetchData() {
+export async function FetchData(id) {
     console.log("entert to fetch dataaa in apiii");
     try {
         const response = await UserApi.get('/property');
         console.log(response, "respnse in fetchdataa proeptuuu apii");
         return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function SingleData(id) {
+    console.log(id,'enter to contrr getDataa');
+    try {
+        const res = await UserApi.get(`/property/:id`)
+        console.log(res, " got res in singledataaaa function inside userappiii");
+        return res
     } catch (error) {
         console.log(error);
     }

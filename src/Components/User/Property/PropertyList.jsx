@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 function PropertyList() {
     const navigate = useNavigate()
+    const [Id, SetId] = useState(null)
     const [loadData, SetLoadData] = useState([])
 
     useEffect(() => {
@@ -11,7 +12,7 @@ function PropertyList() {
             console.log("--------========---------");
             try {
                 const res = await FetchData()
-                console.log(res.data.data, "responseee to fetch properttyy");
+                console.log(res.data, "responseee to fetch properttyy");
                 const property = res.data.data
                 SetLoadData(property || []);
             } catch (error) {
@@ -21,15 +22,16 @@ function PropertyList() {
         FetchProperty()
     }, [])
 
-    const handleClick = (id) => {
-        navigate(`/property/${id}`)
+    const handleClick = async (id) => {
+        SetId(id)
+        navigate(`/propertyeach`,{state:{id}})
     }
 
     return (
         <>
             <div className='flex flex-wrap gap-16'>
                 {loadData.map((data) => (
-                    <div key={data._id} className="w-full max-w-[26rem] shadow-lg cursor-pointer" onClick={() => handleClick(data._id)}  >
+                    <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer" onClick={() => handleClick(data._id)}  >
                         <div  >
                             <div className="relative " >
                                 <img
@@ -38,7 +40,7 @@ function PropertyList() {
                                     alt="ui/ux review check"
                                 />
                                 <div className="absolute inset-0 h-full w-full" />
-                                <button onClick={() => handleClick()} className="absolute top-4 right-24 mt-2 mr-2 rounded-full bg-black border-2 shadow-md shadow-black text-white p-2">
+                                <button className="absolute top-4 right-24 mt-2 mr-2 rounded-full bg-black border-2 shadow-md shadow-black text-white p-2">
                                     For Rent
                                 </button>
                                 <button className="absolute top-4 right-4 rounded-full border-2 shadow-md mt-2 mr-2 bg-green-700  shadow-green-700 text-white p-2">

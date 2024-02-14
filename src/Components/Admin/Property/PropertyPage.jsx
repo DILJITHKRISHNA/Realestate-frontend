@@ -6,7 +6,7 @@ import { ListProperty, PropertyStatus } from '../../../Api/AdminApi';
 
 function PropertyPage() {
   const [listingProperty, setListingProperty] = useState([]);
-  const [openPropertyId, setOpenPropertyId] = useState(null);
+  const [openPropertyId, setOpenPropertyId] = useState(false);
 
   useEffect(() => {
     const handleGetProperty = async () => {
@@ -20,14 +20,14 @@ function PropertyPage() {
       }
     };
     handleGetProperty();
-  }, [listingProperty]);
+  }, [openPropertyId]);
 
   const handleClick = (propertyId) => {
     setOpenPropertyId(propertyId);
   };
 
   const closePropertyModal = () => {
-    setOpenPropertyId(null);
+    setOpenPropertyId(false);
   };
 
   const ApproveProperty = async (PropertyId) => {

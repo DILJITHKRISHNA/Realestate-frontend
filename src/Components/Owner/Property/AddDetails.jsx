@@ -20,9 +20,11 @@ function AddDetails({ SetOpen }) {
         furnished: false,
         buildUpArea: "",
         FloorCount: "",
+        balconies: "",
         location: "",
         country: "",
-        city: ""
+        city: "",
+        state: "",
     });
 
     const handleClose = () => {
@@ -53,7 +55,8 @@ function AddDetails({ SetOpen }) {
             !details.FloorCount ||
             !details.location ||
             !details.country ||
-            !details.city
+            !details.city||
+            !details.balconies
           ) {
             // Display an error message or handle the validation failure accordingly
             toast.error("Please fill in all required fields.");
@@ -155,6 +158,28 @@ function AddDetails({ SetOpen }) {
                                         value={details.bathroom}
                                         onChange={handleClick}
                                         placeholder="bathroom"
+                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">State</label>
+                                    <input
+                                        type="text"
+                                        name="state"
+                                        value={details.state}
+                                        onChange={handleClick}
+                                        placeholder="state"
+                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">Balcony</label>
+                                    <input
+                                        type="text"
+                                        name="balconies"
+                                        value={details.balconies}
+                                        onChange={handleClick}
+                                        placeholder="balcony"
                                         className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                     />
                                 </div>
