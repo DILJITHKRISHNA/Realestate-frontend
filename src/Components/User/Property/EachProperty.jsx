@@ -1,32 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { faBed, faBath, faChair, faParking, faDownLeftAndUpRightToCenter, faHouseFloodWater } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FetchData, GetImages } from '../../../Api/UserApi';
-import { useLocation, useParams } from 'react-router-dom';
+import { FetchData, IsBooked } from '../../../Api/UserApi';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast} from 'react-toastify'
+import BookProperty from '../Booking/BookProperty';
 
-function EachProperty() {
-
+function EachProperty({}) {
   const location = useLocation()
   const { id } = location.state
   const [property, setProperty] = useState([]);
-  const [imageId, setImageId] = useState([])
-
-
-  useEffect(() => {
-    const getImages = async () => {
-      console.log("getImages ");
-      try {
-        const ImageData = await GetImages()
-        console.log(ImageData, "images dataa res in frontednddndnd");
-        if (ImageData) {
-          setImageId(ImageData)
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getImages()
-  }, [])
+  const navigate = useNavigate()
+  
 
   useEffect(() => {
 
@@ -49,26 +34,42 @@ function EachProperty() {
   const date = property.createdAt;
   const dateObject = new Date(date);
   const formattedDate = dateObject.toLocaleDateString();
-
+  
+  const handleBook = async(e) => {
+    e.preventDefault()
+    try {
+      const res = await IsBooked(property._id)
+      if(res.data.property.is_Booked===false){
+        toast.success("Property Booking is on process..!")
+        setTimeout(() => {
+          navigate('/bookproperty', { state: { propertyId: property._id }})
+        }, 2000);
+      }else{
+        toast.error("Property is already booked.")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       <div>
         <div className="flex flex-col lg:flex-row ml-10">
           <img
-            className="object-cover object-center w-full lg:w-[60%] h-[20%] lg:h-[100%] rounded-xl mt-4 lg:mt-24 lg:ml-14"
-            src="/src/assets/images/interiorproperty.jpg"
+            className="object-cover object-center w-full lg:w-[60%] h-full lg:h-[100%] rounded-xl mt-4 lg:mt-24 lg:ml-14"
+            src={property.imageUrls}
             alt="nature image"
           />
 
           <div className='flex flex-col'>
             <img
-              className="object-cover object-center w-full lg:w-[76%] h-[40%] lg:h-[50%] rounded-xl mt-4 lg:mt-24 lg:ml-10"
-              src="/src/assets/images/interiorproperty.jpg"
+              className="object-cover object-center w-full lg:w-[76%] h-full lg:h-[50%] rounded-xl mt-4 lg:mt-24 lg:ml-10"
+              src={property.imageUrls}
               alt="nature image"
             />
             <img
-              className="object-cover object-center w-full lg:w-[76%] h-[38%] lg:h-[50%] rounded-xl mt-4 lg:ml-10"
-              src="/src/assets/images/interiorproperty.jpg"
+              className="object-cover object-center w-full lg:w-[76%] h-full lg:h-[50%] rounded-xl mt-4 lg:ml-10"
+              src={property.imageUrls}
               alt="nature image"
             />
           </div>
@@ -89,7 +90,7 @@ function EachProperty() {
         <div className='mt-4 lg:mt-14 ml-4 lg:ml-16 w-full lg:w-[91%] h-screen flex flex-col lg:flex-row'>
           <div className='w-full lg:w-[90%] p-8'>
             <h1 className='text-4xl font-bold font-custom'>{property.name}</h1>
-            <span>{property.location}</span>
+            <span className='p-1 font-semibold'>{property.location}</span>
             <p className='mt-6 text-lg text-gray-700 leading-snug tracking'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
               incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -158,14 +159,14 @@ function EachProperty() {
             <div className='flex justify-between'>
               <button className='mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400 '> SHARE</button>
               <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400 '> Reserve</button>
-              <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400 '> Book</button>
+              <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleBook}> Book</button>
             </div>
           </div>
         </div>
 
         <div className='border-2 border-lime-200 shadow-md shadow-lime-200 w-full lg:w-[89%] h-[60vh] mt-4 lg:ml-24 flex flex-col lg:flex-row'>
-          <img src="/src/assets/images/property2.jpg" alt="" className='top-0 w-[50%] ' />
-          <div className='text-black text-2xl font-bold  ml-12 uppercase w-[45%] h-[74%]'>
+          <img src={property.imageUrls} alt="" className='top-0 h-full w-full object-cover ' />
+          <div className='text-black text-2xl font-bold  ml-12 p-2 mr-2 uppercase w-[45%] h-[74%]'>
             <h1 className='mt-2 font-bold text-lg bg-lime-400  w-[100%] text-white text-center'>LOCATION DETAILS</h1>
             <ul className='mt-2 ml-1 uppercase text-lg'>
               <li className='mt-6 font-mono'>Location: {property.location}</li>
@@ -178,8 +179,8 @@ function EachProperty() {
             </ul>
           </div>
         </div>
+        <ToastContainer/>
       </div>
-      dgdf
     </>
   )
 }

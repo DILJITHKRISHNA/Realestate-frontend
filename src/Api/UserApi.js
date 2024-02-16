@@ -109,13 +109,24 @@ export async function SingleData(id) {
         console.log(error);
     }
 }
-
-export async function GetImages() {
+export async function IsBooked(id) {
+    console.log(id,'enter to contrr is booked');
     try {
-        const response = await UserApi.get('/owner/images');
-        console.log(response," response in oowner image get apiiiiii");
-        return response
+        const res = await UserApi.post(`/property/bookproperty/${id}`)
+        console.log(res, "res in is booked apii");
+        return res
     } catch (error) {
         console.log(error);
     }
-}  
+}
+export async function BookingData(PaymentDetails, id) {
+    console.log(PaymentDetails, id, "payment details in booking data apiii");
+    try {
+        const res = await UserApi.post(`/property/payment/${id}`,PaymentDetails)
+        console.log(res, "res in is paymentDetails apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+  

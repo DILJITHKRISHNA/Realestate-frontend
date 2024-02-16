@@ -9,43 +9,9 @@ function AddDetails({ SetOpen }) {
     console.log(selector.OwnerInfo.id, "selectorrrrrr")
     const OwnerId = selector.OwnerInfo.id
 
-
-
     const [previewSource, setPreviewSource] = useState('')
     const [fileInputState, setFileInputState] = useState('')
 
-    const handleFileInputChange = (e) => {
-        const file = e.target.files[0]
-        previewFile(file)
-    }
-    const previewFile = (file) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            setPreviewSource(reader.result)
-        }
-    }
-
-    const handleUploadImage = (e) => {
-        console.log("submitting...");
-        e.preventDefault()
-        if (!previewSource) {
-            return
-        }
-        uploadImage(previewSource)
-    }
-
-    const uploadImage = async (base64EncodedImage) => {
-        // console.log(base64EncodedImage, "baseer6444");
-        try {
-            const res = await UploadImages({ data: base64EncodedImage})
-            const url = res.data.uploadedResponse.url
-            console.log(res.data.uploadedResponse.url,"resssssss");
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    
     const [details, SetDetails] = useState({
         title: "",
         type: "",
@@ -58,6 +24,7 @@ function AddDetails({ SetOpen }) {
         buildUpArea: "",
         FloorCount: "",
         balconies: "",
+        imageUrl: null,
         location: "",
         country: "",
         city: "",
@@ -74,7 +41,39 @@ function AddDetails({ SetOpen }) {
             ...details,
             [name]: value
         });
+        
     }
+    const uploadImage = async (file) => {
+        try {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", "dev_setups");
+    
+          const cloudinaryResponse = await fetch(
+            "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+          console.log(cloudinaryResponse, "cloudinaryResponse");
+    
+          if (!cloudinaryResponse.ok) {
+            throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
+          }
+          const cloudinaryData = await cloudinaryResponse.json();
+          console.log("Cloudinary response:", cloudinaryData); // Add this line to log the response
+          if (cloudinaryData.error) {
+            console.log(cloudinaryData.error);
+            return;
+          }
+          const uploadedImageUrl = cloudinaryData.secure_url;
+          console.log(uploadedImageUrl, "uploadedImageUrl");
+          return uploadedImageUrl;
+        } catch (error) {
+          console.log("Error during image upload:", error);
+        }
+      };
 
     const handleSubmit = async (e) => {
         console.log("handleSubmit add detailssssss");
@@ -94,14 +93,19 @@ function AddDetails({ SetOpen }) {
             !details.country ||
             !details.city ||
             !details.balconies
-            ) {
-                // Display an error message or handle the validation failure accordingly
-                toast.error("Please fill in all required fields.");
-                return;
+        ) {
+            // Display an error message or handle the validation failure accordingly
+            toast.error("Please fill in all required fields.");
+            return;
+        }
+
+        try {
+            const data = {
+                ...details,
+                imageUrl: previewSource
             }
-            
-            try {
-            const res = await AddProperty(details, OwnerId);
+            console.log(data,"dttttttttttttttttt4444444");
+            const res = await AddProperty(data, OwnerId);
             console.log(res, "ressssssssssssssssst in pieceeee");
             if (res.data.success) {
                 toast.success("Your property is in the verification process; we appreciate your patience and will notify you upon approval.")
@@ -112,13 +116,52 @@ function AddDetails({ SetOpen }) {
             console.log(error);
         }
     };
-    
+
     const handleCombinedSubmit = (e) => {
         e.preventDefault();
 
         handleSubmit(e);
         handleUploadImage(e);
     }
+
+    const handleFileInputChange = async(e) => {
+        const file = e.target.files[0]
+        const url = await uploadImage(file)
+        SetDetails(prevState => ({...prevState, imageUrl:url}))
+        setPreviewSource(url)
+    }
+    // const previewFile = (file) => {
+    //     const reader = new FileReader()
+    //     reader.readAsDataURL(file);
+    //     reader.onloadend = () => {
+    //         console.log(reader.result, "---------------------eeeeeeee");
+    //         setPreviewSource(reader.result)
+    //     }
+    // }
+
+    const handleUploadImage = (e) => {
+        console.log("submitting...");
+        e.preventDefault()
+        if (!previewSource) {
+            return
+        }
+        // const AllData = {
+        //     image: previewSource,
+        //     propertyId: 
+        // }
+        uploadImage(previewSource)
+    }
+
+    // const uploadImage = async (base64EncodedImage) => {
+    //     // console.log(base64EncodedImage, "baseer6444");
+    //     try {
+    //         const res = await UploadImages({ data: base64EncodedImage })
+    //         const url = res.data.uploadedResponse.url
+    //         console.log(res.data.uploadedResponse.url, "resssssss");
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     return (
         <>
@@ -298,7 +341,6 @@ function AddDetails({ SetOpen }) {
                                         />
                                     )}
                                 </div>
-                                <button className='mt-1 border-2 border-black hover:bg-black hover:text-white' type='submit'>Upload Image</button>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">City</label>

@@ -4,14 +4,14 @@ import PropertyList from './PropertyList'
 function PropertyPage() {
   return (
     <>
-      <div className='flex flex-wrap mt-16 h-[20%]'>
-        <div className='z-10 absolute w-[66%] h-[100%] mt-8 ml-10 rounded-2xl p-2'>
-          <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
+      <div className='flex flex-wrap mt-16'>
+    <div className='z-10 lg:w-[66%] lg:h-auto h-full mt-8 ml-10 rounded-2xl p-2'>
+        <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
           {/* contents here */}
           <PropertyList />
         </div>
         <div className='absolute w-screen h-screen flex justify-end'>
-          <div className='w-[28%] h-[80%] mt-16 mr-10 bg-black rounded-2xl'>
+          <div className='w-[28%] h-[80%] mt-20 mr-10 bg-black rounded-2xl'>
             <div className='p-6 mt-2'>
               <h1 className='text-white font-league-spartan text-lg font-bold'>Find Your  <span className='bg-white text-black px-1 '>Property</span></h1>
             </div>

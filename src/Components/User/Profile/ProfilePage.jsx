@@ -1,5 +1,4 @@
 import React from 'react'
-import HeaderNav from '../Header/HeaderNav'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 function ProfilePage() {
