@@ -88,13 +88,4 @@ export async function AddProperty(addProperty, id) {
         console.log(error);
     }
 }  
-export async function UploadImages(base64EncodedImage) {
-    console.log(base64EncodedImage,"baseeeeeeeeeeeee");
-    try {
-        const response = await OwnerApi.post('/owner/uploadimage', base64EncodedImage);
-        console.log(response," response in oowner image upload apiiiiii");
-        return response
-    } catch (error) {
-        console.log(error);
-    }
-}  
+

@@ -9,6 +9,7 @@ import BookProperty from '../Booking/BookProperty';
 function EachProperty({}) {
   const location = useLocation()
   const { id } = location.state
+  console.log(location)
   const [property, setProperty] = useState([]);
   const navigate = useNavigate()
   

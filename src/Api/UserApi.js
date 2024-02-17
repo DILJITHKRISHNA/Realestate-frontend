@@ -129,4 +129,14 @@ export async function BookingData(PaymentDetails, id) {
         console.log(error);
     }
 }
+export async function paymentRequest(propertyId) {
+    console.log(propertyId, "property iddd in payment user apiii");
+    try {
+        const res = await UserApi.post(`/property/paymentreq/${propertyId}`)
+        console.log(res, "res in is payment request apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
   

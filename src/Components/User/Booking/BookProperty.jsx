@@ -1,69 +1,91 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { FaStripe } from 'react-icons/fa';
-import { IoMdCard } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
-import { BookingData, FetchData } from '../../../Api/UserApi';
+import { Elements, CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { BookingData, FetchData, paymentRequest } from '../../../Api/UserApi';
+import  Payment from './Payment.jsx';
 
-
+let StripePromise = loadStripe('pk_test_51OjybQSJlwdVAH1a32idG8AAn1ZS5xnlCjLSX87y02i9aO6TiGbIYlvgUs1e2B24WLz3U7KG2EqEZhagI1AAjvyk00WDj0U8Jp');
+console.log(StripePromise, "pkk");
 
 function BookProperty() {
-
   const location = useLocation();
   const propertyId = location.state?.propertyId;
+  const [clientSecret, setClientSecret] = useState("");
 
-  const [Payment, setPayment] = useState({
+  const [payment, setPayment] = useState({
     name: '',
     contact: '',
     email: '',
     relocationDate: ''
-  })
+  });
 
-  const handleSubmit = async(e) => {
-    console.log(Payment, "paymentyyyyyyyyyyyy");
-    try {
-      const res = await BookingData(Payment, propertyId);
-      console.log(res,"res in payment handlesubmitt payment ");
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (propertyId) {
+      const fetchPaymentIntent = async () => {
+        try {
+          const res = await paymentRequest(propertyId);
+          console.log(res, "Response in payment requestttt");
+          setClientSecret(res.data.clientSecret);
+        } catch (error) {
+          console.error("Error while making the request:", error);
+        }
+      };
+      fetchPaymentIntent();
     }
-  }
+  }, [propertyId]);
+
+  const appearance = {
+    theme: 'stripe',
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleClick = (e) => {
-    e.preventDefault()
-    const { name, value } = e.target
+    e.preventDefault();
+    const { name, value } = e.target;
     setPayment({
-      ...Payment,
+      ...payment,
       [name]: value
-    })
-  }
-  console.log(Payment, "typing dataaa");
-
+    });
+  };
+  console.log(payment, "typing dataaa");
 
   const [property, setProperty] = useState([]);
 
   useEffect(() => {
-
     const getPropertyData = async () => {
-
-      const res = await FetchData()
-      const Details = res.data.data
-      const date = Details[0].createdAt
+      const res = await FetchData();
+      const Details = res.data.data;
+      const date = Details[0].createdAt;
       const dateObject = new Date(date);
 
       console.log(dateObject, "datee");
-      const propertyData = Details.find((item) => item._id === propertyId)
+      const propertyData = Details.find((item) => item._id === propertyId);
       console.log(propertyData, "got propertyyy dataaaaa");
 
-      setProperty(propertyData)
-    }
-    getPropertyData()
-  }, [])
+      setProperty(propertyData);
+    };
+    getPropertyData();
+  }, [propertyId]);
 
   return (
     <div className='flex justify-center items-center h-screen'>
       <div className='flex flex-col lg:flex-row w-[80%] border-2 border-black mt-16'>
         <div className='flex flex-col justify-center w-full lg:w-full p-8'>
-          <h3 className='text-xl mb-4 text-white font-mono font-semibold uppercase w-auto bg-amber-900 p-1 text-center'>Details</h3>
+          <h3 className='text-xl mb-8 text-white font-mono font-semibold uppercase w-auto bg-amber-900 p-1 text-center'>Details</h3>
 
 
           <form onSubmit={handleSubmit}>
@@ -73,15 +95,15 @@ function BookProperty() {
               <input
                 type='text'
                 name='name'
-                value={Payment.name}
+                value={payment.name}
                 onChange={handleClick}
                 placeholder='Fullname'
-                className='border p-2 w-full border-amber-900' />
+                className='border p-2 w-full border-amber-900 ' />
             </div>
             <div className='mb-4'>
               <label >Contact</label>
               <input type='text'
-                value={Payment.contact}
+                value={payment.contact}
                 onChange={handleClick}
                 name='contact'
                 placeholder='Contact'
@@ -93,7 +115,7 @@ function BookProperty() {
               <input
                 type='email'
                 name='email'
-                value={Payment.email}
+                value={payment.email}
                 onChange={handleClick}
                 placeholder='Email'
                 className='border p-2 w-full border-amber-900' />
@@ -102,12 +124,12 @@ function BookProperty() {
               <label >Re-Location</label>
               <input
                 type='date'
-                value={Payment.relocationDate}
+                value={payment.relocationDate}
                 onChange={handleClick}
                 name='relocationDate'
                 className='border p-2 w-full border-amber-900' />
             </div>
-            <h3 className='text-xl mb-auto text-amber-900 font-mono font-semibold uppercase'>Payment Type</h3>
+            <h3 className='text-xl mb-auto text-amber-900 font-mono font-semibold uppercase'>Payment Type </h3>
 
 
             <div className="">
@@ -118,8 +140,8 @@ function BookProperty() {
           </form>
         </div>
 
-        <div className='w-full lg:w-auto p-8'>
-          <div className='mb-5 lg:flex lg:flex-row'>
+        <div className='w-full lg:w-auto p-8 mt-8'>
+          <div className='mb-6 lg:flex lg:flex-row'>
             <img
               src={property.imageUrls}
               alt='Property Preview'
@@ -151,21 +173,27 @@ function BookProperty() {
               <li className='mb-2 text-amber-900 font-mono'>State: <span className='text-black font-semibold'>{property.state}</span></li>
             </ul>
           </div>
-          <div className='mt-auto border-b border-amber-900 w-auto mb-6'></div>
+          <div className='mt-auto border-b border-amber-900 w-auto mb-10'></div>
+          {/* {property.isBooked === false ? clientSecret && ( */}
           <div
-            className='w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
-            onClick={handleSubmit}
+            className='mb-12 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
             style={{ cursor: 'pointer' }}
           >
-            <IoMdCard className="ml-[40%] text-white" style={{ width: '30px', height: '39px' }} />
-            <span className='text-white mt-1 ml-2 text-lg font-bold hover:text-amber-200'>Pay Now</span>
+            <FaStripe className=" ml-[40%] text-white" style={{ width: '30px', height: '39px' }} />
+            {clientSecret && (
+              <Elements stripe={StripePromise} options={options}>
+                <Payment name={payment.name} contact={payment.contact} email={payment.contact} re_location={payment.relocationDate} propertyId={propertyId} clientSecret={clientSecret} />
+              </Elements>)}
           </div>
+          {/* // ) : ""}/ */}
         </div>
       </div>
     </div>
 
-
   )
 }
+{/* <button type='submit' className='text-white mt-1 ml-2 text-lg font-bold hover:text-amber-200' onClick={handleSubmit}>
+              Pay Now
+            </button> */}
 
 export default BookProperty
