@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FaStripe } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
-import { Elements, CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { BookingData, FetchData, paymentRequest } from '../../../Api/UserApi';
 import Payment from './Payment.jsx';
 
-let StripePromise = loadStripe('pk_test_51OjybQSJlwdVAH1a32idG8AAn1ZS5xnlCjLSX87y02i9aO6TiGbIYlvgUs1e2B24WLz3U7KG2EqEZhagI1AAjvyk00WDj0U8Jp');
+// let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
+let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
 console.log(StripePromise, "pkk");
 
 function BookProperty() {
@@ -78,7 +79,7 @@ function BookProperty() {
 
       setProperty(propertyData);
     };
-    getPropertyData();
+    getPropertyData();  
   }, [propertyId]);
 
   return (

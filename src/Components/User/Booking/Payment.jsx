@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-    Button,
-    Dialog,
-    DialogHeader,
-    DialogBody,
-    DialogFooter,
-    IconButton,
-    Typography,
-    MenuItem,
-    Card,
-} from "@material-tailwind/react";
-import { Elements, PaymentElement, LinkAuthenticationElement, useStripe, useElements, CardElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
+import { Button } from "@material-tailwind/react";
+import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { FaStripe } from "react-icons/fa";
+import { SuccessRequest } from "../../../Api/UserApi";
+import {ToastContainer, toast} from 'react-toastify'
+import { useNavigate } from "react-router-dom";
 
-function Payment({ clientSecret, name, contact, email, re_location }) {
+function Payment({ clientSecret, name, contact, email, re_location, propertyId }) {
 
+    const navigate = useNavigate()
     const stripe = useStripe();
     const elements = useElements();
     const [open, setOpen] = useState(false);
@@ -35,8 +29,7 @@ function Payment({ clientSecret, name, contact, email, re_location }) {
             console.log(clientSecret, "secrettt");
             const { error, paymentIntent } = await stripe.confirmPayment({
                 elements,
-                confirmParams: {
-                },
+                confirmParams: {},
                 redirect: "if_required"
             })
             if (paymentIntent) {
@@ -47,11 +40,26 @@ function Payment({ clientSecret, name, contact, email, re_location }) {
                     re_location: re_location,
                     email: email
                 }
+                console.log(bookData,"booked data");
+                const response = await SuccessRequest(bookData, propertyId)
+                console.log(response,"response when it is sucecss");
+                if(response.data.success){
+                    toast.success("Property Booked Successfully", {
+                        position: "top-right",
+                        autoClose: 2000,
+                        style: {
+                            marginTop: "50px", 
+                        },})
+                    setTimeout(() => {
+                        navigate('/success')
+                    }, 2000);
+                }else{
+
+                }
             }
-            console.log(paymentIntent, "payment intent");
 
             if (error) {
-                console.error(error.message);
+                console.error(error);
             } else {
                 console.log('Payment successful:', paymentIntent);
             }
@@ -112,6 +120,7 @@ function Payment({ clientSecret, name, contact, email, re_location }) {
                             <h1>Payments are secure and encrypted</h1>
                         </div>
                     </div>
+                    <ToastContainer/>
                 </div>
             )}
         </>

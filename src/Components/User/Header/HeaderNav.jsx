@@ -8,9 +8,10 @@ function HeaderNav() {
 
 
   const userSelector = useSelector((state) => state.user)
-  console.log(userSelector.userInfo, "use selectorrrrrrfgdfgrrrrrr");
+  console.log(userSelector, "use selectorrrrrrfgdfgrrrrrr");
   const UserGoogleData = userSelector.userInfo
   const OwnerGoogleData = userSelector.OwnerInfo
+  console.log(OwnerGoogleData, "seleeeeee");
   const [storedToken, setStoredToken] = useState('')
 
   useEffect(() => {
@@ -36,13 +37,8 @@ function HeaderNav() {
             <Link to="/blog" className='hover:underline text-white hover:text-yellow-100'>Blog</Link>
             {storedToken && userSelector ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
-                {UserGoogleData.is_google ? (
-                  // <img src="" alt="" />
-                  <h1>{OwnerGoogleData.username}</h1>
-                ) : (
-                  // <img src="" alt="" />
-                  <h1>{UserGoogleData.username}</h1>
-                )}
+                 {/* <img src="" alt="" /> */}
+                <h1>{UserGoogleData.username}</h1>
               </Link>
             ) : (
               <>
@@ -55,7 +51,7 @@ function HeaderNav() {
           </div>
         </nav>
       </div>
-      
+
     </>
   )
 }

@@ -139,4 +139,14 @@ export async function paymentRequest(propertyId) {
         console.log(error);
     }
 }
+export async function SuccessRequest(bookData, id) {
+    console.log(bookData, id, "book data in success request apii");
+    try {
+        const res = await UserApi.post(`/property/success/${id}`,{data: bookData})
+        console.log(res, "res in is success requestt apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
   

@@ -10,6 +10,7 @@ import ProtectRoutes from './Protect/ProtectRoute.jsx';
 import Property from '../../pages/User/PropertyPage/Property.jsx';
 import SingleProperty from '../../pages/User/SinglePropertyPage/SingleProperty.jsx';
 import Booking from '../../pages/User/BookingPage/Booking.jsx';
+import Success from '../../pages/User/SuccessPage/Success.jsx';
 
 function UserRoute() {
   return (
@@ -20,6 +21,9 @@ function UserRoute() {
 
         <Route path="/profile" element={<ProtectRoutes />}>
           <Route index element={<ProfilePage />} />
+        </Route>
+        <Route path="/success" element={<ProtectRoutes />}>
+          <Route index element={<Success />} />
         </Route>
 
         <Route path="/bookproperty" element={<Booking />} />
