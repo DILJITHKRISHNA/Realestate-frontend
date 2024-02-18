@@ -48,7 +48,7 @@ function Payment({ clientSecret, name, contact, email, re_location }) {
                     email: email
                 }
             }
-            console.log(paymentIntent, "hiii");
+            console.log(paymentIntent, "payment intent");
 
             if (error) {
                 console.error(error.message);
@@ -62,92 +62,58 @@ function Payment({ clientSecret, name, contact, email, re_location }) {
 
     return (
         <>
-            <Button onClick={handleOpen}>Connect Wallet</Button>
-            <Dialog size="xs" open={open} handler={handleOpen} style={{ maxWidth: '30rem' }}>
-                <DialogHeader className="justify-between">
-                    <div>
-                        <Typography variant="h5" color="blue-gray" className="flex flex-row gap-4">
-                            Make Your Payment
-                            <img
-                                src="https://docs.material-tailwind.com/icons/metamask.svg"
-                                alt="metamast"
-                                className="h-6 w-6 rounded-md"
-                            />
-                        </Typography>
-                        <Typography color="gray" variant="paragraph">
-                            Choose which card you want to connect
-                        </Typography>
-                    </div>
-
-                    <IconButton
-                        color="blue-gray"
-                        size="sm"
-                        variant="text"
-                        onClick={handleOpen}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            className="h-5 w-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
-                    </IconButton>
-                </DialogHeader>
-                <div className="flex justify-around">
-                    <Typography color="gray" variant="paragraph" className="mr-60 font-bold">
-                        Rent Amount
-                    </Typography>
-                    <span className="font-bold">₹ 30000</span>
-                </div>
-                <div className="border-b-2 border-gray-300 w-[92%] ml-5"></div>
-                <DialogBody className="overflow-y-scroll !px-5">
-                    <div className="mb-6">
-                        <Typography
-                            variant="paragraph"
-                            color="blue-gray"
-                            className="py-3 font-semibold uppercase opacity-70"
-                        >
-                        </Typography>
-                        <form onSubmit={handleSubmit}>
-
-                            <Card className="flex justify-between mb-4 flex-col">
-                                <div className=" text-gray-300">
-                                    <label>
-                                        <PaymentElement />
-                                    </label>
-                                </div>
-                            </Card>
-                            <div className="mt-12 w-full flex justify-center">
-                                <Button variant="outlined" size="sm" type="submit" className="bg-blue-500 hover:bg- text-white p-2 rounded w-[70%] ">
-                                    Pay
-                                </Button>
+            <Button onClick={handleOpen}>Pay Now</Button>
+            {open && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
+                    <div className="bg-white p-4 rounded-md shadow-md w-full max-w-md">
+                        <div className="flex justify-between">
+                            <div className="">
+                                <h5 className="text-blue-gray text-xl font-semibold">
+                                    Make Your Payment
+                                </h5>
+                                <p className="text-gray text-sm">
+                                    Choose which card you want to connect
+                                </p>
                             </div>
 
-                        </form>
+                            <button
+                                className="text-blue-gray focus:outline-none  mt-2"
+                                onClick={handleOpen}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    className="h-5 w-5"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="mt-6 flex flex-row justify-around space-x-72">
+                            <h1 className="flex">RentAmount</h1>
+                            <span>$3000</span>
+                        </div>
+                        <div className="border-b-2 border-gray-400"></div>
+                        <div className="mt-12">
+                            <PaymentElement />
+                        </div>
+                        <div className="w-auto flex justify-center mt-5" onClick={handleSubmit}>
+                            <button className="bg-blue-500 w-44 text-white font-semibold rounded-md">PAY</button>
+                        </div>
+                        <div className="w-full flex justify-center mt-10 gap-2">
+                            <FaStripe className="w-6 h-7" />
+                            <h1>Payments are secure and encrypted</h1>
+                        </div>
                     </div>
-                    <div>
-                        <ul className="mt-4 -ml-2.5 flex flex-col gap-1">
-                        </ul>
-                    </div>
-                </DialogBody>
-                <DialogFooter className="flex justify-center items-center gap-2">
-                    <div className="flex items-center">
-                        <FaStripe className="w-8 h-8 mt-1" />
-                    </div>
-                    <div className="">
-                        Payments Are Secured And Encrypted
-                    </div>
-                </DialogFooter>
-
-            </Dialog>
+                </div>
+            )}
         </>
     );
 }
