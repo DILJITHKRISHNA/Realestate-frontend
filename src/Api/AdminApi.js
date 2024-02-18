@@ -133,6 +133,15 @@ export async function PropertyStatus(id, action) {
       console.log(error);
     }
   }
+export async function FetchBookingData() {
+    try {
+      const response = await AdminApi.get('/bookingsdata'); 
+      console.log(response, "res in fetchBookingData admin apiii");
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
 
 

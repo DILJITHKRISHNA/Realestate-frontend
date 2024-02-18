@@ -1,6 +1,6 @@
 // src/components/Sidebar.js
 import React, { useState } from 'react';
-import { HomeIcon, UserIcon, ClipboardCheckIcon, UsersIcon} from '@heroicons/react/solid';
+import { HomeIcon, UserIcon, ClipboardCheckIcon, UsersIcon, BookOpenIcon, DotsVerticalIcon} from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -99,6 +99,18 @@ const Sidebar = () => {
                                     }`}
                             >
                                 Category
+                            </p>
+                        </Link>
+                        <Link to='/admin/bookinglist' onClick={() => handleItemClick('booking')}>
+                            <BookOpenIcon
+                                className={`h-8 w-8 mt-12 text-white ${selectedItem === 'booking' && 'text-yellow-300'
+                                    }`}
+                            />
+                            <p
+                                className={`text-white text-sm mt-1 mr-4 hover:text-yellow-100 hover:underline ${selectedItem === 'booking' && 'hover:text-yellow-100'
+                                    }`}
+                            >
+                                Bookings
                             </p>
                         </Link>
                     </div>

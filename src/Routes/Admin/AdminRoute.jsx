@@ -10,6 +10,7 @@ import Property from '../../pages/Admin/Propertypage/Property.jsx'
 import CategoryPage from '../../pages/Admin/CategoryPage/CategoryPage.jsx'
 import Kyc from '../../pages/Admin/OwnerKyc/Kyc.jsx'
 import AdminProtect from './Protect/AdminProtect.jsx'
+import BookingList from '../../pages/Admin/BookingList/BookingList.jsx'
 
 function AdminRoute() {
   return (
@@ -27,6 +28,7 @@ function AdminRoute() {
           <Route path="/ownerlist" element={<OwnerList />}></Route>
           <Route path="/userlist" element={<UserList />}></Route>
           <Route path="/kyclist" element={<Kyc />}></Route>
+          <Route path="/bookinglist" element={<BookingList />}></Route>
         </Route>
       </Routes>
     </div>

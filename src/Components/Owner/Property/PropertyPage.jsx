@@ -1,18 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HomeIcon, SearchIcon } from '@heroicons/react/solid';
 import { useLocation } from 'react-router-dom';
 import AddDetails from './AddDetails';
+import { GetProperty } from '../../../Api/OwnerApi';
 
 function PropertyPage() {
 
   const [open, SetOpen] = useState(false)
- 
+  const [propertyData, setPropertyData] = useState([])
 
   const handleOpen = (e) => {
     console.log('lllllllll');
     e.preventDefault()
     SetOpen(true)
   }
+
+  useEffect(() => {
+
+    const FetchProperty = async () => {
+      try {
+        const result = await GetProperty()
+        console.log(result, "got the dataaaaaa");
+        if (result.data.success) {
+          console.log(result.data.property, "propertyy dattat");
+          setPropertyData(result.data.property);
+        }
+      } catch (error) {
+        console.log("Fetch property", error);
+      }
+    }
+    FetchProperty()
+  }, [])
 
   return (
     <>
@@ -32,17 +50,50 @@ function PropertyPage() {
             Add New Property
           </button>
         </div>
+        {propertyData.map((data) => (
+          <div className='flex w-[90%] justify-center'>
+            <div className='flex flex-col pb-4 mb-4 w-[90%] bg-white rounded-sm shadow-md shadow-black'>
+              <div className='flex flex-col'>
+                {data.imageUrls.map((imageUrl, index) => (
+                  <div key={index} className='flex flex-row '>
+                    <img
+                      src={imageUrl}
+                      alt={`Image ${index}`}
+                      className='w-[20%] h-auto max-h-48 object-cover rounded-lg ml-2 mt-4'
+                    />
+                    <div className='flex flex-col mx-3 my-4 font-mono'>
+                      <h1 className={`border-2 bg-green-800 w-24 px-1 text-white text-center ${data.is_verified ? 'bg-green-800' : 'bg-red-500'}`}>{data.is_verified === true ? "Verified" : "Unverified"}</h1>
+                      <p className="font-semibold uppercase tracking-wide text-base">{data.name}</p>
+                      <p className="font-medium uppercase tracking-wide text-base">₹{data.Rent}</p>
+                      <p className="font-medium uppercase tracking-wide text-base">{data.location}</p>
+                      <div className='border-b-2 border-black w-82 mt-1'></div>
 
-        <div className='flex mb-4 w-[80%]'>
-          <div className='flex flex-col pb-20 mb-24 bg-white border-8 border-black rounded-lg shadow-lg overflow-x-auto w-full '>
-            <div className='flex flex-col gap-4 p-4'>
-              {/* Property items will go here */}
+                      <div className='flex flex-row gap-14'>
+                        <h1 className='text-lime-400'>Bedroom: <span className='font-semibold text-black'>0{data.bedrooms}</span></h1>
+                        <h1 className='text-lime-400'>Bathroom: <span className='font-semibold text-black '>0{data.bathrooms}</span></h1>
+                        <h1 className='text-lime-400'>Total Floor: <span className='font-semibold text-black'>0{data.FloorCount}</span></h1>
+                      </div>
+                      <div className='border-b-2 border-black w-82 mt-4'></div>
+                      <div className='flex flex-row gap-5 mt-2'>
+                        <h1 className='text-lime-400'>Balconies: <span className='font-semibold text-black'>0{data.balcony}</span></h1>
+                        <h1 className='text-lime-400'>Parking: <span className='font-semibold text-black'>{data.parking === true ? "Available" : "No"}</span></h1>
+                        <h1 className='text-lime-400 '>Furnished: <span className='font-semibold text-black'>{data.furnished === true ? "Yes" : "No"}</span></h1>
+                      </div>
+                      <div className='border-b-2 border-black w-82 mt-2'></div>
+                    </div>
+                    <div className='w-auto flex flex-col col-span-3 md:col-span-2 lg:col-span-3'>
+                      <button className='ml-96 bg-lime-400 h-8 mt-24 px-6 font-semibold text-white hover:bg-white hover:border-2 hover:border-lime-400 hover:text-lime-400 rounded-md'>Hide </button>
+                      <button className='ml-96 bg-lime-400 h-8 mt-2 px-6 font-semibold text-white hover:bg-white hover:border-2 hover:border-lime-400 hover:text-lime-400 rounded-md'>Edit </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ))}
 
       </div>) : (
-        <AddDetails SetOpen={SetOpen}  />
+        <AddDetails SetOpen={SetOpen} />
 
       )}
 
