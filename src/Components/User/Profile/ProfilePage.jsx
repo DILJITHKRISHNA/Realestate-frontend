@@ -13,22 +13,33 @@ function ProfilePage() {
     return (
         <>
             <div className='mt-[80px]  items-center p-6'>
-                <div className='flex justify-between border-b-4 border-black w-[100%] '>
-                    <h1 className='text-2xl font-bold'>Profile</h1>
+                <div className='flex justify-around  '>
+                    <h1 className='text-2xl font-bold'>My Profile</h1>
                     <div>
-                        <Link to='/history' className='border-2 hover:border-black hover:bg-white hover:text-black bg-black text-white rounded-md p-1'>PaymentHistory</Link>
                     </div>
                     <button className='border-2 hover:border-black hover:bg-white hover:text-black bg-black text-white rounded-md p-2' onClick={handleClick}>
                         Log Out
                     </button>
                 </div>
             </div>
-            <div className='border-2 border-black w-[96%] h-screen ml-7' >
-                <img src='' alt="" />
+            <div className=' gap-16 mt-5 flex justify-between ml-28'>
+            <div className='shadow-md shadow-black w-[70%] h-screen ml-10 rounded-lg flex flex-row justify-around'>
+                    <h1 className=' font-semibold font-mono mt-8'>Personal Data</h1>
+                    <Link to='/history' className='border-2 hover:border-black h-10 mt-6 hover:bg-white hover:text-black bg-black text-white rounded-md p-1 font-mono'>PaymentHistory</Link>
+                    <div className='border-b-2 border-black'></div>
+                </div>
+                <div className=' flex flex-col w-[40%] gap-10'>
+                    <div className='shadow-md shadow-black w-[60%] h-[15%] mr-10 rounded-lg' >
+                        {/* <div className='border-b-2 border-gray-200'></div> */}
+                        <img src='' alt="" />
+                    </div>
+                    <div className='shadow-md shadow-black w-[60%] h-[60%] mr-10 rounded-2xl' >
+                        {/* <div className='border-b-2 border-gray-200'></div> */}
+                        <img src='' alt="" />
+                    </div>
+                </div>
             </div>
         </>
-
-
     )
 }
 

@@ -40,10 +40,10 @@ export function ListPayment() {
     }
     return (
         <>
-            <div className="flex flex-col w-full mt-20">
+            <div className="flex flex-col w-full mt-36">
                 <div className="flex">
-                    <div className="overflow-y-hidden rounded-lg pt-12 bg-offgreen mx-auto h-auto w-[90%] sm:px-8 shadow-md shadow-lime-400 mr-20">
-                        <h1 className='flex justify-center text-3xl mb-16 rounded-md text-black uppercase  font-mono font-semibold'>Payment History</h1>
+                    <div className="overflow-y-hidden rounded-lg  bg-offgreen mx-auto h-auto w-[90%] sm:px-4 shadow-md shadow-lime-400 mr-20">
+                        <h1 className='flex justify-center text-3xl mb-10 rounded-md text-black uppercase  font-mono font-semibold'>Payment History</h1>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
@@ -52,7 +52,7 @@ export function ListPayment() {
                                         <th className="px-5 py-3">Payer</th>
                                         <th className="px-5 py-3">Payment Date</th>
                                         <th className="px-5 py-3">Payment Type</th>
-                                        <th className="px-5 py-3">Propety Name</th>
+                                        <th className="px-5 py-3">Property Id</th>
                                         <th className="px-5 py-3">Mobile</th>
                                         <th className="px-5 py-3">Payment Id</th>
                                         <th className="px-5 py-3">Amount</th>

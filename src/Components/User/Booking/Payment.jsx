@@ -4,7 +4,7 @@ import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js";
 import { FaStripe } from "react-icons/fa";
 import { SuccessRequest } from "../../../Api/UserApi";
-import {ToastContainer, toast} from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 
 function Payment({ clientSecret, name, contact, email, re_location, propertyId }) {
@@ -40,20 +40,22 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId }
                     re_location: re_location,
                     email: email
                 }
-                console.log(bookData,"booked data");
+                console.log(bookData, "booked data");
                 const response = await SuccessRequest(bookData, propertyId)
-                console.log(response,"response when it is sucecss");
-                if(response.data.success){
+                console.log(response, "response when it is sucecss");
+                if (response.data.success) {
                     toast.success("Property Booked Successfully", {
                         position: "top-right",
                         autoClose: 2000,
                         style: {
-                            marginTop: "50px", 
-                        },})
+                            marginTop: "50px",
+                        },
+                    })
+
                     setTimeout(() => {
                         navigate('/success')
                     }, 2000);
-                }else{
+                } else {
 
                 }
             }
@@ -67,7 +69,6 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId }
             console.error(error);
         }
     };
-
     return (
         <>
             <Button onClick={handleOpen}>Pay Now</Button>
@@ -104,10 +105,11 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId }
                                 </svg>
                             </button>
                         </div>
-                        <div className="mt-6 flex flex-row justify-around space-x-72">
-                            <h1 className="flex">RentAmount</h1>
-                            <span>$3000</span>
-                        </div>
+
+                            <div className="mt-6 flex flex-row justify-around space-x-72">
+                                <h1 className="flex">RentAmount</h1>
+                                <span>$3000</span>
+                            </div>
                         <div className="border-b-2 border-gray-400"></div>
                         <div className="mt-12">
                             <PaymentElement />
@@ -120,7 +122,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId }
                             <h1>Payments are secure and encrypted</h1>
                         </div>
                     </div>
-                    <ToastContainer/>
+                    <ToastContainer />
                 </div>
             )}
         </>
