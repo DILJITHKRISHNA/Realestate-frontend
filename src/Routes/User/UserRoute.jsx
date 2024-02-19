@@ -11,6 +11,7 @@ import Property from '../../pages/User/PropertyPage/Property.jsx';
 import SingleProperty from '../../pages/User/SinglePropertyPage/SingleProperty.jsx';
 import Booking from '../../pages/User/BookingPage/Booking.jsx';
 import Success from '../../pages/User/SuccessPage/Success.jsx';
+import History from '../../pages/User/PaymentHistory/History.jsx';
 
 function UserRoute() {
   return (
@@ -24,6 +25,9 @@ function UserRoute() {
         </Route>
         <Route path="/success" element={<ProtectRoutes />}>
           <Route index element={<Success />} />
+        </Route>
+        <Route path="/history" element={<ProtectRoutes />}>
+          <Route index element={<History />} />
         </Route>
 
         <Route path="/bookproperty" element={<Booking />} />

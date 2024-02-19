@@ -98,4 +98,14 @@ export async function GetProperty() {
         console.log(error);
     }
 }  
+export async function FetchBookings() {
+    console.log('FetchBookings');
+    try {
+        const response = await OwnerApi.get('/owner/FetchBookings');
+        console.log(response," response in /owner/FetchBookings apiiiiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  
 

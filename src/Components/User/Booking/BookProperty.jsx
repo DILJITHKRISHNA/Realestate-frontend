@@ -48,7 +48,7 @@ function BookProperty() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
+      
     } catch (error) {
       console.error(error);
     }
@@ -176,7 +176,7 @@ function BookProperty() {
           </div>
           <div className='mt-auto border-b border-amber-900 w-auto mb-10'></div>
           {clientSecret ? (
-            <div
+            <div onClick={handleSubmit}
               className='mb-12 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
               style={{ cursor: 'pointer' }}
             >

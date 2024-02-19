@@ -8,6 +8,7 @@ import OwnerLayout from '../../Layouts/OwnerLayout/OwnerLayout.jsx'
 import ProtectRoute from './Protect/ProtectRoutes.jsx'
 import Profile from '../../pages/Owner/ProfilePage/Profile.jsx'
 import Property from '../../pages/Owner/PropertyPage/Property.jsx'
+import Bookings from '../../pages/Owner/BookingPage/Bookings.jsx'
 
 function ownerRoute() {
   return (
@@ -18,6 +19,7 @@ function ownerRoute() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/' element={<Home />} />
         <Route path='/property' element={<Property />} />
+        <Route path='/bookings' element={<Bookings />} />
       </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/otp' element={<OTP />} />

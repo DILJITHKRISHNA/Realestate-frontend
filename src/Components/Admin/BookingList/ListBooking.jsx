@@ -44,7 +44,7 @@ function ListBooking() {
                                     </tr>
                                 </thead>
                                 {book.map((data, index) => (
-
+                                    
 
                                     <tbody className="text-gray-500">
                                         <tr key={index}>
@@ -70,12 +70,15 @@ function ListBooking() {
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <p className="whitespace-no-wrap">{data.mobile}</p>
                                             </td>
-
-                                            <td className={`border-gray-200 bg-white px-1 py-5 text-sm font-semibold  ${data.bookingStatus === "Success" ?'text-green-500':'text-red-500  '} `}>
-                                                {data.bookingStatus}
-
-
-                                            </td>
+                                            {!data.is_canceled ? (
+                                                <td className={`border-gray-200 bg-white px-1 py-5 text-sm font-semibold  ${data.bookingStatus === "Success" ? 'text-green-500' : 'text-red-500  '} `}>
+                                                    {data.bookingStatus}
+                                                </td>
+                                            ) : (
+                                                <td className={`border-gray-200 bg-white px-1 py-5 text-sm font-semibold  ${data.is_canceled ? 'text-red-500' : ' text-green-500 '} `}>
+                                                    {data.is_canceled === true ? "Canceled" : ""}
+                                                </td>
+                                            )}
                                         </tr>
                                     </tbody>
                                 ))}

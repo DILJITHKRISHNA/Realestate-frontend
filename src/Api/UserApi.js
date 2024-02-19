@@ -110,40 +110,52 @@ export async function SingleData(id) {
     }
 }
 export async function IsBooked(id) {
-    console.log(id,'enter to contrr is booked');
     try {
         const res = await UserApi.post(`/property/bookproperty/${id}`)
-        console.log(res, "res in is booked apii");
         return res
     } catch (error) {
         console.log(error);
     }
 }
 export async function BookingData(PaymentDetails, id) {
-    console.log(PaymentDetails, id, "payment details in booking data apiii");
     try {
         const res = await UserApi.post(`/property/payment/${id}`,PaymentDetails)
-        console.log(res, "res in is paymentDetails apii");
         return res
     } catch (error) {
         console.log(error);
     }
 }
 export async function paymentRequest(propertyId) {
-    console.log(propertyId, "property iddd in payment user apiii");
     try {
         const res = await UserApi.post(`/property/paymentreq/${propertyId}`)
-        console.log(res, "res in is payment request apii");
         return res
     } catch (error) {
         console.log(error);
     }
 }
 export async function SuccessRequest(bookData, id) {
-    console.log(bookData, id, "book data in success request apii");
     try {
         const res = await UserApi.post(`/property/success/${id}`,{data: bookData})
-        console.log(res, "res in is success requestt apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function FetchPaymentData() {
+    console.log("fetch payment dataaa");
+    try {
+        const res = await UserApi.get('/paymenthistory')
+        console.log(res, "res in is fetch payment historyy apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function CancelBookPayment(id, propId) {
+    console.log(propId,"fetch payment dataaa");
+    try {
+        const res = await UserApi.post(`/paymenthistory/${id}`, propId)
+        console.log(res, "res in is fetch payment historyy apii");
         return res
     } catch (error) {
         console.log(error);
