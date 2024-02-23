@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminProtect = () => {
-    const AdminSelector = useSelector((state) => state.admin);
-    const AdminInfo = AdminSelector.adminInfo
-    console.log(AdminInfo, "kkkkiiiiiifffff");
-    return AdminInfo ? <Outlet /> : <Navigate to={'/admin/login'} replace />;
+
+    const admintok = localStorage.getItem("admintok")
+    return admintok ? <Outlet /> : <Navigate to={'/admin/login'} />;
 };
 
 export default AdminProtect;

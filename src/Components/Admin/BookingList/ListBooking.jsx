@@ -41,10 +41,11 @@ function ListBooking() {
                                         <th className="px-5 py-3">Rent Amount</th>
                                         <th className="px-5 py-3">Mobile</th>
                                         <th className="px-5 py-3">Status</th>
+                                        <th className="px-5 py-3">Details</th>
                                     </tr>
                                 </thead>
                                 {book.map((data, index) => (
-                                    
+
 
                                     <tbody className="text-gray-500">
                                         <tr key={index}>
@@ -71,7 +72,7 @@ function ListBooking() {
                                                 <p className="whitespace-no-wrap">{data.mobile}</p>
                                             </td>
                                             {!data.is_canceled ? (
-                                                <td className={`border-gray-200 bg-white px-1 py-5 text-sm font-semibold  ${data.bookingStatus === "Success" ? 'text-green-500' : 'text-red-500  '} `}>
+                                                <td className={`border-gray-200 bg-white px-1 py-5 text-sm font-semibold  ${data.bookingStatus === "Success" ? 'text-lime-500' : 'text-red-500  '} `}>
                                                     {data.bookingStatus}
                                                 </td>
                                             ) : (
@@ -79,6 +80,9 @@ function ListBooking() {
                                                     {data.is_canceled === true ? "Canceled" : ""}
                                                 </td>
                                             )}
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <button className="whitespace-no-wrap border-2 border-lime-400 w-20 h-7 text-lime-400 hover:bg-lime-400 hover:text-white font-semibold">Details</button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 ))}

@@ -23,13 +23,13 @@ function AdminRoute() {
           </Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/property" element={<Property />}></Route>
           <Route path="/ownerlist" element={<OwnerList />}></Route>
           <Route path="/userlist" element={<UserList />}></Route>
           <Route path="/kyclist" element={<Kyc />}></Route>
           <Route path="/bookinglist" element={<BookingList />}></Route>
         </Route>
+          <Route path="/login" element={<LoginPage />}></Route>
       </Routes>
     </div>
   )

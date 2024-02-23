@@ -34,7 +34,7 @@ function LoginPage() {
       let token = response.data.token
 
       if(response.data.token){
-        localStorage.setItem('token', JSON.stringify(token))
+        localStorage.setItem('admintok', JSON.stringify(token))
 
         dispatch(
           setAdminDetails({

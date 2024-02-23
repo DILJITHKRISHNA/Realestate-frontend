@@ -13,18 +13,18 @@ import Bookings from '../../pages/Owner/BookingPage/Bookings.jsx'
 function ownerRoute() {
   return (
     <Routes>
-      <Route element={<ProtectRoute/>}>
+      <Route element={<ProtectRoute />}>
 
-      <Route element={<OwnerLayout />}>
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/' element={<Home />} />
-        <Route path='/property' element={<Property />} />
-        <Route path='/bookings' element={<Bookings />} />
+        <Route element={<OwnerLayout />}>
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/property' element={<Property />} />
+          <Route path='/bookings' element={<Bookings />} />
+        </Route>
       </Route>
-        <Route path='/login' element={<Login />} />
-        <Route path='/otp' element={<OTP />} />
-        <Route path='/signup' element={<Signup />} />
-      </Route>
+      <Route path='/otp' element={<OTP />} />
+      <Route path='/signup' element={<Signup />} />
+      <Route path='/login' element={<Login />} />
     </Routes>
   )
 }

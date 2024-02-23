@@ -50,7 +50,7 @@ function LoginPage() {
   
       console.log(response,"{}}}}}}}}}}}}}}}}}}}}}}}}");
       if (response.data.user.is_block !== true) {
-        localStorage.setItem("token", token);
+        localStorage.setItem("ownertok", token);
         dispatch(
           setOwnerDetails({
             id: response.data.user._id,

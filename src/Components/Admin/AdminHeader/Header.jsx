@@ -10,7 +10,7 @@ function Header() {
 
   const handleClick = () =>{
     try {
-      localStorage.removeItem("token")
+      localStorage.removeItem("admintok")
       navigate('/admin/login')
     } catch (error) {
       console.log(error);
