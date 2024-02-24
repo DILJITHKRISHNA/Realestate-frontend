@@ -3,6 +3,7 @@ import Header from '../AdminHeader/Header';
 import Sidebar from '../AdminSidebar/Sidebar';
 import { ToastContainer, toast } from 'react-toastify';
 import { ListProperty, PropertyStatus } from '../../../Api/AdminApi';
+import { PropertyDetails } from '../BookingList/PropertyDetails';
 
 function PropertyPage() {
   const [listingProperty, setListingProperty] = useState([]);
@@ -15,6 +16,7 @@ function PropertyPage() {
         const res = await ListProperty();
         const PropertyData = res.data.data || [];
         setListingProperty(PropertyData);
+        console.log(PropertyData,"dtaaaaaa");
       } catch (error) {
         console.log(error);
       }
@@ -76,7 +78,7 @@ function PropertyPage() {
             <thead>
               <tr className="bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-black">
                 <th className="px-5 py-3">Index</th>
-                <th className="px-5 py-3">Property ID</th>
+                <th className="px-5 py-3">Property Details</th>
                 <th className="px-5 py-3">Property type</th>
                 <th className="px-5 py-3">Rent Amount</th>
                 <th className="px-5 py-3">Approval</th>
@@ -87,11 +89,13 @@ function PropertyPage() {
               <tbody key={index}>
                 <tr>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">{index + 1}</td>
-                  <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data._id}</td>
+                  <td className="border-gray-200 bg-white px-5 py-5 text-sm">
+                    <PropertyDetails propertyId={data._id} className='text-lime-400 border-2 border-lime-400 px-2 rounded-md font-semibold hover:bg-lime-400 hover:text-white'/>
+                  </td>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.type}</td>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.Rent}</td>
                   <td
-                    className={`border-gray-200 bg-white px-5 py-5 text-sm ${data.is_verified === true ? 'text-green-700 font-bold' : 'text-red-700 font-bold'
+                    className={`border-gray-200 bg-white px-5 py-5 text-sm ${data.is_verified === true ? 'text-lime-400 font-bold' : 'text-red-700 font-bold'
                       }`}
                   >
                     {data.is_verified ===true ? 'Approved' : 'Rejected'}
@@ -99,7 +103,7 @@ function PropertyPage() {
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
                       onClick={() => handleClick(data._id)}
-                      className={`rounded-full px-3 py-1 text-xs font-semibold bg-green-600 text-white `}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold bg-lime-400 border-2 hover:border-lime-400 hover:text-lime-400 hover:bg-white text-white `}
                     >
                       Status
                     </button>

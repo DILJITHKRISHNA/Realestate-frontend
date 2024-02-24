@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify'
 import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
 import { FetchBookingData } from '../../../Api/AdminApi'
+import { PropertyDetails } from './PropertyDetails'
 
 function ListBooking() {
 
@@ -81,7 +82,7 @@ function ListBooking() {
                                                 </td>
                                             )}
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <button className="whitespace-no-wrap border-2 border-lime-400 w-20 h-7 text-lime-400 hover:bg-lime-400 hover:text-white font-semibold">Details</button>
+                                                <PropertyDetails propertyId={data.property_id} className="whitespace-no-wrap border-2 border-lime-400 w-20 h-7 text-lime-400 hover:bg-lime-400 hover:text-white font-semibold"/>
                                             </td>
                                         </tr>
                                     </tbody>

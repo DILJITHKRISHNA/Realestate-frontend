@@ -98,6 +98,26 @@ export async function GetProperty() {
         console.log(error);
     }
 }  
+export async function editProperty(id) {
+    console.log('edit propertyyy');
+    try {
+        const response = await OwnerApi.get(`/owner/editproperty/${id}`)
+        console.log(response," response in oowner EDit property apiiiiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  
+export async function HideProperty(id) {
+    console.log(id,'hide propertyyy');
+    try {
+        const response = await OwnerApi.post(`/owner/hideproperty/${id}`)
+        console.log(response," response in oowner hide property apiiiiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  
 export async function FetchBookings() {
     console.log('FetchBookings');
     try {

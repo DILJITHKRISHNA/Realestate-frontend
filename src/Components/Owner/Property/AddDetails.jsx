@@ -143,7 +143,7 @@ function AddDetails({ SetOpen }) {
         <>
             <form onSubmit={handleCombinedSubmit}>
                 <div className="fixed inset-0 backdrop-blur-sm overflow-y-auto flex items-center justify-center">
-                    <div className="relative w-[80%] bg-gray-200 p-8 max-w-4xl max-h-2xl h-[100%] mx-auto rounded-lg shadow-black">
+                    <div className="relative w-[80%] bg-white p-8 max-w-4xl max-h-2xl h-[100%] mx-auto rounded-lg shadow-md shadow-black">
                         <h1 className="text-2xl font-bold mb-6">Add Property</h1>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="mb-4">
@@ -335,18 +335,17 @@ function AddDetails({ SetOpen }) {
                                     <button
                                         type='button'
                                         onClick={handleClose}
-                                        className="bg-gradient-to-r bg-red-700 px-4 py-2 rounded-md text-white"
+                                        className="bg-gradient-to-r border-2 border-lime-400 px-4 py-2 rounded-md text-lime-400"
                                     >
                                         Close
                                     </button>
                                     <button
                                         type='submit'
-                                        // onClick={handleClose}
-                                        className="bg-gradient-to-r bg-black px-4 py-2 rounded-md text-white"
+                                        className="bg-gradient-to-r bg-lime-400 px-4 py-2 rounded-md text-white"
                                     >
                                         Add Property
                                     </button>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     </div>

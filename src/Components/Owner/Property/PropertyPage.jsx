@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { HomeIcon, SearchIcon } from '@heroicons/react/solid';
-import { useLocation } from 'react-router-dom';
+import { FaEdit } from 'react-icons/fa'
+import { useLocation, useNavigate } from 'react-router-dom';
 import AddDetails from './AddDetails';
-import { GetProperty } from '../../../Api/OwnerApi';
+import { GetProperty, HideProperty } from '../../../Api/OwnerApi';
+import EditProperty from './EditProperty';
 
 function PropertyPage() {
 
+  const navigate = useNavigate()
   const [open, SetOpen] = useState(false)
   const [propertyData, setPropertyData] = useState([])
 
@@ -31,6 +34,26 @@ function PropertyPage() {
     }
     FetchProperty()
   }, [])
+
+  useEffect(() => {},[])
+
+    const handleHide = async (id, is_hide) => {
+      try {
+        const res = await HideProperty(id)
+        console.log(res, "res in hide property frontend");
+        const hideProperty = propertyData.map((data) => {
+          if (data._id === id) {
+            return { ...data, is_hide: !is_hide };
+          }
+          return data;
+        });
+        setPropertyData(hideProperty);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+
 
   return (
     <>
@@ -62,16 +85,20 @@ function PropertyPage() {
                       className='w-[20%] h-auto max-h-48 object-cover rounded-lg ml-2 mt-4'
                     />
                     <div className='flex flex-col mx-3 my-4 font-mono'>
+                      <div className='flex flex-row'>
+
                       <h1 className={`border-2 bg-green-800 w-24 px-1 text-white text-center ${data.is_verified ? 'bg-green-800' : 'bg-red-500'}`}>{data.is_verified === true ? "Verified" : "Unverified"}</h1>
+                      {/* <h1 className={`border-2 bg-green-800 w-24 px-1 text-white text-center ${data.is_Booked ? 'bg-green-800' : 'bg-red-600'}`}>{data.is_Booked === true ? "Owned" : ""}</h1> */}
+                      </div>
                       <p className="font-semibold uppercase tracking-wide text-base">{data.name}</p>
                       <p className="font-medium uppercase tracking-wide text-base">₹{data.Rent}</p>
                       <p className="font-medium uppercase tracking-wide text-base">{data.location}</p>
                       <div className='border-b-2 border-black w-82 mt-1'></div>
 
                       <div className='flex flex-row gap-14'>
-                        <h1 className='text-lime-400'>Bedroom: <span className='font-semibold text-black'>0{data.bedrooms}</span></h1>
-                        <h1 className='text-lime-400'>Bathroom: <span className='font-semibold text-black '>0{data.bathrooms}</span></h1>
-                        <h1 className='text-lime-400'>Total Floor: <span className='font-semibold text-black'>0{data.FloorCount}</span></h1>
+                        <h1 className='text-lime-400'>Bedroom:<span className='font-semibold text-black'>0{data.bedrooms}</span></h1>
+                        <h1 className='text-lime-400'>Bathroom:<span className='font-semibold text-black '>0{data.bathrooms}</span></h1>
+                        <h1 className='text-lime-400'>Total Floor:<span className='font-semibold text-black'>0{data.FloorCount}</span></h1>
                       </div>
                       <div className='border-b-2 border-black w-82 mt-4'></div>
                       <div className='flex flex-row gap-5 mt-2'>
@@ -81,9 +108,19 @@ function PropertyPage() {
                       </div>
                       <div className='border-b-2 border-black w-82 mt-2'></div>
                     </div>
-                    <div className='w-auto flex flex-col col-span-3 md:col-span-2 lg:col-span-3'>
-                      <button className='ml-96 bg-lime-400 h-8 mt-24 px-6 font-semibold text-white hover:bg-white hover:border-2 hover:border-lime-400 hover:text-lime-400 rounded-md'>Hide </button>
-                      <button className='ml-96 bg-lime-400 h-8 mt-2 px-6 font-semibold text-white hover:bg-white hover:border-2 hover:border-lime-400 hover:text-lime-400 rounded-md'>Edit </button>
+                    <div className='w-auto flex flex-col col-span-3 md:col-span-2 lg:col-span-3 p-2'>
+                      {propertyData && data.is_hide === false ? (
+                        <button
+                          onClick={() => handleHide(data._id)}
+                          className='ml-96 bg-lime-400 h-8 mt-24 px-6 font-semibold text-white hover:bg-white hover:border-2
+                       hover:border-lime-400 hover:text-lime-400 rounded-md'>Hide</button>
+                      ) : (
+                        <button
+                          onClick={() => handleHide(data._id, data.is_hide)}
+                          className='ml-96 bg-red-600 h-8 mt-24 px-6 font-semibold text-white hover:bg-white hover:border-2
+                         hover:border-red-600 hover:text-red-600 rounded-md'>Unhide</button>
+                      )}
+                      <EditProperty propertyId={data._id} />
                     </div>
                   </div>
                 ))}
@@ -91,11 +128,12 @@ function PropertyPage() {
             </div>
           </div>
         ))}
-
-      </div>) : (
+      </div >
+      ) : (
         <AddDetails SetOpen={SetOpen} />
 
-      )}
+      )
+      }
 
 
     </>

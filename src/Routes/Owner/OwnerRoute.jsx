@@ -9,6 +9,7 @@ import ProtectRoute from './Protect/ProtectRoutes.jsx'
 import Profile from '../../pages/Owner/ProfilePage/Profile.jsx'
 import Property from '../../pages/Owner/PropertyPage/Property.jsx'
 import Bookings from '../../pages/Owner/BookingPage/Bookings.jsx'
+import EditProperty from '../../Components/Owner/Property/EditProperty.jsx'
 
 function ownerRoute() {
   return (

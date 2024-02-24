@@ -27,30 +27,9 @@ function PropertyList() {
         navigate(`/propertyeach`, { state: { id } })
     }
 
-
-    // const renderPropertyImages = (propertyId) => {
-    //     const propertyImages = GetImages().data.public_id || [];
-
-    //     const propertyImage = propertyImages.find(image => {
-    //         // Assuming the image data has a propertyId field
-    //         return image.propertyId === propertyId;
-    //     });
-
-    //     if (propertyImage) {
-    //         return (
-    //             <div className="relative" key={propertyImage.id}>
-    //                 <Image
-    //                     public_id={propertyImage.id}
-    //                     className="w-full h-full p-4 object-cover rounded-3xl"
-    //                     cloudName="dqewi7vjr"
-    //                     alt="Property Image"
-    //                 />
-    //             </div>
-    //         );
-    //     }
-    // }
-
-
+    const handleReserve = async () => {
+        alert("Reserved")
+    }
 
     return (
         <>
@@ -58,11 +37,11 @@ function PropertyList() {
                 {loadData.map((data, index) => (
                     <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer" onClick={() => handleClick(data._id)}  >
                         <div  >
-                            <div className="relative " >
+                            <div className="relative" >
                                 <img
                                     key={index}
                                     src={data.imageUrls}
-                                    className="w-full h-full p-4 object-contain rounded-3xl"
+                                    className="w-[100%] h-72 p-4 object-contain rounded-3xl"
                                     alt="ui/ux review check"
                                 />
                                 <div className="absolute inset-0 h-full w-full" />
@@ -114,7 +93,7 @@ function PropertyList() {
                             </div>
                         </div>
                         <div className="pt-3">
-                            <button className="bg-black text-white px-4 py-2 w-full">
+                            <button onClick={handleReserve} className="bg-black text-white px-4 py-2 w-full cursor-progress">
                                 Reserve
                             </button>
                         </div>
