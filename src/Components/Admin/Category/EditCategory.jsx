@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { EditCat } from '../../../Api/AdminApi'
 
-function EditCategory() {
+function EditCategory({ Category, catId}) {
+  const [open, setOpen] = useState(false)
+  const [category, SetCategory] = useState({
+    category: Category? Category: ""
+  })
+
+  const handleClick = (e) => {
+    const { name, value } = e.target
+    SetCategory({
+      ...category,
+      [name]: value
+    })
+  }
+  const handleOpen = () => {
+    setOpen(!open)
+  }
+
+  const handleSubmit = async(e) => {
+    try {
+      const res = await EditCat(catId, category)
+      console.log(res,"ress innn handlesubmit edit category");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div>
-      
+      <button className='border-2 border-lime-400 text-lime-400 px-3 rounded-md hover:bg-lime-400 hover:text-white' onClick={handleOpen}>
+        Edit
+      </button>
       <form onSubmit={handleSubmit}>
 
         <div className={`fixed z-10 inset-0 overflow-y-auto ${open ? 'block' : 'hidden'}`}>
@@ -21,14 +48,16 @@ function EditCategory() {
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-white">
                 <div className="px-4 py-5 sm:p-6">
-                  <h2 className="text-lg font-bold leading-6 text-gray-900 mb-3" name='category'>Add Category</h2>
+                  <h2 className="text-lg font-bold leading-6 text-gray-900 mb-3" name='category'>Edit Category</h2>
                   <label className=''>Category</label>
                   <div className="mt-2 flex flex-col  justify-center ">
 
-                    <input type="text" placeholder='Add category' value={category.category}
+                    <input type="text" placeholder='Add category'
+                      value={category.category}
+                      onChange={handleClick}
                       name='category'
                       className='border-[1px] border-black pl-2 rounded-sm h-9 w-[100%]'
-                      onChange={handleClick} />
+                    />
 
                   </div>
                 </div>
@@ -43,6 +72,7 @@ function EditCategory() {
                 </button>
                 <button
                   type="submit"
+                  onClick={handleOpen}
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-slate-950 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring focus:border-blue-300 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Confirm

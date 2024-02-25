@@ -153,5 +153,15 @@ export async function PropertGet(id){
         console.log(error);
     }
 }
+export async function EditCat(id, category){
+    console.log(id,"idd in edit cat aopiiii");
+    try {
+        const response = await AdminApi.post(`/admin/editcategory/${id}`, category);
+        console.log(response,"res in edit cat admin apiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 

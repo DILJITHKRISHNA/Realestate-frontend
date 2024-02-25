@@ -3,6 +3,7 @@ import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
 import { FetchCategory, blockCategory, categoryTypes } from '../../../Api/AdminApi';
 import { ToastContainer, toast } from 'react-toastify';
+import EditCategory from './EditCategory';
 
 
 function CategoryPage() {
@@ -113,7 +114,7 @@ function CategoryPage() {
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>{index + 1}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>
-                    <button className='border-2 border-lime-400 text-lime-400 px-3 rounded-md font-semibold hover:bg-lime-400 hover:text-white'>Edit</button>
+                    <EditCategory Category={category.category} catId={category._id} className='border-2 border-lime-400 text-lime-400 px-3 rounded-md font-semibold hover:bg-lime-400 hover:text-white'/>
                   </td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button

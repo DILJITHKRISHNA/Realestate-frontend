@@ -7,7 +7,7 @@ import { SuccessRequest } from "../../../Api/UserApi";
 import { ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 
-function Payment({ clientSecret, name, contact, email, re_location, propertyId }) {
+function Payment({ clientSecret, name, contact, email, re_location, propertyId, Rent }) {
 
     const navigate = useNavigate()
     const stripe = useStripe();
@@ -37,6 +37,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId }
                     name: name,
                     paymentstatus: "success",
                     contact: contact,
+                    Rent: Rent,
                     re_location: re_location,
                     email: email
                 }
@@ -108,7 +109,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId }
 
                             <div className="mt-6 flex flex-row justify-around space-x-72">
                                 <h1 className="flex">RentAmount</h1>
-                                <span>$3000</span>
+                                <span>₹{Rent}</span>
                             </div>
                         <div className="border-b-2 border-gray-400"></div>
                         <div className="mt-12">

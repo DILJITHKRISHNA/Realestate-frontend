@@ -93,12 +93,7 @@ function EachProperty({}) {
             <h1 className='text-4xl font-bold font-custom'>{property.name}</h1>
             <span className='p-1 font-semibold'>{property.location}</span>
             <p className='mt-6 text-lg text-gray-700 leading-snug tracking'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
+              {property.details}
             </p>
             <button className='mt-6 border-2 border-lime-400 text-lime-400 p-2 font-mono hover:text-white hover:bg-lime-400'>LEARN MORE</button>
             <h2 className='mt-6 font-bold text-2xl'>₹{property.Rent}/month</h2>
