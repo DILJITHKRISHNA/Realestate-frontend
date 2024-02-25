@@ -34,13 +34,13 @@ function CategoryPage() {
 
     try {
       const res = await categoryTypes(category);
-      console.log(res,"101010101010");
+      console.log(res, "101010101010");
       if (res.data.success == true) {
         console.log("Category added successfully");
         toast.success("Category added successfully");
 
         handleOpen()
-        setManagePage(true); 
+        setManagePage(true);
       } else {
         toast.error(res.data.message)
         console.log("Error adding category");
@@ -64,10 +64,10 @@ function CategoryPage() {
     handleCategory();
   }, [managePage]);
 
-  const catBlockHandle = async(id,  is_block) => {
+  const catBlockHandle = async (id, is_block) => {
     try {
       const res = await blockCategory(id)
-      console.log(res,"suiiii");
+      console.log(res, "suiiii");
       const updatedCategory = categorys.map((category) => {
         if (category._id === id) {
           return { ...category, is_block: !is_block };
@@ -84,7 +84,7 @@ function CategoryPage() {
         toast.success("category unblocked");
       }
 
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
   }
@@ -103,6 +103,7 @@ function CategoryPage() {
               <tr className='bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-black'>
                 <th className='px-5 py-3'>Index</th>
                 <th className='px-5 py-3'>Category Type</th>
+                <th className='px-5 py-3'>Edit</th>
                 <th className='px-5 py-3'>Delete</th>
               </tr>
             </thead>
@@ -111,11 +112,14 @@ function CategoryPage() {
                 <tr key={index}>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>{index + 1}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
+                  <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>
+                    <button className='border-2 border-lime-400 text-lime-400 px-3 rounded-md font-semibold hover:bg-lime-400 hover:text-white'>Edit</button>
+                  </td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
-                    onClick={()=>catBlockHandle(category._id, category.is_block)}
-                      className={`rounded-md px-3 py-1 text-xs font-semibold ${category.is_block? "bg-green-700 text-white": "bg-red-700 text-white"} `}>
-                      {category.is_block? "Unblock": "Block"}
+                      onClick={() => catBlockHandle(category._id, category.is_block)}
+                      className={`rounded-md px-3 py-1 text-xs font-semibold ${category.is_block ? "bg-lime-400 text-white" : "bg-red-600 text-white"} `}>
+                      {category.is_block ? "Unblock" : "Block"}
                     </button>
                   </td>
                 </tr>

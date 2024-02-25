@@ -12,13 +12,19 @@ import SingleProperty from '../../pages/User/SinglePropertyPage/SingleProperty.j
 import Booking from '../../pages/User/BookingPage/Booking.jsx';
 import Success from '../../pages/User/SuccessPage/Success.jsx';
 import History from '../../pages/User/PaymentHistory/History.jsx';
+import PublicRoute from './Protect/PublicRoute.jsx';
 
 function UserRoute() {
   return (
     <Routes>
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/otp" element={<Otp />} />
+      </Route>
+
       <Route path="/" element={<UserLayout />}>
         <Route index element={<HomePage />} />
-
 
         <Route path="/profile" element={<ProtectRoutes />}>
           <Route index element={<ProfilePage />} />
@@ -34,9 +40,6 @@ function UserRoute() {
         <Route path="/property" element={<Property />} />
         <Route path="/propertyeach" element={<SingleProperty />} />
       </Route>
-      <Route path="/otp" element={<Otp />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 }
