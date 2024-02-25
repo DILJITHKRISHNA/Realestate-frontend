@@ -98,10 +98,10 @@ export async function GetProperty() {
         console.log(error);
     }
 }  
-export async function editProperty(id) {
-    console.log('edit propertyyy');
+export async function PropertyEdit(details, id) {
+    console.log(id,'edit propertyyy');
     try {
-        const response = await OwnerApi.get(`/owner/editproperty/${id}`)
+        const response = await OwnerApi.post(`/owner/editproperty/${id}`,details)
         console.log(response," response in oowner EDit property apiiiiii");
         return response
     } catch (error) {

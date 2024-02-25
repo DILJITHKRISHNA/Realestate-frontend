@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HomeIcon, SearchIcon } from '@heroicons/react/solid';
-import { FaEdit } from 'react-icons/fa'
+import { FaCheckCircle, FaEdit } from 'react-icons/fa'
 import { useLocation, useNavigate } from 'react-router-dom';
 import AddDetails from './AddDetails';
 import { GetProperty, HideProperty } from '../../../Api/OwnerApi';
@@ -35,23 +35,23 @@ function PropertyPage() {
     FetchProperty()
   }, [])
 
-  useEffect(() => {},[])
+  useEffect(() => { }, [])
 
-    const handleHide = async (id, is_hide) => {
-      try {
-        const res = await HideProperty(id)
-        console.log(res, "res in hide property frontend");
-        const hideProperty = propertyData.map((data) => {
-          if (data._id === id) {
-            return { ...data, is_hide: !is_hide };
-          }
-          return data;
-        });
-        setPropertyData(hideProperty);
-      } catch (error) {
-        console.log(error);
-      }
+  const handleHide = async (id, is_hide) => {
+    try {
+      const res = await HideProperty(id)
+      console.log(res, "res in hide property frontend");
+      const hideProperty = propertyData.map((data) => {
+        if (data._id === id) {
+          return { ...data, is_hide: !is_hide };
+        }
+        return data;
+      });
+      setPropertyData(hideProperty);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
 
 
@@ -87,8 +87,7 @@ function PropertyPage() {
                     <div className='flex flex-col mx-3 my-4 font-mono'>
                       <div className='flex flex-row'>
 
-                      <h1 className={`border-2 bg-green-800 w-24 px-1 text-white text-center ${data.is_verified ? 'bg-green-800' : 'bg-red-500'}`}>{data.is_verified === true ? "Verified" : "Unverified"}</h1>
-                      {/* <h1 className={`border-2 bg-green-800 w-24 px-1 text-white text-center ${data.is_Booked ? 'bg-green-800' : 'bg-red-600'}`}>{data.is_Booked === true ? "Owned" : ""}</h1> */}
+                        <h1 className={`border-2 bg-green-800 w-24 px-1 text-white text-center ${data.is_verified ? 'bg-green-800' : 'bg-red-500'}`}>{data.is_verified === true ? "Verified" : "Unverified"}</h1>
                       </div>
                       <p className="font-semibold uppercase tracking-wide text-base">{data.name}</p>
                       <p className="font-medium uppercase tracking-wide text-base">₹{data.Rent}</p>
@@ -120,7 +119,7 @@ function PropertyPage() {
                           className='ml-96 bg-red-600 h-8 mt-24 px-6 font-semibold text-white hover:bg-white hover:border-2
                          hover:border-red-600 hover:text-red-600 rounded-md'>Unhide</button>
                       )}
-                      <EditProperty propertyId={data._id} />
+                      < EditProperty Data={data} propertyId={data._id}/>
                     </div>
                   </div>
                 ))}
@@ -131,7 +130,6 @@ function PropertyPage() {
       </div >
       ) : (
         <AddDetails SetOpen={SetOpen} />
-
       )
       }
 
