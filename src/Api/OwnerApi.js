@@ -98,6 +98,16 @@ export async function GetProperty() {
         console.log(error);
     }
 }  
+export async function FetchProperty(id) {
+    console.log(id,'get propertyyy');
+    try {
+        const response = await OwnerApi.get(`/owner/getproperty/${id}`);
+        console.log(response," response in oowner fetch property apiiiiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  
 export async function PropertyEdit(details, id) {
     console.log(id,'edit propertyyy');
     try {

@@ -16,7 +16,7 @@ function PropertyPage() {
         const res = await ListProperty();
         const PropertyData = res.data.data || [];
         setListingProperty(PropertyData);
-        console.log(PropertyData,"dtaaaaaa");
+        console.log(PropertyData, "dtaaaaaa");
       } catch (error) {
         console.log(error);
       }
@@ -48,7 +48,7 @@ function PropertyPage() {
       console.error('Error approving property:', error);
     }
   };
-  
+
   const DisapproveProperty = async (PropertyId) => {
     closePropertyModal();
     try {
@@ -65,8 +65,8 @@ function PropertyPage() {
       console.error('Error disapproving property:', error);
     }
   };
-  
-  
+
+
 
   return (
     <div className="flex flex-col w-full">
@@ -90,15 +90,17 @@ function PropertyPage() {
                 <tr>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">{index + 1}</td>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">
-                    <PropertyDetails propertyId={data._id} className='text-lime-400 border-2 border-lime-400 px-2 rounded-md font-semibold hover:bg-lime-400 hover:text-white'/>
+                    <PropertyDetails propertyId={data._id} className='text-lime-400 border-2 border-lime-400 px-2 rounded-md font-semibold hover:bg-lime-400 hover:text-white' />
                   </td>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.type}</td>
                   <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.Rent}</td>
                   <td
-                    className={`border-gray-200 bg-white px-5 py-5 text-sm ${data.is_verified === true ? 'text-lime-400 font-bold' : 'text-red-700 font-bold'
-                      }`}
-                  >
-                    {data.is_verified ===true ? 'Approved' : 'Rejected'}
+                    className={`border-gray-200 bg-white px-5 py-5 text-sm ${data.is_verified === true ? 'text-lime-400 font-bold' : 'text-red-700 font-bold'}`}>
+                    {data.is_pending === true && data.is_verified===false ? (
+                      <span className='text-amber-900'>Pending</span>
+                    ) : (
+                      <span>{data.is_verified === true? "Approved":"Rejected"}</span>
+                    )}
                   </td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
@@ -135,7 +137,7 @@ function PropertyPage() {
                   Approve
                 </button>
                 <button
-                   onClick={() => DisapproveProperty(data._id)}
+                  onClick={() => DisapproveProperty(data._id)}
                   className="bg-gradient-to-r bg-red-700 rounded-full text-white px-4 py-2 text-xs font-semibold"
                 >
                   Reject

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { FetchBookings } from '../../../Api/OwnerApi';
 import { HiOutlineCheckCircle, HiMiniXCircle } from "react-icons/hi2";
+import PropertyDetails from './PropertyDetails';
 
 const BookingList = () => {
 
@@ -36,7 +37,7 @@ const BookingList = () => {
                                         <th className="px-5 py-3">ID</th>
                                         <th className="px-5 py-3">Full Name</th>
                                         <th className="px-5 py-3">Email</th>
-                                        <th className="px-5 py-3">Rent Amount</th>
+                                        <th className="px-5 py-3">Property Details</th>
                                         <th className="px-5 py-3">Mobile</th>
                                         <th className="px-5 py-3">Status</th>
                                         <th className="px-5 py-3">Connect</th>
@@ -66,7 +67,7 @@ const BookingList = () => {
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
                                                     <div className="ml-6">
-                                                        <p className="whitespace-no-wrap" >{data.Rent}</p>
+                                                        <PropertyDetails propertyId={data.property_id} className="whitespace-no-wrap border-2"/>
                                                     </div>
                                                 </div>
                                             </td>
