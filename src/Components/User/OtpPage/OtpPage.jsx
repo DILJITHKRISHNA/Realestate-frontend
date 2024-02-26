@@ -1,9 +1,13 @@
-import React from 'react'
-import { userVerifyOtp } from '../../../Api/UserApi'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { resendOTp, userVerifyOtp } from '../../../Api/UserApi'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 function OtpPage() {
+
+    const selector = useSelector(state => state.user)
+    const email = selector.userInfo.email.email
     const navigate = useNavigate()
     const location = useLocation()
     const Current = location.state
@@ -31,19 +35,12 @@ function OtpPage() {
                     } else {
                         toast.error("Wrong Otp");
                     }
-
                 } else if (Current == 'forgot') {
-                    console.log("poooooooooooooooooooooooooo");
-
                     const res = await userVerifyOtp(data);
-
                     if (res.data.success) {
-                        console.log("iedddddddddddiiiii");
-
                         toast.success("Email verified");
-
                         setTimeout(() => {
-                            navigate('/otp', {state: "otp"});
+                            navigate('/otp', { state: "otp" });
                         }, 1000);
                     } else {
                         toast.error("Wrong Otp");
@@ -54,6 +51,34 @@ function OtpPage() {
                 console.error("Error during API call:", error);
                 toast.error("An error occurred. Please try again.");
             }
+        }
+    };
+
+    //resend Otp
+    const [countdown, setCountdown] = useState(60); 
+
+    useEffect(() => {
+        let timer;
+
+        if (countdown > 0) {
+            timer = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+            }, 1000);
+        }
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, [countdown]);
+
+    const handleResendOtp = async() => {
+        try {
+            
+            const response = await resendOTp({email: email});
+            console.log(response,"Ress in resend otppp");
+            setCountdown(60);
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -106,8 +131,14 @@ function OtpPage() {
                                             className="w-10 h-10 px-2 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white text-center"
                                         />
                                     </div>
-                                    <div className='flex justify-center items-center '>
-                                        <h3>Resend otp in : </h3>
+                                    <div className='flex justify-center items-center flex-col'>
+                                        {countdown ?
+                                            <h3>Resend OTP in: {countdown}</h3>
+                                            :
+                                            <button onClick={handleResendOtp} disabled={countdown > 0} className='bg-black text-white font-semibold px-2 rounded-md'>
+                                                Resend OTP
+                                            </button>
+                                        }
                                     </div>
                                     <button
                                         type="submit"

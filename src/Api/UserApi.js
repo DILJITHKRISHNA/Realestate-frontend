@@ -161,4 +161,14 @@ export async function CancelBookPayment(id, propId) {
         console.log(error);
     }
 }
+export async function resendOTp(email) {
+    console.log(email,"resend otpp ");
+    try {
+        const res = await UserApi.post('/resendotp', email)
+        console.log(res, "res in Resend otppp apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
   

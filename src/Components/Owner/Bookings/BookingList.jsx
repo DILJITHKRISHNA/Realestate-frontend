@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { FetchBookings } from '../../../Api/OwnerApi';
 import { HiOutlineCheckCircle, HiMiniXCircle } from "react-icons/hi2";
 import PropertyDetails from './PropertyDetails';
+import { FaCartArrowDown } from 'react-icons/fa';
 
 const BookingList = () => {
 
@@ -29,7 +30,8 @@ const BookingList = () => {
             <div className="flex flex-col w-full mt-12 ">
                 <div className="flex">
                     <div className="overflow-y-hidden rounded-lg pt-10 bg-offgreen mx-auto h-auto w-[90%] sm:px-8 shadow-md shadow-lime-400 mr-20">
-                        <h1 className='flex justify-center text-3xl mb-4 rounded-md text-black  font-mono font-semibold'>Booking list</h1>
+                        
+                        <h1 className='flex justify-center text-3xl mb-4 rounded-md text-black  font-mono font-semibold uppercase gap-4'><FaCartArrowDown className='mt-1'/>Booking list</h1>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>

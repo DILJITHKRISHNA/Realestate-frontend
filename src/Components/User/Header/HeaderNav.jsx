@@ -34,7 +34,6 @@ function HeaderNav() {
           <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
             <Link to="/" className='hover:underline text-white hover:text-yellow-100'>Home</Link>
             <Link to="/property" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
-            <Link to="/blog" className='hover:underline text-white hover:text-yellow-100'>Blog</Link>
             {storedToken && userSelector ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
                  {/* <img src="" alt="" /> */}
