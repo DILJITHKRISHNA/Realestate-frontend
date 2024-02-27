@@ -1,14 +1,15 @@
 import axios from 'axios'
+import userRequest from "../utils/userRequest";
 
 
-const UserApi = axios.create({
-    baseURL: 'http://localhost:5000',
-})
+// const UserApi = axios.create({
+//     baseURL: 'http://localhost:5000',
+// })
 
 export async function userLogin(LoginData) {
     try {
         console.log(LoginData, "dataa from userlogin inside API");
-        const res = await UserApi.post('/login', LoginData);
+        const res = await userRequest.post('/login', LoginData);
         console.log(res, "response from userLogin inside Api");
         return res;
     } catch (error) {
@@ -18,7 +19,7 @@ export async function userLogin(LoginData) {
 }
 export async function userSignUp(SignUpData) {
     try {
-        const SignUpRes = await UserApi.post('/signup', SignUpData)
+        const SignUpRes = await userRequest.post('/signup', SignUpData)
         console.log(SignUpRes, "pppppppppppllllllll");
         return SignUpRes;
     } catch (error) {
@@ -29,7 +30,7 @@ export async function userSignUp(SignUpData) {
 export async function userVerifyOtp(userOtp) {
     try {
         console.log(userOtp, 'ghfgju');
-        const data = await UserApi.post('/verifyotp', userOtp)
+        const data = await userRequest.post('/verifyotp', userOtp)
         return data
     } catch (error) {
         console.log(error.message);
@@ -39,7 +40,7 @@ export async function userVerifyOtp(userOtp) {
 export async function ManageUserOtp(userMail) {
     try {
         console.log(userMail, "usermail fron manageprpoperety");
-        const data = await UserApi.post('/send-otp', userMail)
+        const data = await userRequest.post('/send-otp', userMail)
         return data
     } catch (error) {
         console.log(error.message);
@@ -50,7 +51,7 @@ export async function ManageUserOtp(userMail) {
 export async function userPass(forgotData) {
     console.log(forgotData, "forgot dataaaaaaaa");
     try {
-        const result = await UserApi.post('/forgotPassword', forgotData)
+        const result = await userRequest.post('/forgotPassword', forgotData)
         console.log(result, 'resultttttttt');
         return result
     } catch (error) {
@@ -60,7 +61,7 @@ export async function userPass(forgotData) {
 
 export async function NewPassword(newPass) {
     try {
-        const result = await UserApi.post("/resetpassword", newPass)
+        const result = await userRequest.post("/resetpassword", newPass)
         console.log(result, "resuuuu");
         return result
     } catch (error) {
@@ -71,7 +72,7 @@ export async function NewPassword(newPass) {
 export async function userRegisterGoogle(userData) {
     console.log(userData, "dtataaa apiii");
     try {
-        const response = await UserApi.post("/userRegisterWithGoogle", userData);
+        const response = await userRequest.post("/userRegisterWithGoogle", userData);
         return response;
     } catch (error) {
         console.log(error);
@@ -80,7 +81,7 @@ export async function userRegisterGoogle(userData) {
 export async function userLoginGoogle(userData) {
     console.log(userData, "dtataaa apiii");
     try {
-        const response = await UserApi.post("/userLoginWithGoogle", userData);
+        const response = await userRequest.post("/userLoginWithGoogle", userData);
         console.log(response, "rip");
         return response;
     } catch (error) {
@@ -91,7 +92,7 @@ export async function userLoginGoogle(userData) {
 export async function FetchData(id) {
     console.log("entert to fetch dataaa in apiii");
     try {
-        const response = await UserApi.get('/property');
+        const response = await userRequest.get('/property');
         console.log(response, "respnse in fetchdataa proeptuuu apii");
         return response;
     } catch (error) {
@@ -102,7 +103,7 @@ export async function FetchData(id) {
 export async function SingleData(id) {
     console.log(id,'enter to contrr getDataa');
     try {
-        const res = await UserApi.get(`/property/:id`)
+        const res = await userRequest.get(`/property/:id`)
         console.log(res, " got res in singledataaaa function inside userappiii");
         return res
     } catch (error) {
@@ -111,7 +112,7 @@ export async function SingleData(id) {
 }
 export async function IsBooked(id) {
     try {
-        const res = await UserApi.post(`/property/bookproperty/${id}`)
+        const res = await userRequest.post(`/property/bookproperty/${id}`)
         return res
     } catch (error) {
         console.log(error);
@@ -119,7 +120,7 @@ export async function IsBooked(id) {
 }
 export async function BookingData(PaymentDetails, id) {
     try {
-        const res = await UserApi.post(`/property/payment/${id}`,PaymentDetails)
+        const res = await userRequest.post(`/property/payment/${id}`,PaymentDetails)
         return res
     } catch (error) {
         console.log(error);
@@ -127,7 +128,7 @@ export async function BookingData(PaymentDetails, id) {
 }
 export async function paymentRequest(propertyId) {
     try {
-        const res = await UserApi.post(`/property/paymentreq/${propertyId}`)
+        const res = await userRequest.post(`/property/paymentreq/${propertyId}`)
         return res
     } catch (error) {
         console.log(error);
@@ -135,7 +136,7 @@ export async function paymentRequest(propertyId) {
 }
 export async function SuccessRequest(bookData, id) {
     try {
-        const res = await UserApi.post(`/property/success/${id}`,{data: bookData})
+        const res = await userRequest.post(`/property/success/${id}`,{data: bookData})
         return res
     } catch (error) {
         console.log(error);
@@ -144,7 +145,7 @@ export async function SuccessRequest(bookData, id) {
 export async function FetchPaymentData() {
     console.log("fetch payment dataaa");
     try {
-        const res = await UserApi.get('/paymenthistory')
+        const res = await userRequest.get('/paymenthistory')
         console.log(res, "res in is fetch payment historyy apii");
         return res
     } catch (error) {
@@ -154,7 +155,7 @@ export async function FetchPaymentData() {
 export async function CancelBookPayment(id, propId) {
     console.log(propId,"fetch payment dataaa");
     try {
-        const res = await UserApi.post(`/paymenthistory/${id}`, propId)
+        const res = await userRequest.post(`/paymenthistory/${id}`, propId)
         console.log(res, "res in is fetch payment historyy apii");
         return res
     } catch (error) {
@@ -164,7 +165,7 @@ export async function CancelBookPayment(id, propId) {
 export async function resendOTp(email) {
     console.log(email,"resend otpp ");
     try {
-        const res = await UserApi.post('/resendotp', email)
+        const res = await userRequest.post('/resendotp', email)
         console.log(res, "res in Resend otppp apii");
         return res
     } catch (error) {

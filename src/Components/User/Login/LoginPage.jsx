@@ -110,7 +110,7 @@ function LoginPage() {
             //     toast.error("Invalid credentials. Please try again.");
             }
         } catch (error) {
-            console.error('Login failed:', error);
+            console.error('Login failed:', error.message);
             toast.error("Error during login. Please try again.");
         }
     };
@@ -163,7 +163,7 @@ function LoginPage() {
                             </button>
                             <div className='' onClick={handlechange}>
 
-                                <strong>Forgot Password?</strong>
+                                <strong className='cursor-pointer'>Forgot Password?</strong>
 
                             </div>
                             <div className='mt-2'>

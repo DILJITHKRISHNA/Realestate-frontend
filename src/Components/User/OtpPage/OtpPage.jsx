@@ -73,10 +73,12 @@ function OtpPage() {
 
     const handleResendOtp = async() => {
         try {
-            
             const response = await resendOTp({email: email});
             console.log(response,"Ress in resend otppp");
             setCountdown(60);
+            if(response.data.success){
+                toast("Otp Re-Sended Successfully")
+            }
         } catch (error) {
             console.log(error);
         }

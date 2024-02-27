@@ -9,7 +9,7 @@ function ProfilePage() {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    localStorage.removeItem("token")
+    localStorage.removeItem("admintok")
     navigate('/admin/login')
   }
 
