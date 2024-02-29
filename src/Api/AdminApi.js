@@ -164,4 +164,13 @@ export async function EditCat(id, category){
     }
 }
 
-
+export async function PaginateProperty(currentPage) {
+    console.log(currentPage, "PaginateProperty ");
+    try {
+        const res = await adminRequest.get(`/properties/${currentPage}`);
+        console.log(res, "res in PaginateProperty apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -101,7 +101,7 @@ export async function FetchData(id) {
 }
 
 export async function SingleData(id) {
-    console.log(id,'enter to contrr getDataa');
+    console.log(id, 'enter to contrr getDataa');
     try {
         const res = await userRequest.get(`/property/:id`)
         console.log(res, " got res in singledataaaa function inside userappiii");
@@ -120,7 +120,7 @@ export async function IsBooked(id) {
 }
 export async function BookingData(PaymentDetails, id) {
     try {
-        const res = await userRequest.post(`/property/payment/${id}`,PaymentDetails)
+        const res = await userRequest.post(`/property/payment/${id}`, PaymentDetails)
         return res
     } catch (error) {
         console.log(error);
@@ -136,7 +136,7 @@ export async function paymentRequest(propertyId) {
 }
 export async function SuccessRequest(bookData, id) {
     try {
-        const res = await userRequest.post(`/property/success/${id}`,{data: bookData})
+        const res = await userRequest.post(`/property/success/${id}`, { data: bookData })
         return res
     } catch (error) {
         console.log(error);
@@ -153,7 +153,7 @@ export async function FetchPaymentData() {
     }
 }
 export async function CancelBookPayment(id, propId) {
-    console.log(propId,"fetch payment dataaa");
+    console.log(propId, "fetch payment dataaa");
     try {
         const res = await userRequest.post(`/paymenthistory/${id}`, propId)
         console.log(res, "res in is fetch payment historyy apii");
@@ -163,7 +163,7 @@ export async function CancelBookPayment(id, propId) {
     }
 }
 export async function resendOTp(email) {
-    console.log(email,"resend otpp ");
+    console.log(email, "resend otpp ");
     try {
         const res = await userRequest.post('/resendotp', email)
         console.log(res, "res in Resend otppp apii");
@@ -172,4 +172,23 @@ export async function resendOTp(email) {
         console.log(error);
     }
 }
-  
+export async function FetchProfileData(email) {
+    console.log(email, "FetchProfileData ");
+    try {
+        const res = await userRequest.get('/getprofiledata', email)
+        console.log(res, "res in FetchProfileData apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function PaginateProperty(currentPage) {
+    console.log(currentPage, "PaginateProperty ");
+    try {
+        const res = await userRequest.get(`/properties/${currentPage}`);
+        console.log(res, "res in PaginateProperty apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

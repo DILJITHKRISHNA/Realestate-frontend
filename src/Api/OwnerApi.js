@@ -138,4 +138,23 @@ export async function FetchBookings() {
         console.log(error);
     }
 }  
+export async function FetchCategory() {
+    console.log('FetchCategory');
+    try {
+        const response = await ownerRequest.get('/owner/fetchcategory');
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  
 
+export async function PaginateProperty(currentPage) {
+    console.log(currentPage, "PaginateProperty ");
+    try {
+        const res = await ownerRequest.get(`/properties/${currentPage}`);
+        console.log(res, "res in PaginateProperty apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

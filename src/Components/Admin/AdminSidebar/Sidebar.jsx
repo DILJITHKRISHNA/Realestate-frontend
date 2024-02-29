@@ -13,7 +13,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <div className="bg-gray-950 h-screen w-[14%] py-8">
+            <div className="bg-gray-950 h-auto w-[14%] py-8">
                 <div className="flex flex-col items-center ml-4 justify-between">
                     <div className="mb-8 gap-2">
                         <Link to='/admin/' onClick={() => handleItemClick('dashboard')}>

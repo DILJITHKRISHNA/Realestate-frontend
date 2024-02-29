@@ -8,7 +8,7 @@ function UserLayout() {
     <div>
       <HeaderNav />
       <Outlet />
-      <div className='mt-20'>
+      <div className='mt-[20%]'>
         <Footer />
       </div>
     </div>

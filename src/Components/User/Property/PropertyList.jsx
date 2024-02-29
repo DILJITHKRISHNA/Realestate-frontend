@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { FetchData } from '../../../Api/UserApi'
+import { FetchData, PaginateProperty } from '../../../Api/UserApi'
 import { Link, useNavigate } from 'react-router-dom'
 import { Image } from 'cloudinary-react';
 
-function PropertyList() {
+function PropertyList({ filtered }) {
     const navigate = useNavigate()
-    const [loadData, SetLoadData] = useState([])
-    const [imageId, setImageId] = useState([])
+    const [propertiesToDisplay, setPropertiesToDisplay] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+
+    const fetchProperties = async () => {
+        try {
+            const response = await PaginateProperty(currentPage);
+            setPropertiesToDisplay(response.data.PropertyData);
+            setTotalPages(response.data.totalPages);
+        } catch (error) {
+            console.error('Error fetching properties:', error);
+        }
+    }
 
     useEffect(() => {
-        const FetchProperty = async () => {
-            console.log("--------========---------");
-            try {
-                const res = await FetchData()
-                console.log(res.data, "responseee to fetch properttyy");
-                const property = res.data.data
-                SetLoadData(property || []);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        FetchProperty()
-    }, [])
+        fetchProperties()
+    }, [currentPage])
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
 
     const handleClick = async (id) => {
         navigate(`/propertyeach`, { state: { id } })
@@ -30,11 +35,12 @@ function PropertyList() {
     const handleReserve = async () => {
         alert("Reserved")
     }
+    const FilteredProperties = filtered && filtered.length > 0 ? filtered : propertiesToDisplay;
 
     return (
         <>
             <div className='flex flex-wrap gap-16'>
-                {loadData.map((data, index) => (
+                {FilteredProperties.map((data, index) => (
                     <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer" onClick={() => handleClick(data._id)}  >
                         <div  >
                             <div className="relative" >
@@ -85,10 +91,8 @@ function PropertyList() {
                                             fill="currentColor"
                                             className="h-5 w-5"
                                         >
-                                            {/* SVG Path for the first tooltip */}
                                         </svg>
                                     </button>
-                                    {/* Add similar buttons for other tooltips */}
                                 </div>
                             </div>
                         </div>
@@ -98,6 +102,21 @@ function PropertyList() {
                             </button>
                         </div>
                     </div>
+                ))}
+            </div>
+            <div className="pagination flex justify-center mt-12 gap-4 mr-20">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={`
+                bg-white text-gray-800 font-semibold py-2 px-4 border border-lime-300 rounded-full 
+                transition-all duration-300 hover:bg-gray-200 focus:outline-none  focus:border-lime-400
+                ${currentPage === index + 1 ? 'bg-lime-100 text-black hover:bg-lime-400' : ''}
+            `}
+                    >
+                        {index + 1}
+                    </button>
                 ))}
             </div>
         </>

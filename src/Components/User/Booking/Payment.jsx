@@ -57,7 +57,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                         navigate('/success')
                     }, 2000);
                 } else {
-
+                    toast.error("please add the required fields..")
                 }
             }
 

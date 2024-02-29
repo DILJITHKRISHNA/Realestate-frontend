@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AddProperty } from '../../../Api/OwnerApi';
+import { AddProperty, FetchCategory } from '../../../Api/OwnerApi';
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify'
 
@@ -11,6 +11,7 @@ function AddDetails({ SetOpen }) {
 
     const [previewSource, setPreviewSource] = useState('')
     const [fileInputState, setFileInputState] = useState('')
+    const [category, setCategory] = useState([])
 
     const [details, SetDetails] = useState({
         title: "",
@@ -62,7 +63,7 @@ function AddDetails({ SetOpen }) {
                 throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
             }
             const cloudinaryData = await cloudinaryResponse.json();
-            console.log("Cloudinary response:", cloudinaryData); 
+            console.log("Cloudinary response:", cloudinaryData);
             if (cloudinaryData.error) {
                 console.log(cloudinaryData.error);
                 return;
@@ -96,23 +97,34 @@ function AddDetails({ SetOpen }) {
         ) {
             toast.error("Please fill in all required fields.");
             return;
-        }
+        } else if (
+            details.rent <= 0 ||
+            details.FloorCount <= 0 ||
+            details.bedroom <= 0 ||
+            details.bathroom <= 0 ||
+            details.balconies <= 0
+        ) {
+            toast.error("Negative numbers are not allowed!");
+        } else {
 
-        try {
-            const data = {
-                ...details,
-                imageUrl: previewSource
+
+            try {
+                const data = {
+                    ...details,
+                    imageUrl: previewSource
+                }
+                console.log(data, "dttttttttttttttttt4444444");
+                const res = await AddProperty(data, OwnerId);
+                console.log(res, "ressssssssssssssssst in pieceeee");
+                if (res.data.success) {
+                    toast.success("Your property is in the verification process; we appreciate your patience and will notify you upon approval.")
+                } else {
+                    toast.error("Failed to add property. Please try again.");
+                }
+
+            } catch (error) {
+                console.log(error);
             }
-            console.log(data, "dttttttttttttttttt4444444");
-            const res = await AddProperty(data, OwnerId);
-            console.log(res, "ressssssssssssssssst in pieceeee");
-            if (res.data.success) {
-                toast.success("Your property is in the verification process; we appreciate your patience and will notify you upon approval.")
-            } else {
-                toast.error("Failed to add property. Please try again.");
-            }
-        } catch (error) {
-            console.log(error);
         }
     };
 
@@ -138,6 +150,25 @@ function AddDetails({ SetOpen }) {
         }
         uploadImage(previewSource)
     }
+    const handlePropertyTypeChange = (event) => {
+        setPropertyType(event.target.value);
+    };
+
+    useEffect(() => {
+        const getCat = async () => {
+            try {
+                const res = await FetchCategory()
+                console.log(res, "reddddddddddddddd");
+                if (res.data.success) {
+                    setCategory(res.data.categoryList);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getCat()
+    }, [])
+
 
     return (
         <>
@@ -345,7 +376,7 @@ function AddDetails({ SetOpen }) {
                                     >
                                         Add Property
                                     </button>
-                                </div> 
+                                </div>
                             </div>
                         </div>
                     </div>

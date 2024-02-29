@@ -3,10 +3,13 @@ import { ToastContainer, toast } from 'react-toastify'
 import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
 import { approveOwner, kycList } from '../../../Api/AdminApi'
+import { FaUserCheck } from 'react-icons/fa'
 
 function OwnerKyc() {
     const [kycData, SetKycData] = useState([])
     const [state, SetState] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
     const [showModal, setShowModal] = useState(false);
 
     const handleOpen = () => {
@@ -49,7 +52,11 @@ function OwnerKyc() {
         }
     };
 
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = kycData.slice(indexOfFirstItem, indexOfLastItem);
 
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div>
@@ -58,7 +65,10 @@ function OwnerKyc() {
                 <div className="flex">
                     <Sidebar />
                     <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100" >
-                        <h1 className='flex justify-center font-bold text-2xl mb-4 bg-slate-950 uppercase rounded-md text-white'>Kyc Management</h1>
+                        <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
+                            <FaUserCheck className='w-8 h-6' />
+                            Kyc List
+                        </h1>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
@@ -76,7 +86,7 @@ function OwnerKyc() {
                                         <th className="px-5 py-3">Status</th>
                                     </tr>
                                 </thead>
-                                {Array.isArray(kycData) && kycData.map((kyc) => (
+                                {Array.isArray(currentItems) && currentItems.map((kyc) => (
 
                                     <tbody className="text-gray-500" key={kyc._id}>
                                         <tr >
@@ -133,9 +143,26 @@ function OwnerKyc() {
 
                             </table>
                         </div>
-                        <div className="flex flex-col items-center  bg-white px-5 py-5 sm:flex-row sm:justify-between">
-                            {/* <span className="text-xs text-gray-600 sm:text-sm"> Showing 1 to {userData?.length || 0} of Entries </span> */}
-
+                        <div className="flex flex-col items-center bg-white px-5 py-5 sm:flex-row sm:justify-left">
+                            <button
+                                onClick={() => paginate(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="mr-2 px-3 py-1 text-xs font-semibold bg-gray-400 text-white rounded-full"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                onClick={() => paginate(currentPage + 1)}
+                                disabled={indexOfLastItem >= kycData.length}
+                                className="px-3 py-1 text-xs font-semibold bg-gray-400 text-white rounded-full"
+                            >
+                                Next
+                            </button>
+                            <div className='w-full flex justify-end'>
+                                <span className="text-xs text-gray-600 sm:text-sm">
+                                    Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, kycData.length)} of {kycData.length} Entries
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

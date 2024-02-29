@@ -43,8 +43,12 @@ function LoginPage() {
             mobile: response.data.admin.mobile
           })
         )
-        navigate('/admin/')
-        toast.success("login successfull")
+        toast("Login Successfull")
+        setTimeout(() => {
+          navigate('/admin/')
+        }, 1000);
+      }else{
+        toast.error("Invalid Credentials")
       }
 
     } catch (error) {

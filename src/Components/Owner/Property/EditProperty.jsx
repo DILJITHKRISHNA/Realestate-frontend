@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
-import { PropertyEdit } from '../../../Api/OwnerApi';
+import { FaTimes } from 'react-icons/fa'
+import { FetchCategory, PropertyEdit } from '../../../Api/OwnerApi';
 
 function EditProperty({ Data, propertyId }) {
 
     const [open, setOpen] = useState(false);
     // const [propertyData, setPropertyData] = useState([])
     const [previewSource, setPreviewSource] = useState('')
+    const [category, setCategory] = useState([])
 
     const handleOpen = () => setOpen(!open);
-    console.log(Data, "dataajjjjj");
     const [details, SetDetails] = useState({
         title: Data ? Data.name : "",
         type: Data ? Data.type : "",
@@ -22,14 +23,13 @@ function EditProperty({ Data, propertyId }) {
         buildUpArea: Data ? Data.buildUpArea : "",
         FloorCount: Data ? Data.FloorCount : "",
         balconies: Data ? Data.balcony : "",
-        imageUrl: null,
+        imageUrl: Data ? Data.imageUrls : "imageUrls",
         location: Data ? Data.location : "",
         country: Data ? Data.country : "",
         city: Data ? Data.city : "",
         state: Data ? Data.state : "",
     });
 
-    console.log(typeof details, "ddddddddddddddddd");
 
     const uploadImage = async (file) => {
         try {
@@ -70,6 +70,10 @@ function EditProperty({ Data, propertyId }) {
         handleUploadImage(e);
     }
 
+    const handleImageDeselect = () => {
+        setPreviewSource(null);
+    };
+
     const handleFileInputChange = async (e) => {
         const file = e.target.files[0]
         const url = await uploadImage(file)
@@ -90,12 +94,11 @@ function EditProperty({ Data, propertyId }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log(name, value, "pppppppppppppppp");
-        SetDetails({
-            ...details,
-            [name]: value
-        });
-
-    }
+        SetDetails((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
 
     const handleSubmit = async () => {
         try {
@@ -103,19 +106,62 @@ function EditProperty({ Data, propertyId }) {
                 ...details,
                 imageUrl: previewSource
             }
-            console.log(data, "dttttttttttttttttt4444444");
-            const res = await PropertyEdit(data, propertyId);
-            console.log(res, "ressssssssssssssssst in pieceeee");
-            if (res.data.success) {
-                toast.success("Property Edited Successfully")
-                setOpen(!open)
+            if (
+                !details.title ||
+                !details.type ||
+                !details.rent ||
+                !details.additionalDetails ||
+                !details.bedroom ||
+                !details.bathroom ||
+                !details.buildUpArea ||
+                !details.FloorCount ||
+                !details.location ||
+                !details.country ||
+                !details.city ||
+                !details.balconies
+            ) {
+                toast.error("Please fill in all required fields.");
+                return;
+            } else if (
+                details.rent <= 0 ||
+                details.FloorCount <= 0 ||
+                details.bedroom <= 0 ||
+                details.bathroom <= 0 ||
+                details.balconies <= 0
+            ) {
+                toast.error("Negative numbers are not allowed!");
+            } else {
+
+                const res = await PropertyEdit(data, propertyId);
+                if (res.data.success) {
+                    toast.success("Property Edited Successfully")
+                    setOpen(!open)
+                }
             }
         } catch (error) {
             console.log(error);
         }
     }
 
-    return (    
+    useEffect(() => {
+        const getCat = async () => {
+            try {
+                const res = await FetchCategory()
+                if (res.data.success) {
+                    setCategory(res.data.categoryList);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getCat()
+    }, [])
+
+    const handlePropertyTypeChange = (event) => {
+        setPropertyType(event.target.value);
+    };
+
+    return (
         <>
             <button
                 onClick={handleOpen}
@@ -164,14 +210,16 @@ function EditProperty({ Data, propertyId }) {
                                                 />
                                             </div>
                                             <div className="mb-4">
-                                                <label className="block text-sm font-medium text-gray-700">Property Type</label>
-                                                <input
-                                                    type="text"
-                                                    name="type"
-                                                    value={details['type']}
-                                                    onChange={handleChange}
-                                                    className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                                />
+                                                <div className="mb-4">
+                                                    <label className="block text-sm font-medium text-gray-700">Property Type</label>
+                                                    <input
+                                                        type="text"
+                                                        name="type"
+                                                        value={details['type']}
+                                                        onChange={handleChange}
+                                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="mb-4">
                                                 <label className="block text-sm font-medium text-gray-700">Expected Rent</label>
@@ -294,18 +342,30 @@ function EditProperty({ Data, propertyId }) {
                                             </div>
                                             <div className="mb-4 flex flex-col">
                                                 <label className="block text-sm font-medium text-gray-700">Property Image</label>
-                                                <div className='flex flex-row'>
+                                                <div className='flex flex-row gap-x-2.5'>
                                                     <input
                                                         type="file"
                                                         name="imageUrls"
                                                         onChange={handleFileInputChange}
                                                         className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                                     />
-                                                    <img
-                                                        src={previewSource || (details.imageFile ? URL.createObjectURL(details.imageFile) : '')}
-                                                        alt="chosen"
-                                                        className='h-[50px] w-[50px] rounded-full '
-                                                    />
+                                                    {previewSource ? (
+                                                        <div className='flex flex-row'>
+                                                            <img
+                                                                src={previewSource || (details.imageFile ? URL.createObjectURL(details.imageFile) : '')}
+                                                                name="imageUrls"
+                                                                alt="chosen"
+                                                                className='h-[50px] w-[50px] rounded-full'
+                                                            />
+                                                            <FaTimes className='text-xl text-red-700' onClick={handleImageDeselect}>Erase</FaTimes>
+                                                        </div>
+                                                    ) : (
+                                                        <img
+                                                            src={Data.imageUrls}
+                                                            alt="chosen"
+                                                            className='h-[50px] w-[50px] rounded-full'
+                                                        />
+                                                    )}
 
                                                 </div>
                                             </div>

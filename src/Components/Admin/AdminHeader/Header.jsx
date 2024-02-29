@@ -8,7 +8,7 @@ function Header() {
 
   const navigate = useNavigate()
 
-  const handleClick = () =>{
+  const handleClick = () => {
     try {
       localStorage.removeItem("admintok")
       navigate('/admin/login')
@@ -44,8 +44,6 @@ function Header() {
               <LogoutIcon className="h-6 w-6 text-white hover:text-yellow-100" />
             </div>
           </button>
-          
-    
         </div>
       </div>
     </>

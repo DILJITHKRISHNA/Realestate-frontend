@@ -3,45 +3,48 @@ import Header from '../AdminHeader/Header'
 import Sidebar from '../AdminSidebar/Sidebar'
 import { ToastContainer, toast } from 'react-toastify'
 import { OwnerBlockUnBlock, fetchOwnerData } from '../../../Api/AdminApi'
+import { FaUsers } from 'react-icons/fa'
 
 function OwnerList() {
 
-  const [owners, setOwners] = useState([]);  
+  const [owners, setOwners] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   useEffect(() => {
     const OwnerData = async () => {
       try {
         const storedOwners = JSON.parse(localStorage.getItem('owners'));
-       
-          const ownerData = await fetchOwnerData();
-          const ownerDetails = ownerData.data.OwnerDetails || [];
-          setOwners(ownerDetails);
-        
+
+        const ownerData = await fetchOwnerData();
+        const ownerDetails = ownerData.data.OwnerDetails || [];
+        setOwners(ownerDetails);
+
       } catch (error) {
         console.log(error);
       }
     };
-  
+
     OwnerData();
   }, []);
-  
+
 
   const OwnerBlockHandle = async (id, is_block) => {
     try {
       const res = await OwnerBlockUnBlock(id);
-  
+
       const updatedOwners = owners.map((owner) => {
         if (owner._id === id) {
           return { ...owner, is_block: !is_block };
         }
         return owner;
       });
-  
+
       setOwners(updatedOwners);
-  
+
       // Update localStorage
       localStorage.setItem('owners', JSON.stringify(updatedOwners));
-  
+
       if (!is_block) {
         localStorage.removeItem('token');
         toast.success("Owner blocked");
@@ -52,7 +55,12 @@ function OwnerList() {
       console.log("Error during Owner blocking:", error);
     }
   };
-  
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = owners.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
   return (
@@ -62,7 +70,10 @@ function OwnerList() {
         <div className="flex">
           <Sidebar />
           <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100" >
-            <h1 className='flex justify-center font-bold text-2xl mb-4 bg-slate-950 rounded-md text-white'>Owner LIST</h1>
+            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
+              <FaUsers className='w-8 h-6' />
+              Owner List
+            </h1>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -76,7 +87,7 @@ function OwnerList() {
                 </thead>
 
                 <tbody className="text-gray-500">
-                  {Array.isArray(owners) && owners.map((owner, index) => (
+                  {Array.isArray(currentItems) && currentItems.map((owner, index) => (
 
                     <tr >
                       <td className=" border-gray-200 bg-white px-5 py-5 text-sm">
@@ -98,7 +109,7 @@ function OwnerList() {
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <p className="whitespace-no-wrap">{owner.city}</p>
                       </td>
-                    
+
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                           {!owner.is_block ? (
@@ -121,9 +132,26 @@ function OwnerList() {
                 </tbody>
               </table>
             </div>
-            <div className="flex flex-col items-center  bg-white px-5 py-5 sm:flex-row sm:justify-between">
-              {/* <span className="text-xs text-gray-600 sm:text-sm"> Showing 1 to {userData?.length || 0} of Entries </span> */}
-
+            <div className="flex flex-col items-center bg-white px-5 py-5 sm:flex-row sm:justify-between">
+              <div>
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="mr-2 px-3 py-1 text-xs font-semibold bg-gray-400 text-white rounded-full"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={indexOfLastItem >= owners.length}
+                  className="px-3 py-1 text-xs font-semibold bg-gray-400 text-white rounded-full"
+                >
+                  Next
+                </button>
+              </div>
+              <span className="text-xs text-gray-600 sm:text-sm">
+                Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, owners.length)} of {owners.length} Entries
+              </span>
             </div>
           </div>
         </div>

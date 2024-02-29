@@ -10,8 +10,8 @@ function CategoryPage() {
   const [categorys, setCategorys] = useState([])
   const [open, setOpen] = useState(false);
   const [managePage, setManagePage] = useState(false)
-  const [state, SetState] = useState()
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [category, SetCategory] = useState({
     category: ""
   })
@@ -90,6 +90,13 @@ function CategoryPage() {
     }
   }
 
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = categorys.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
 
     <div className="flex flex-col w-full">
@@ -109,12 +116,12 @@ function CategoryPage() {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(categorys) && categorys.map((category, index) => (
+              {Array.isArray(currentItems) && currentItems.map((category, index) => (
                 <tr key={index}>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>{index + 1}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>
-                    <EditCategory Category={category.category} catId={category._id} className='border-2 border-lime-400 text-lime-400 px-3 rounded-md font-semibold hover:bg-lime-400 hover:text-white'/>
+                    <EditCategory Category={category.category} catId={category._id} className='border-2 border-lime-400 text-lime-400 px-3 rounded-md font-semibold hover:bg-lime-400 hover:text-white' />
                   </td>
                   <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
                     <button
@@ -127,6 +134,27 @@ function CategoryPage() {
               ))}
             </tbody>
           </table>
+          <div className="flex flex-col items-center bg-white px-5 py-5 sm:flex-row sm:justify-between">
+            <div>
+              <button
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="mr-2 px-3 py-1 text-xs font-semibold bg-gray-400 text-white rounded-full"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => paginate(currentPage + 1)}
+                disabled={indexOfLastItem >= categorys.length}
+                className="px-3 py-1 text-xs font-semibold bg-gray-400 text-white rounded-full"
+              >
+                Next
+              </button>
+            </div>
+            <span className="text-xs text-gray-600 sm:text-sm">
+              Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, categorys.length)} of {categorys.length} Entries
+            </span>
+          </div>
         </div>
       </div>
       {/* Add category modal */}

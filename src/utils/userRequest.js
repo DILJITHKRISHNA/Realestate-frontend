@@ -10,9 +10,10 @@ userRequest.interceptors.request.use((req) => {
         req.headers.authorization = localStorage.getItem("token")
     }
     return req
-})        
+})
 userRequest.interceptors.response.use((response) =>
     response, (error) => {
+        console.log(error.response, "error response token expr");
         if (error.response && error.response.status === 401) {
             GenerateError(error.response.data.message)
             setTimeout(() => {
