@@ -45,7 +45,7 @@ function PropertyPage() {
   const fetchProperties = async () => {
     try {
       const response = await PaginateProperty(currentPage);
-      console.log(response,"resppppp in ownere paginate");
+      console.log(response, "resppppp in ownere paginate");
       setPropertiesToDisplay(response.data.PropertyData);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -57,7 +57,6 @@ function PropertyPage() {
     fetchProperties()
   }, [currentPage])
 
-
   const handleHide = async (id, is_hide) => {
     try {
       const res = await HideProperty(id)
@@ -67,7 +66,7 @@ function PropertyPage() {
         }
         return data;
       });
-      setPropertyData(hideProperty);
+      setPropertiesToDisplay(hideProperty);
     } catch (error) {
       console.log(error);
     }

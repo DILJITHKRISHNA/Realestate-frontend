@@ -6,7 +6,7 @@ import { FetchCategory, PropertyEdit } from '../../../Api/OwnerApi';
 function EditProperty({ Data, propertyId }) {
 
     const [open, setOpen] = useState(false);
-    // const [propertyData, setPropertyData] = useState([])
+    const [previewVideo, setPreviewVideo] = useState('')
     const [previewSource, setPreviewSource] = useState('')
     const [category, setCategory] = useState([])
 
@@ -23,7 +23,8 @@ function EditProperty({ Data, propertyId }) {
         buildUpArea: Data ? Data.buildUpArea : "",
         FloorCount: Data ? Data.FloorCount : "",
         balconies: Data ? Data.balcony : "",
-        imageUrl: Data ? Data.imageUrls : "imageUrls",
+        imageUrl: Data.imageUrls,
+        videoUrl: Data.videoUrls,
         location: Data ? Data.location : "",
         country: Data ? Data.country : "",
         city: Data ? Data.city : "",
@@ -63,33 +64,103 @@ function EditProperty({ Data, propertyId }) {
         }
     };
 
+    const uploadVideo = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "dev_setups");
+
+            const cloudinaryResponse = await fetch(
+                "https://api.cloudinary.com/v1_1/dqewi7vjr/video/upload",  // Note the change to video/upload endpoint
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+
+            if (!cloudinaryResponse.ok) {
+                throw new Error(`Failed to upload video. Status: ${cloudinaryResponse.status}`);
+            }
+
+            const cloudinaryData = await cloudinaryResponse.json();
+            console.log("Cloudinary response:", cloudinaryData);
+
+            if (cloudinaryData.error) {
+                console.log(cloudinaryData.error);
+                return;
+            }
+
+            const uploadedVideoUrl = cloudinaryData.secure_url;
+            console.log(uploadedVideoUrl, "uploadedVideoUrl");
+            return uploadedVideoUrl;
+        } catch (error) {
+            console.log("Error during video upload:", error);
+        }
+    };
+
     const handleCombinedSubmit = (e) => {
         e.preventDefault();
 
         handleSubmit(e);
         handleUploadImage(e);
+        handleUploadVideo(e)
+
     }
 
     const handleImageDeselect = () => {
-        setPreviewSource(null);
+        setPreviewSource('');
+        SetDetails(prevState => ({ ...prevState, imageUrl: Data ? Data.imageUrls : "" }));
     };
 
     const handleFileInputChange = async (e) => {
-        const file = e.target.files[0]
-        const url = await uploadImage(file)
-        SetDetails(prevState => ({ ...prevState, imageUrl: url }))
-        setPreviewSource(url)
+        const file = e.target.files[0];
+
+        if (file) {
+            const url = await uploadImage(file);
+            SetDetails((prevState) => ({ ...prevState, imageUrl: url }));
+            setPreviewSource(url);
+        }
+    };
+
+    const handleVideoInputChange = async (e) => {
+        const file = e.target.files[0];
+        const url = await uploadVideo(file);
+        SetDetails(prevState => ({ ...prevState, videoUrl: url }));
+        setPreviewVideo(url);
+        console.log(previewVideo, "video urlll");
     }
 
-    const handleUploadImage = (e) => {
-        console.log("submitting...");
+    const handleUploadImage = async (e) => {
+        e.preventDefault();
+
+        if (previewSource && previewSource !== Data.imageUrls) {
+            try {
+                const uploadedImageUrl = await uploadImage(previewSource);
+                SetDetails((prevState) => ({
+                    ...prevState,
+                    imageUrl: uploadedImageUrl,
+                }));
+                console.log("New image uploaded:", uploadedImageUrl);
+            } catch (error) {
+                console.log("Error uploading image:", error);
+            }
+        } else {
+            SetDetails((prevState) => ({
+                ...prevState,
+                imageUrl: Data.imageUrls,
+            }));
+            console.log("No new image selected, using existing image URL:", Data.imageUrls);
+        }
+    };
+
+    const handleUploadVideo = (e) => {
+        console.log("video submitting...");
         e.preventDefault()
-        if (!previewSource) {
+        if (!previewVideo) {
             return
         }
-        uploadImage(previewSource)
+        uploadVideo(previewVideo)
     }
-        ;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -104,7 +175,7 @@ function EditProperty({ Data, propertyId }) {
         try {
             const data = {
                 ...details,
-                imageUrl: previewSource
+                imageUrl: details.imageUrl || Data.imageUrls
             }
             if (
                 !details.title ||
@@ -236,6 +307,7 @@ function EditProperty({ Data, propertyId }) {
                                                 <label className="block text-sm font-medium text-gray-700">Property Details</label>
                                                 <input
                                                     type="text"
+                                                    name='additionalDetails'
                                                     value={details['additionalDetails']}
                                                     onChange={handleChange}
                                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
@@ -245,6 +317,7 @@ function EditProperty({ Data, propertyId }) {
                                                 <label className="block text-sm font-medium text-gray-700">Built Up Area</label>
                                                 <input
                                                     type="text"
+                                                    name='buildUpArea'
                                                     value={details['buildUpArea']}
                                                     onChange={handleChange}
                                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
@@ -352,8 +425,7 @@ function EditProperty({ Data, propertyId }) {
                                                     {previewSource ? (
                                                         <div className='flex flex-row'>
                                                             <img
-                                                                src={previewSource || (details.imageFile ? URL.createObjectURL(details.imageFile) : '')}
-                                                                name="imageUrls"
+                                                                src={previewSource}
                                                                 alt="chosen"
                                                                 className='h-[50px] w-[50px] rounded-full'
                                                             />
@@ -367,6 +439,14 @@ function EditProperty({ Data, propertyId }) {
                                                         />
                                                     )}
 
+                                                </div>
+                                                <div className='flex flex-row gap-x-2.5'>
+                                                    <input
+                                                        type="file"
+                                                        name="imageUrls"
+                                                        onChange={handleVideoInputChange}
+                                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="mb-4">

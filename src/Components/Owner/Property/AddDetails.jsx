@@ -9,7 +9,8 @@ function AddDetails({ SetOpen }) {
     console.log(selector.OwnerInfo.id, "selectorrrrrr")
     const OwnerId = selector.OwnerInfo.id
 
-    const [previewSource, setPreviewSource] = useState('')
+    const [previewSource, setPreviewSource] = useState([])
+    const [previewVideo, setPreviewVideo] = useState('')
     const [fileInputState, setFileInputState] = useState('')
     const [category, setCategory] = useState([])
 
@@ -26,6 +27,7 @@ function AddDetails({ SetOpen }) {
         FloorCount: "",
         balconies: "",
         imageUrl: null,
+        videoUrl: null,
         location: "",
         country: "",
         city: "",
@@ -44,42 +46,84 @@ function AddDetails({ SetOpen }) {
         });
 
     }
-    const uploadImage = async (file) => {
+
+    const uploadVideo = async (file) => {
         try {
             const formData = new FormData();
             formData.append("file", file);
             formData.append("upload_preset", "dev_setups");
 
             const cloudinaryResponse = await fetch(
-                "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
+                "https://api.cloudinary.com/v1_1/dqewi7vjr/video/upload",  // Note the change to video/upload endpoint
                 {
                     method: "POST",
                     body: formData,
                 }
             );
-            console.log(cloudinaryResponse, "cloudinaryResponse");
 
             if (!cloudinaryResponse.ok) {
-                throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
+                throw new Error(`Failed to upload video. Status: ${cloudinaryResponse.status}`);
             }
+
             const cloudinaryData = await cloudinaryResponse.json();
             console.log("Cloudinary response:", cloudinaryData);
+
             if (cloudinaryData.error) {
                 console.log(cloudinaryData.error);
                 return;
             }
-            const uploadedImageUrl = cloudinaryData.secure_url;
-            console.log(uploadedImageUrl, "uploadedImageUrl");
-            return uploadedImageUrl;
+
+            const uploadedVideoUrl = cloudinaryData.secure_url;
+            console.log(uploadedVideoUrl, "uploadedVideoUrl");
+            return uploadedVideoUrl;
+        } catch (error) {
+            console.log("Error during video upload:", error);
+        }
+    };
+
+    const uploadImage = async (files) => {
+        try {
+            const uploadedImageUrls = [];
+
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", "dev_setups");
+
+                const cloudinaryResponse = await fetch(
+                    "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
+
+                if (!cloudinaryResponse.ok) {
+                    throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
+                }
+
+                const cloudinaryData = await cloudinaryResponse.json();
+
+                if (cloudinaryData.error) {
+                    console.log(cloudinaryData.error);
+                    return;
+                }
+
+                const uploadedImageUrl = cloudinaryData.secure_url;
+                uploadedImageUrls.push(uploadedImageUrl);
+            }
+
+            console.log("Uploaded Image URLs:", uploadedImageUrls);
+            return uploadedImageUrls;
         } catch (error) {
             console.log("Error during image upload:", error);
         }
     };
 
+
     const handleSubmit = async (e) => {
         console.log("handleSubmit add detailssssss");
         e.preventDefault();
-        console.log(details, "datassss");
 
         if (
             !details.title ||
@@ -113,9 +157,7 @@ function AddDetails({ SetOpen }) {
                     ...details,
                     imageUrl: previewSource
                 }
-                console.log(data, "dttttttttttttttttt4444444");
                 const res = await AddProperty(data, OwnerId);
-                console.log(res, "ressssssssssssssssst in pieceeee");
                 if (res.data.success) {
                     toast.success("Your property is in the verification process; we appreciate your patience and will notify you upon approval.")
                 } else {
@@ -133,26 +175,44 @@ function AddDetails({ SetOpen }) {
 
         handleSubmit(e);
         handleUploadImage(e);
+        handleUploadVideo(e)
     }
 
     const handleFileInputChange = async (e) => {
-        const file = e.target.files[0]
-        const url = await uploadImage(file)
-        SetDetails(prevState => ({ ...prevState, imageUrl: url }))
-        setPreviewSource(url)
+        const files = e.target.files;
+
+        try {
+            const urls = await uploadImage(files);
+            SetDetails(prevState => ({ ...prevState, imageUrl: urls }));
+            setPreviewSource(urls);
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        }
+    };
+    const handleVideoInputChange = async (e) => {
+        const file = e.target.files[0];
+        const url = await uploadVideo(file);
+        SetDetails(prevState => ({ ...prevState, videoUrl: url }));
+        setPreviewVideo(url);
+        console.log(previewVideo, "video urlll");
     }
 
     const handleUploadImage = (e) => {
-        console.log("submitting...");
+        console.log("image submitting...");
         e.preventDefault()
         if (!previewSource) {
             return
         }
         uploadImage(previewSource)
     }
-    const handlePropertyTypeChange = (event) => {
-        setPropertyType(event.target.value);
-    };
+    const handleUploadVideo = (e) => {
+        console.log("video submitting...");
+        e.preventDefault()
+        if (!previewVideo) {
+            return
+        }
+        uploadVideo(previewVideo)
+    }
 
     useEffect(() => {
         const getCat = async () => {
@@ -169,12 +229,12 @@ function AddDetails({ SetOpen }) {
         getCat()
     }, [])
 
-
+    console.log(previewSource, "iiiiiiiiiiiii");
     return (
         <>
             <form onSubmit={handleCombinedSubmit}>
                 <div className="fixed inset-0 backdrop-blur-sm overflow-y-auto flex items-center justify-center">
-                    <div className="relative w-[80%] bg-white p-8 max-w-4xl max-h-2xl h-[100%] mx-auto rounded-lg shadow-md shadow-black">
+                    <div className="relative w-[80%] bg-white p-8 max-w-8xl max-h-2xl h-[100%] mx-auto rounded-lg shadow-md shadow-black">
                         <h1 className="text-2xl font-bold mb-6">Add Property</h1>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="mb-4">
@@ -338,15 +398,26 @@ function AddDetails({ SetOpen }) {
                                         name="imageUrls"
                                         value={fileInputState}
                                         onChange={handleFileInputChange}
+                                        multiple
                                         className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                     />
-                                    {previewSource && (
+                                    {previewSource.map((url, index) => (
                                         <img
-                                            src={previewSource}
-                                            alt="chosen"
-                                            className='h-[50px] w-[50px] rounded-full '
+                                            key={index}
+                                            src={url}
+                                            alt={`chosen-${index}`}
+                                            className='h-[50px] w-[50px] rounded-full mx-2'
                                         />
-                                    )}
+                                    ))}
+                                    <div className='flex flex-row'>
+                                        <input
+                                            type="file"
+                                            name="videoUrls"
+                                            value={fileInputState}
+                                            onChange={handleVideoInputChange}
+                                            className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div className="mb-4">

@@ -3,55 +3,56 @@ import { faBed, faBath, faChair, faParking, faDownLeftAndUpRightToCenter, faHous
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FetchData, IsBooked } from '../../../Api/UserApi';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ToastContainer, toast} from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import BookProperty from '../Booking/BookProperty';
+import PropertyVideo from './PropertyVideo';
 
-function EachProperty({}) {
+function EachProperty() {
   const location = useLocation()
   const { id } = location.state
   console.log(location)
   const [property, setProperty] = useState([]);
   const navigate = useNavigate()
-  
 
   useEffect(() => {
 
     const getPropertyData = async () => {
-
       const res = await FetchData()
       const Details = res.data.data
       const date = Details[0].createdAt
       const dateObject = new Date(date);
 
-      console.log(dateObject, "datee");
+
       const propertyData = Details.find((item) => item._id === id)
-      console.log(propertyData, "got propertyyy dataaaaa");
-      
-      setProperty(propertyData )
+      setProperty(propertyData)
     }
     getPropertyData()
   }, [])
 
   const date = property.createdAt;
+  console.log(date, "dateee");
   const dateObject = new Date(date);
   const formattedDate = dateObject.toLocaleDateString();
-  
-  const handleBook = async(e) => {
+
+  const handleBook = async (e) => {
     e.preventDefault()
     try {
       const res = await IsBooked(property._id)
-      if(res.data.property.is_Booked===false){
+      if (res.data.property.is_Booked === false) {
         toast.success("Property Booking is on process..!")
         setTimeout(() => {
-          navigate('/bookproperty', { state: { propertyId: property._id }})
+          navigate('/bookproperty', { state: { propertyId: property._id } })
         }, 2000);
-      }else{
+      } else {
         toast.error("Property is already booked.")
       }
     } catch (error) {
       console.log(error);
     }
   }
+
+
+
   return (
     <>
       <div>
@@ -83,9 +84,7 @@ function EachProperty({}) {
                 {formattedDate}
               </p>
             </div>
-            <h5 className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-              Growth
-            </h5>
+            <PropertyVideo videoUrl={property.videoUrls} className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"/>
           </figcaption>
         </div>
         <div className='mt-4 lg:mt-14 ml-4 lg:ml-16 w-full lg:w-[91%] h-screen flex flex-col lg:flex-row'>
@@ -175,7 +174,7 @@ function EachProperty({}) {
             </ul>
           </div>
         </div>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </>
   )

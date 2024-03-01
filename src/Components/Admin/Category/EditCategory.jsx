@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { EditCat } from '../../../Api/AdminApi'
+import { ToastContainer, toast } from 'react-toastify'
 
-function EditCategory({ Category, catId}) {
+function EditCategory({ Category, catId }) {
   const [open, setOpen] = useState(false)
   const [category, SetCategory] = useState({
-    category: Category? Category: ""
+    category: Category ? Category : ""
   })
 
   const handleClick = (e) => {
@@ -18,10 +19,16 @@ function EditCategory({ Category, catId}) {
     setOpen(!open)
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     try {
       const res = await EditCat(catId, category)
-      console.log(res,"ress innn handlesubmit edit category");
+      console.log(res.data, "ress innn handlesubmit edit category");
+      if (res.data.success) {
+          toast("Category Updated Successfully")
+      }else{
+        toast.error("Category with same name already exists!")
+      }
     } catch (error) {
       console.log(error);
     }
@@ -83,6 +90,7 @@ function EditCategory({ Category, catId}) {
         </div>
 
       </form>
+      <ToastContainer />
     </div>
   )
 }

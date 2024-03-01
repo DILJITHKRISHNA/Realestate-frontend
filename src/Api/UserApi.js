@@ -100,16 +100,6 @@ export async function FetchData(id) {
     }
 }
 
-export async function SingleData(id) {
-    console.log(id, 'enter to contrr getDataa');
-    try {
-        const res = await userRequest.get(`/property/:id`)
-        console.log(res, " got res in singledataaaa function inside userappiii");
-        return res
-    } catch (error) {
-        console.log(error);
-    }
-}
 export async function IsBooked(id) {
     try {
         const res = await userRequest.post(`/property/bookproperty/${id}`)
