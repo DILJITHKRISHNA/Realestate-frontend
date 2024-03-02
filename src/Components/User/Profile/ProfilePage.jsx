@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { ListPayment } from '../PaymentHistory/ListPayment'
-import { FaExchangeAlt, FaLock, FaMailBulk, FaMobile, FaUser } from 'react-icons/fa'
+import { FaExchangeAlt, FaFunnelDollar, FaHome, FaLock, FaMailBulk, FaMobile, FaUpload, FaUser } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
-import { FetchProfileData } from '../../../Api/UserApi'
+import { FetchProfileData, addProfileImage } from '../../../Api/UserApi'
+import Wishlist from './Wishlist'
+import {ToastContainer, toast } from 'react-toastify'
 
 function ProfilePage() {
 
 
     const navigate = useNavigate()
     const userData = useSelector(state => state.user)
-    const email = userData.userInfo.email
+    const id = userData.userInfo.id
     const [profileData, setProfileData] = useState([])
     const [open, setOpen] = useState(false)
+    const [details, SetDetails] = useState({
+        imageUrl: null,
+    });
 
     const handleClick = () => {
         localStorage.removeItem("token")
@@ -22,8 +27,7 @@ function ProfilePage() {
     useEffect(() => {
         const ProfileData = async () => {
             try {
-                const res = await FetchProfileData({ email: email })
-                console.log(res, "res in profile page");
+                const res = await FetchProfileData(id)
                 if (res.data.success) {
                     setProfileData(res.data.userData)
                 }
@@ -36,17 +40,80 @@ function ProfilePage() {
 
     const [imagePreview, setImagePreview] = useState('');
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
+
+    const uploadImage = async (files) => {
+        try {
+            const uploadedImageUrls = [];
+
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", "dev_setups");
+
+                const cloudinaryResponse = await fetch(
+                    "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
+
+                if (!cloudinaryResponse.ok) {
+                    throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
+                }
+
+                const cloudinaryData = await cloudinaryResponse.json();
+
+                if (cloudinaryData.error) {
+                    console.log(cloudinaryData.error);
+                    return;
+                }
+
+                const uploadedImageUrl = cloudinaryData.secure_url;
+                uploadedImageUrls.push(uploadedImageUrl);
+            }
+
+            console.log("Uploaded Image URLs:", uploadedImageUrls);
+            return uploadedImageUrls;
+        } catch (error) {
+            console.log("Error during image upload:", error);
         }
-    }
+    };
+
+    const handleFileInputChange = async (e) => {
+        const files = e.target.files;
+        try {
+            const urls = await uploadImage(files);
+            SetDetails((prevState) => ({ ...prevState, imageUrl: urls }));
+            setImagePreview(urls);
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        }
+    };
+    console.log(imagePreview, "image prieviewew");
+
+
+    const handleUploadImage = async (e) => {
+        console.log("image submitting...");
+        e.preventDefault();
+        if (!imagePreview) {
+            return;
+        }
+        try {
+            const urls = await uploadImage(imagePreview);
+            console.log(urls, "image urllllll");
+            const ProfileImage = await addProfileImage(urls, id)
+            console.log(ProfileImage,"profile imageee");
+            if(ProfileImage.data.success){
+                toast("Image Updated Successfully!")
+            }else{
+                toast.error("Error While updating profile!")
+            }
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        }
+    };
 
     const handleOpen = () => {
         setOpen(!open)
@@ -58,19 +125,11 @@ function ProfilePage() {
 
     return (
         <>
-            <div className='mt-8 sm:mt-16 md:mt-24 lg:mt-32 items-center p-6 w-full sm:w-[80%] lg:w-[60%] mx-auto'>
-                <div className='flex flex-col sm:flex-row justify-between items-center mr-56'>
-                    <div className='flex items-center mb-4 sm:mb-0 '>
+            <div className='mt-8 sm:mt-16 md:mt-24 lg:mt-32 items-center p-2 w-full sm:w-[80%] lg:w-[60%] mx-auto'>
+                <div className='flex flex-col sm:flex-row'>
+                    <div className='flex items-center mt-10 '>
                         <FaUser className='w-8 h-8 text-black' />
-                        <h1 className='text-lg sm:text-2xl font-bold ml-2'>My Profile</h1>
-                    </div>
-                    <div className='flex flex-col sm:flex-row gap-4'>
-                        <Link to='/history' className='border-2 hover:bg-black hover:text-white border-black sm:h-10 text-black rounded-md p-1 font-mono'>
-                            Payment History
-                        </Link>
-                        <button className='border-2 hover:bg-black hover:text-white border-black h-10 text-black rounded-md p-1 font-mono' onClick={handleClick}>
-                            Log Out
-                        </button>
+                        <h1 className='text-lg sm:text-2xl font-bold '>My Profile</h1>
                     </div>
                 </div>
             </div>
@@ -85,24 +144,36 @@ function ProfilePage() {
 
                         <h1 className='absolute lg:ml-9 lg:mt-16 uppercase font-semibold font-mono'>Profile Photo</h1>
                         <div className='flex flex-col sm:flex-row gap-6 mt-10 ml-8'>
-
-                            {/* {imagePreview && ( */}
-                            <img
-                                src='/src/assets/images/property1.jpg'
-                                alt="Preview"
-                                className='rounded-full w-32 h-32 mt-8 transition-transform transform hover:scale-105'
-                            />
-                            {/* )} */}
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                style={{ display: 'none' }}
-                                id="imageInput"
-                            />
-                            <label htmlFor="imageInput" className='button absolute  sm:ml-2 sm:mt-44 uppercase font-semibold font-mono border-2 border-black px-2 rounded-md hover:bg-black hover:text-white'>
-                                Change Image
-                            </label>
+                            <form onSubmit={handleUploadImage} className="flex flex-col items-center">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    name='imageUrls'
+                                    onChange={handleFileInputChange}
+                                    style={{ display: 'none' }}
+                                    id="imageInput"
+                                />
+                                <div className="relative mt-4">
+                                    {imagePreview ?
+                                        <img
+                                            src={imagePreview}
+                                            alt="Preview"
+                                            className='rounded-full w-32 h-32 transition-transform transform hover:scale-105'
+                                        />
+                                        :
+                                        <img
+                                            src={profileData.imageUrls}
+                                            alt="Preview"
+                                            className='rounded-full w-32 h-32 transition-transform transform hover:scale-105'
+                                        />}
+                                    <label htmlFor="imageInput" className='button uppercase font-semibold font-mono border-2 border-black px-2 rounded-md hover:bg-black hover:text-white'>
+                                        Change Image
+                                    </label>
+                                    <button type="submit" className='absolute top-0 right-0 bg-white p-2 rounded-full'>
+                                        <FaUpload />
+                                    </button>
+                                </div>
+                            </form>
 
                             <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0'>
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
@@ -131,19 +202,18 @@ function ProfilePage() {
 
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                     <div className='flex flex-row gap-[10%]'>
-                                        
-                                            <label onClick={handleOpen} className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
-                                                <FaLock />ResetPassword
-                                            </label>
-                                            {!open ? 
+
+                                        <label onClick={handleOpen} className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
+                                            <FaLock />ResetPassword
+                                        </label>
+                                        {open ?
                                             <div className="flex flex-row gap-2">
                                                 <input type="text" className='w-auto outline-double rounded-md px-1' />
                                                 <button onClick={handleResetPassword} className='px-3 rounded-md bg-black text-white transition-all duration-300 ease-in-out hover:transform hover:scale-105'>
                                                     Reset
                                                 </button>
                                             </div>
-                                        :""}
-
+                                            : ""}
                                     </div>
                                     <div className='border-b-2 w-full'></div>
                                 </div>
@@ -154,8 +224,33 @@ function ProfilePage() {
                 <div className='border-b-2 border-black hidden sm:block '></div>
                 <div className='flex flex-col w-full sm:w-[40%] gap-8 sm:gap-10'>
                     <div className='shadow-md shadow-black w-full sm:w-[60%] h-[8%] md:w-[70%] lg:mr-10 rounded-md flex justify-center bg-black'></div>
-                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[90%] md:w-[70%] rounded-2xl flex justify-center'></div>
+                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[90%] md:w-[70%] rounded-2xl flex flex-col gap-2'>
+                        <h1 className='flex flex-row ml-2 py-2 font-bold '>
+                            <FaUser className='w-10 h-5' /> My Bookings
+                        </h1>
+                        <Link to='/history' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                            My Bookings
+                        </Link>
+                        <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                            Notifications
+                        </Link>
+                        <h1 className='flex flex-row ml-2 py-2 font-bold '>
+                            <FaHome className='w-10 h-5' /> Property Management
+                        </h1>
+                        <Wishlist className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline' />
+                        <h1 className='flex flex-row ml-2 py-2 font-bold '>
+                            <FaFunnelDollar className='w-10 h-5' /> Refunds
+                        </h1>
+                        <h1
+                            className=' sm:h-10 sm:w-32 text-black rounded-md ml-14 font-mono hover:underline'>
+                            Wallet : 3000
+                        </h1>
+                        <h1 className='sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline' onClick={handleClick}>
+                            Log Out
+                        </h1>
+                    </div>
                 </div>
+                <ToastContainer/>
             </div>
         </>
     )

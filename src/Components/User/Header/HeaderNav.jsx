@@ -3,16 +3,19 @@ import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
+import { FetchProfileData } from '../../../Api/UserApi';
 
 function HeaderNav() {
 
 
   const userSelector = useSelector((state) => state.user)
+    const id = userSelector.userInfo.id
   console.log(userSelector, "use selectorrrrrrfgdfgrrrrrr");
   const UserGoogleData = userSelector.userInfo
   const OwnerGoogleData = userSelector.OwnerInfo
   console.log(OwnerGoogleData, "seleeeeee");
   const [storedToken, setStoredToken] = useState('')
+  const [profileImg, setProfileImg] = useState('')
 
   useEffect(() => {
     let localStore = localStorage.getItem("token")
@@ -20,6 +23,15 @@ function HeaderNav() {
     console.log(localStore, " localstore");
   }, [setStoredToken])
 
+  useEffect(()=>{
+    const profile = async() => {
+      const profileImage =  await FetchProfileData(id)
+      if(profileImage.data.success){
+        setProfileImg(profileImage.data.userData)
+      }
+    }
+    profile()
+  },[id])
 
   return (
     <>
@@ -35,8 +47,11 @@ function HeaderNav() {
             <Link to="/" className='hover:underline text-white hover:text-yellow-100'>Home</Link>
             <Link to="/property" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
             {storedToken && userSelector ? (
-              <Link to="/profile" className='hover:underline text-white hover:text-yellow-100'>
-                 {/* <img src="" alt="" /> */}
+              <Link to="/profile" className='hover:underline text-white hover:text-yellow-100 flex flex-row gap-2'>
+                <img src={profileImg.imageUrls}
+                  alt=""
+                  className='rounded-full w-6 h-6 mt-1'
+                />
                 <h1>{UserGoogleData.username}</h1>
               </Link>
             ) : (

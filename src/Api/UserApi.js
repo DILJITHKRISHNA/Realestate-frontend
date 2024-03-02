@@ -162,10 +162,10 @@ export async function resendOTp(email) {
         console.log(error);
     }
 }
-export async function FetchProfileData(email) {
-    console.log(email, "FetchProfileData ");
+export async function FetchProfileData(id) {
+    console.log(id, "FetchProfileData ");
     try {
-        const res = await userRequest.get('/getprofiledata', email)
+        const res = await userRequest.get(`/getprofiledata/${id}`)
         console.log(res, "res in FetchProfileData apii");
         return res
     } catch (error) {
@@ -177,6 +177,34 @@ export async function PaginateProperty(currentPage) {
     try {
         const res = await userRequest.get(`/properties/${currentPage}`);
         console.log(res, "res in PaginateProperty apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function SaveProperty(name, type, rent, ownerId, imageUrls) {
+    try {
+        const res = await userRequest.post('/wishlist', {name, type, rent, ownerId, imageUrls});
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function WishlistData(id) {
+    console.log(id, "WishlistData ");
+    try {
+        const res = await userRequest.get(`/wishlist/${id}`);
+        console.log(res, "res in WishlistData apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function addProfileImage(imageUrl, userId) {
+    console.log(imageUrl, userId, "addProfileImage ");
+    try {
+        const res = await userRequest.post(`/profileimage/${userId}`, imageUrl);
+        console.log(res, "res in addProfileImage apii");
         return res
     } catch (error) {
         console.log(error);

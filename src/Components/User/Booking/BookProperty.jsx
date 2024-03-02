@@ -51,7 +51,7 @@ function BookProperty() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
+
     } catch (error) {
       console.error(error);
     }
@@ -170,7 +170,6 @@ function BookProperty() {
                   <h1 className='text-md font-mono text-amber-900'>balcony:0<span className='text-black font-semibold'>{property.balcony}</span></h1>
                   <h1 className='text-md font-mono text-amber-900'>Parking:<span className='text-black font-semibold'>{property.parking === true ? "Available" : "No"}</span></h1>
                   <h1 className='text-md font-mono text-amber-900'>Furnished:<span className='text-black font-semibold'>{property.furnished === true ? "Yes" : "No"}</span></h1>
-
                 </div>
               </div>
             </div>

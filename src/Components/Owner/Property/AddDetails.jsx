@@ -180,7 +180,6 @@ function AddDetails({ SetOpen }) {
 
     const handleFileInputChange = async (e) => {
         const files = e.target.files;
-
         try {
             const urls = await uploadImage(files);
             SetDetails(prevState => ({ ...prevState, imageUrl: urls }));
@@ -229,7 +228,6 @@ function AddDetails({ SetOpen }) {
         getCat()
     }, [])
 
-    console.log(previewSource, "iiiiiiiiiiiii");
     return (
         <>
             <form onSubmit={handleCombinedSubmit}>

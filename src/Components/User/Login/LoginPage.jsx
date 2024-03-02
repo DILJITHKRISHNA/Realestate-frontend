@@ -42,7 +42,7 @@ function LoginPage() {
                     dispatch(setUserDetails({
                         email: response.data.email,
                         username: response.data.name,
-                        id: response.data.id,
+                        id: response.data._id,
                         is_google: true
                     }))
                     navigate('/')
@@ -96,6 +96,7 @@ function LoginPage() {
                 dispatch(
                     setUserDetails({
                         username: response.data.user.username,
+                        id: response.data.user._id,
                         email: response.data.user.email,
                         mobile: response.data.user.mobile,
                     })

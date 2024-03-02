@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { FetchData, PaginateProperty } from '../../../Api/UserApi'
+import { FetchData, PaginateProperty, SaveProperty } from '../../../Api/UserApi'
 import { Link, useNavigate } from 'react-router-dom'
 import { Image } from 'cloudinary-react';
+import { FaRegHeart } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
 
 function PropertyList({ filtered }) {
     const navigate = useNavigate()
@@ -20,6 +22,28 @@ function PropertyList({ filtered }) {
         }
     }
 
+    const handleSaved = async (name, type, rent, ownerId, imageUrls) => {
+        try {
+            const result = await SaveProperty(name, type, rent, ownerId, imageUrls)
+            console.log(result, "result while wishlisting property");
+            if (result.data.success) {
+                toast("Property Saved to Wishlist!",{
+                    style: {
+                        marginTop: "4rem"
+                    }
+                });
+            } else {
+                toast.error("Error while saving property!", {
+                    style: {
+                        marginTop: "3rem"
+                    }
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         fetchProperties()
     }, [currentPage])
@@ -31,19 +55,15 @@ function PropertyList({ filtered }) {
     const handleClick = async (id) => {
         navigate(`/propertyeach`, { state: { id } })
     }
-
-    const handleReserve = async () => {
-        alert("Reserved")
-    }
     const FilteredProperties = filtered && filtered.length > 0 ? filtered : propertiesToDisplay;
 
     return (
         <>
             <div className='flex flex-wrap gap-16'>
                 {FilteredProperties.map((data, index) => (
-                    <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer" onClick={() => handleClick(data._id)}  >
-                        <div  >
-                            <div className="relative" >
+                    <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer">
+                        <div>
+                            <div className="relative" onClick={() => handleClick(data._id)}>
                                 <img
                                     key={index}
                                     src={data.imageUrls}
@@ -83,26 +103,22 @@ function PropertyList({ filtered }) {
                                 <p className="text-gray">
                                     {data.details}
                                 </p>
+                                {}
                                 <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
-                                    <button className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                            fill="currentColor"
-                                            className="h-5 w-5"
-                                        >
-                                        </svg>
+                                    <button onClick={() => handleSaved(data.name, data.type, data.Rent, data.ownerRef, data.imageUrls)} className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                                        <FaRegHeart />
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div className="pt-3">
-                            <button onClick={handleReserve} className="bg-black text-white px-4 py-2 w-full cursor-progress">
-                                Reserve
+                            <button onClick={() => handleClick(data._id)} className="bg-black text-white px-4 py-2 w-full cursor-progress font-bold">
+                                View
                             </button>
                         </div>
                     </div>
                 ))}
+                <ToastContainer />
             </div>
             <div className="pagination flex justify-center mt-12 gap-4 mr-20">
                 {Array.from({ length: totalPages }, (_, index) => (
@@ -113,7 +129,7 @@ function PropertyList({ filtered }) {
                 bg-white text-gray-800 font-semibold py-2 px-4 border border-lime-300 rounded-full 
                 transition-all duration-300 hover:bg-gray-200 focus:outline-none  focus:border-lime-400
                 ${currentPage === index + 1 ? 'bg-lime-100 text-black hover:bg-lime-400' : ''}
-            `}
+                `}
                     >
                         {index + 1}
                     </button>
