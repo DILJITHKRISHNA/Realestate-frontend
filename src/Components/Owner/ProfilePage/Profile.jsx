@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-import { AddKyc } from '../../../Api/OwnerApi';
+import { AddKyc, getOwner } from '../../../Api/OwnerApi';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import ViewKycModal from './ViewKycModal';
 import { LogoutIcon } from '@heroicons/react/solid';
+import { useSelector } from 'react-redux';
 
 
 function Profile() {
     const navigate = useNavigate()
+    const selector = useSelector(state => state.owner.OwnerInfo.id)
     const [kyc, SetKyc] = useState({
 
         username: "",
@@ -22,7 +24,6 @@ function Profile() {
         state: "",
 
     })
-
     const handleOnclick = (e) => {
         const { name, value } = e.target
         SetKyc({
@@ -32,6 +33,7 @@ function Profile() {
     }
     const [isOpen, setIsOpen] = useState(false);
     const [open, setOpen] = useState(false);
+    const [owner, setOwner] = useState([]);
 
     const openModal = () => {
         setIsOpen(true);
@@ -61,17 +63,35 @@ function Profile() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-
             await validationSchema.validate(kyc, { abortEarly: false });
-
             console.log(kyc, "datasssss");
             const response = await AddKyc(kyc);
-            console.log(response);
-            toast.error("Your KYC has been received. Admin review is in progress. Please await confirmation.")
+            if (response.data.success) {
+
+                toast("Your KYC has been received. Admin review is in progress. Please await confirmation.")
+            } else {
+                toast.error("error while creating Kyc")
+            }
         } catch (error) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        const fetchOwner = async () => {
+            try {
+                const res = await getOwner(selector);
+                console.log(res, "rrrrrrrrrespons fetchowner");
+                if (res.data.success) {
+                    const data = res.data.OwnerData
+                    setOwner(data)
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchOwner()
+    }, [])
 
     const handleLogout = () => {
         localStorage.removeItem("ownertok")
@@ -85,19 +105,22 @@ function Profile() {
                 <div className='border-2 border-black mt-5 w-[80%] h-[550px]'>
                     <div className='flex items-center justify-between p-4 text-black relative border-b-2 border-black ml-4 w-[95%]'>
                         <h1 className='font-bold text-xl relative'>Profile</h1>
+                        {!owner.is_Kyc == true ? (
+                            <button
+                                className='bg-black text-white rounded-lg  w-20 h-10'
+                                onClick={openModal} state={"kyc"}>
+                                Add KYC
+                            </button>
+                        ) : (
+                            <button
+                                className='bg-black text-white rounded-lg  w-20 h-10'
+                                onClick={KycModal}>
+                                View KYC
+                            </button>
 
-                        <button
-                            className='bg-black text-white rounded-lg  w-20 h-10'
-                            onClick={openModal} state={"kyc"}>
-                            Add KYC
-                        </button>
-                        <button
-                            className='bg-black text-white rounded-lg  w-20 h-10'
-                            onClick={KycModal}>
-                            View KYC
-                        </button>
+                        )}
                         <button className='bg-black rounded-lg text-white font-bold w-16 h-10' onClick={handleLogout}>
-                            <LogoutIcon className='w-16 h-6 flex'/>
+                            <LogoutIcon className='w-16 h-6 flex' />
                         </button>
                     </div>
                     <div className=' '>
@@ -266,7 +289,7 @@ function Profile() {
 
             {/* view kyc modal */}
             {open ?
-                <ViewKycModal setOpen={setOpen}/>
+                <ViewKycModal setOpen={setOpen} />
                 : ""}
             {/* view kyc modal */}
         </>

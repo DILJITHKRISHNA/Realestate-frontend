@@ -148,11 +148,21 @@ export async function FetchCategory() {
     }
 }  
 
-export async function PaginateProperty(currentPage) {
-    console.log(currentPage, "PaginateProperty ");
+export async function PaginateProperty(currentPage, id) {
+    console.log(id, "PaginateProperty ");
     try {
         const res = await ownerRequest.get(`/properties/${currentPage}`);
         console.log(res, "res in PaginateProperty apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function getOwner(id) {
+    console.log( id,"getOwner ");
+    try {
+        const res = await ownerRequest.get(`/owner/profile/${id}`);
+        console.log(res, "res in getOwner apii");
         return res
     } catch (error) {
         console.log(error);

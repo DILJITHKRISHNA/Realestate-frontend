@@ -27,7 +27,6 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Basic validations
     if (!ownerData.email || !ownerData.password) {
       toast.error("Please provide both email and password");
       return;

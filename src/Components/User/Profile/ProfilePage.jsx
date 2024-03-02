@@ -12,6 +12,7 @@ function ProfilePage() {
     const userData = useSelector(state => state.user)
     const email = userData.userInfo.email
     const [profileData, setProfileData] = useState([])
+    const [open, setOpen] = useState(false)
 
     const handleClick = () => {
         localStorage.removeItem("token")
@@ -33,7 +34,7 @@ function ProfilePage() {
         ProfileData()
     }, [])
 
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -47,6 +48,13 @@ function ProfilePage() {
         }
     }
 
+    const handleOpen = () => {
+        setOpen(!open)
+    }
+
+    const handleResetPassword = () => {
+
+    }
 
     return (
         <>
@@ -68,22 +76,22 @@ function ProfilePage() {
             </div>
 
 
-            <div className='gap-8 sm:gap-10 mt-5 flex flex-col sm:flex-row justify-center mx-auto'>
-                <div className='shadow-md shadow-black w-full h-screen sm:w-[60%] md:w-[40%] lg:w-[70%] ml-0 sm:ml-4 md:ml-12 lg:ml-36 rounded-lg flex flex-row sm:flex-col '>
+            <div className='gap-8 sm:gap-10 mt-5 flex flex-col sm:flex-row justify-center mx-auto '>
+                <div className='shadow-md shadow-black w-full h-[40%] sm:w-[60%] md:w-[40%] lg:w-[70%] ml-0 sm:ml-4 md:ml-12 lg:ml-36 rounded-lg flex flex-row sm:flex-col '>
                     <div className='flex flex-col '>
-                        <div className='border-2 border-gray-400 w-full h-10 rounded-md '>
-                            
+                        <div className='border-2 border-gray-400 w-full h-10 rounded-md bg-black'>
+
                         </div>
 
                         <h1 className='absolute lg:ml-9 lg:mt-16 uppercase font-semibold font-mono'>Profile Photo</h1>
                         <div className='flex flex-col sm:flex-row gap-6 mt-10 ml-8'>
 
                             {/* {imagePreview && ( */}
-                                <img
-                                    src='/src/assets/images/property1.jpg'
-                                    alt="Preview"
-                                    className='rounded-full w-32 h-32 mt-8 transition-transform transform hover:scale-105'
-                                />
+                            <img
+                                src='/src/assets/images/property1.jpg'
+                                alt="Preview"
+                                className='rounded-full w-32 h-32 mt-8 transition-transform transform hover:scale-105'
+                            />
                             {/* )} */}
                             <input
                                 type="file"
@@ -96,7 +104,7 @@ function ProfilePage() {
                                 Change Image
                             </label>
 
-                            <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0 justi'>
+                            <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0'>
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                     <div className='flex flex-col'>
                                         <label className='font-semibold font-mono flex flex-row gap-2'>
@@ -119,24 +127,34 @@ function ProfilePage() {
                                 <div className=''>
                                     <button className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white'>Edit Profile</button>
                                 </div>
-                                <div className=' border-b-2 border-gray-400 w-'></div>
+                                <div className=' border-b-2 border-gray-400 w-full'></div>
 
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
-                                    <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
-                                            <FaLock />Reset Password
-                                        </label>
+                                    <div className='flex flex-row gap-[10%]'>
+                                        
+                                            <label onClick={handleOpen} className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
+                                                <FaLock />ResetPassword
+                                            </label>
+                                            {!open ? 
+                                            <div className="flex flex-row gap-2">
+                                                <input type="text" className='w-auto outline-double rounded-md px-1' />
+                                                <button onClick={handleResetPassword} className='px-3 rounded-md bg-black text-white transition-all duration-300 ease-in-out hover:transform hover:scale-105'>
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        :""}
+
                                     </div>
-                                    <div className='border-b-2 border-gray-400 w-full'></div>
+                                    <div className='border-b-2 w-full'></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='border-b-2 border-black hidden sm:block'></div>
-                <div className='flex flex-col w-full sm:w-[40%] gap-8 sm:gap-10 '>
-                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[15%] md:w-[70%] lg:mr-10 rounded-md flex justify-center'></div>
-                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[80%] md:w-[70%] rounded-2xl flex justify-center '></div>
+                <div className='border-b-2 border-black hidden sm:block '></div>
+                <div className='flex flex-col w-full sm:w-[40%] gap-8 sm:gap-10'>
+                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[8%] md:w-[70%] lg:mr-10 rounded-md flex justify-center bg-black'></div>
+                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[90%] md:w-[70%] rounded-2xl flex justify-center'></div>
                 </div>
             </div>
         </>
