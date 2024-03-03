@@ -27,11 +27,11 @@ export function ListPayment() {
 
     const handleClick = async (id, propertyId) => {
         try {
-            const CancelBook = await CancelBookPayment(id, {propId: propertyId})
+            const CancelBook = await CancelBookPayment(id, { propId: propertyId })
             console.log(CancelBook, "Cancel book ");
-            if(CancelBook.data.success){
+            if (CancelBook.data.success) {
                 toast("Your Payment has been cancelled successfully")
-            }else{
+            } else {
                 toast("Something went wrong! Please try again later.")
             }
         } catch (error) {
@@ -54,7 +54,6 @@ export function ListPayment() {
                                         <th className="px-5 py-3">Payment Type</th>
                                         <th className="px-5 py-3">Property Id</th>
                                         <th className="px-5 py-3">Mobile</th>
-                                        <th className="px-5 py-3">Payment Id</th>
                                         <th className="px-5 py-3">Amount</th>
                                         <th className="px-5 py-3">Status</th>
                                         <th className="px-5 py-3">Cancel</th>
@@ -102,13 +101,7 @@ export function ListPayment() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <div className="flex items-center">
-                                                    <div className="ml-6">
-                                                        <p className="whitespace-no-wrap" >{data._id}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
+
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
                                                     <div className="ml-6">
@@ -134,9 +127,11 @@ export function ListPayment() {
                                                 )}
                                             </td>
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <div className="flex items-center">
-                                                    <button onClick={() => handleClick(data._id, data.property_id)} className="border-2 border-lime-400 text-lime-400 p-1 ml-4 hover:bg-lime-400 hover:text-white">Cancel</button>
-                                                </div>
+                                                {data.is_canceled === false ?
+                                                    <div className="flex items-center">
+                                                        <button onClick={() => handleClick(data._id, data.property_id)} className="border-2 border-lime-400 text-lime-400 p-1 ml-4 hover:bg-lime-400 hover:text-white">Cancel</button>
+                                                    </div>
+                                                    : ""}
                                             </td>
                                         </tr>
                                     </tbody>

@@ -13,6 +13,7 @@ import Booking from '../../pages/User/BookingPage/Booking.jsx';
 import Success from '../../pages/User/SuccessPage/Success.jsx';
 import History from '../../pages/User/PaymentHistory/History.jsx';
 import PublicRoute from './Protect/PublicRoute.jsx';
+import Chat from '../../pages/User/ChatPage/Chat.jsx';
 
 function UserRoute() {
   return (
@@ -34,6 +35,9 @@ function UserRoute() {
         </Route>
         <Route path="/history" element={<ProtectRoutes />}>
           <Route index element={<History />} />
+        </Route>
+        <Route path="/chat" element={<ProtectRoutes />}>
+          <Route index element={<Chat />} />
         </Route>
 
         <Route path="/bookproperty" element={<Booking />} />

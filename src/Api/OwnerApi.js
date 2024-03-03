@@ -168,3 +168,14 @@ export async function getOwner(id) {
         console.log(error);
     }
 }
+
+export async function addOwnerImage(imageUrl, ownerId) {
+    console.log(imageUrl, ownerId, "addProfileImage ");
+    try {
+        const res = await ownerRequest.post(`/profileimage/${ownerId}`, imageUrl);
+        console.log(res, "res in addOwnerProfileImage apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

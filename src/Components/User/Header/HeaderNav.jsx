@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 import { FetchProfileData } from '../../../Api/UserApi';
+import { FaTelegramPlane } from 'react-icons/fa';
 
 function HeaderNav() {
 
@@ -46,6 +47,9 @@ function HeaderNav() {
           <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
             <Link to="/" className='hover:underline text-white hover:text-yellow-100'>Home</Link>
             <Link to="/property" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
+            <Link to="/chat" className='hover:underline text-white hover:text-yellow-100'>
+                <FaTelegramPlane/>
+            </Link>
             {storedToken && userSelector ? (
               <Link to="/profile" className='hover:underline text-white hover:text-yellow-100 flex flex-row gap-2'>
                 <img src={profileImg.imageUrls}

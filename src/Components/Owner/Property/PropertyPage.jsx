@@ -113,11 +113,11 @@ function PropertyPage() {
           <div className='flex w-[90%] justify-center'>
             <div className='flex flex-col pb-4 mb-4 w-[90%] bg-white rounded-sm shadow-md shadow-black'>
               <div className='flex flex-col'>
-                {data.imageUrls.map((imageUrl, index) => (
-                  <div key={index} className='flex flex-row '>
+              {data.imageUrls.length > 0 && (
+                  <div  className='flex flex-row '>
                     <img
-                      src={imageUrl}
-                      alt={`Image ${index}`}
+                      src={data.imageUrls[0]}
+                      alt="image"
                       className='w-[20%] h-auto max-h-48 object-cover rounded-lg ml-2 mt-4'
                     />
                     <div className='flex flex-col mx-3 my-4 font-mono'>
@@ -158,7 +158,7 @@ function PropertyPage() {
                       < EditProperty Data={data} propertyId={data._id} />
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>

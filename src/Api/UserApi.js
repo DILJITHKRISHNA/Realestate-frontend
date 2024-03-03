@@ -124,9 +124,9 @@ export async function paymentRequest(propertyId) {
         console.log(error);
     }
 }
-export async function SuccessRequest(bookData, id) {
+export async function SuccessRequest(bookData, id ,userId) {
     try {
-        const res = await userRequest.post(`/property/success/${id}`, { data: bookData })
+        const res = await userRequest.post(`/property/success/${id}`, { data:  bookData, userId : userId })
         return res
     } catch (error) {
         console.log(error);
@@ -205,6 +205,16 @@ export async function addProfileImage(imageUrl, userId) {
     try {
         const res = await userRequest.post(`/profileimage/${userId}`, imageUrl);
         console.log(res, "res in addProfileImage apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function NewProfileData(formData, id) {
+    console.log(formData, "NewProfileData ");
+    try {
+        const res = await userRequest.post(`/editprofile/${id}`, formData);
+        console.log(res, "res in NewProfileData apii");
         return res
     } catch (error) {
         console.log(error);

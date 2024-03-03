@@ -57,23 +57,23 @@ function EachProperty() {
     <>
       <div>
         <div className="flex flex-col lg:flex-row ml-10">
-          <img
-            className="object-cover object-center w-full lg:w-[60%] h-full lg:h-[100%] rounded-xl mt-4 lg:mt-24 lg:ml-14"
-            src={property.imageUrls}
-            alt="nature image"
-          />
+          {property.imageUrls && property.imageUrls.length > 0 && (
+            <img
+              className="object-cover object-center w-full lg:w-[60%] h-full lg:h-[100%] rounded-xl mt-4 lg:mt-24 lg:ml-14"
+              src={property.imageUrls[0]}
+              alt="nature image"
+            />
+          )}
 
           <div className='flex flex-col'>
-            <img
-              className="object-cover object-center w-full lg:w-[76%] h-full lg:h-[50%] rounded-xl mt-4 lg:mt-24 lg:ml-10"
-              src={property.imageUrls}
-              alt="nature image"
-            />
-            <img
-              className="object-cover object-center w-full lg:w-[76%] h-full lg:h-[50%] rounded-xl mt-4 lg:ml-10"
-              src={property.imageUrls}
-              alt="nature image"
-            />
+            {property.imageUrls && property.imageUrls.slice(1, 4).map((imageUrl, index) => (
+              <img
+                key={index + 1}
+                className="object-cover object-center w-full lg:w-[76%] h-full lg:h-[50%] rounded-xl mt-4 lg:mt-24 lg:ml-10"
+                src={imageUrl}
+                alt={`nature image ${index + 1}`}
+              />
+            ))}
           </div>
           <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 lg:ml-8 flex w-full lg:w-[calc(60%-4rem)] justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
             <div>
@@ -84,7 +84,7 @@ function EachProperty() {
                 {formattedDate}
               </p>
             </div>
-            <PropertyVideo videoUrl={property.videoUrls} className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"/>
+            <PropertyVideo videoUrl={property.videoUrls} className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900" />
           </figcaption>
         </div>
         <div className='mt-4 lg:mt-14 ml-4 lg:ml-16 w-full lg:w-[91%] h-screen flex flex-col lg:flex-row'>
@@ -160,7 +160,9 @@ function EachProperty() {
         </div>
 
         <div className='border-2 border-lime-200 shadow-md shadow-lime-200 w-full lg:w-[89%] h-[60vh] mt-4 lg:ml-24 flex flex-col lg:flex-row'>
-          <img src={property.imageUrls} alt="" className='top-0 h-full w-full object-cover ' />
+          {property.imageUrls && property.imageUrls.length > 0 && (
+            <img src={property.imageUrls[1]} alt="" className='top-0 h-full w-full object-cover' />
+          )}
           <div className='text-black text-2xl font-bold  ml-12 p-2 mr-2 uppercase w-[45%] h-[74%]'>
             <h1 className='mt-2 font-bold text-lg bg-lime-400  w-[100%] text-white text-center'>LOCATION DETAILS</h1>
             <ul className='mt-2 ml-1 uppercase text-lg'>

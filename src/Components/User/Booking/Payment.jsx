@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { useSelector } from "react-redux"
 import { FaStripe } from "react-icons/fa";
 import { SuccessRequest } from "../../../Api/UserApi";
 import { ToastContainer, toast } from 'react-toastify'
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 function Payment({ clientSecret, name, contact, email, re_location, propertyId, Rent }) {
 
+    const selector = useSelector(state => state.user.userInfo.id)
+    console.log(selector,"userIddd");
     const navigate = useNavigate()
     const stripe = useStripe();
     const elements = useElements();
@@ -42,7 +44,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                     email: email
                 }
                 console.log(bookData, "booked data");
-                const response = await SuccessRequest(bookData, propertyId)
+                const response = await SuccessRequest(bookData, propertyId, selector)
                 console.log(response, "response when it is sucecss");
                 if (response.data.success) {
                     toast.success("Property Booked Successfully", {

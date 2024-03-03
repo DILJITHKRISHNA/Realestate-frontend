@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-import { AddKyc, getOwner } from '../../../Api/OwnerApi';
+import { AddKyc, addOwnerImage, getOwner } from '../../../Api/OwnerApi';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ViewKycModal from './ViewKycModal';
 import { LogoutIcon } from '@heroicons/react/solid';
 import { useSelector } from 'react-redux';
+import { FaFunnelDollar, FaHome, FaLock, FaMailBulk, FaMobile, FaUpload, FaUser } from 'react-icons/fa';
 
 
 function Profile() {
@@ -33,7 +34,14 @@ function Profile() {
     }
     const [isOpen, setIsOpen] = useState(false);
     const [open, setOpen] = useState(false);
+    const [resetOpen, setResetopen] = useState(false);
     const [owner, setOwner] = useState([]);
+    const [imagePreview, setImagePreview] = useState('');
+    const [profileData, setProfileData] = useState([])
+    const [details, SetDetails] = useState({
+        imageUrl: null,
+    });
+
 
     const openModal = () => {
         setIsOpen(true);
@@ -98,37 +106,224 @@ function Profile() {
         navigate('/owner/login')
     }
 
+
+    /////////////////////////
+
+
+
+    const uploadImage = async (files) => {
+        try {
+            const uploadedImageUrls = [];
+
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", "dev_setups");
+
+                const cloudinaryResponse = await fetch(
+                    "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
+
+                if (!cloudinaryResponse.ok) {
+                    throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
+                }
+
+                const cloudinaryData = await cloudinaryResponse.json();
+
+                if (cloudinaryData.error) {
+                    console.log(cloudinaryData.error);
+                    return;
+                }
+
+                const uploadedImageUrl = cloudinaryData.secure_url;
+                uploadedImageUrls.push(uploadedImageUrl);
+            }
+
+            console.log("Uploaded Image URLs:", uploadedImageUrls);
+            return uploadedImageUrls;
+        } catch (error) {
+            console.log("Error during image upload:", error);
+        }
+    };
+
+    const handleFileInputChange = async (e) => {
+        const files = e.target.files;
+        try {
+            const urls = await uploadImage(files);
+            SetDetails((prevState) => ({ ...prevState, imageUrl: urls }));
+            setImagePreview(urls);
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        }
+    };
+    console.log(imagePreview, "image prieviewew");
+
+
+    const handleUploadImage = async (e) => {
+        console.log("image submitting...");
+        e.preventDefault();
+        if (!imagePreview) {
+            return;
+        }
+        try {
+            const urls = await uploadImage(imagePreview);
+            console.log(urls, "image urllllll");
+            const ProfileImage = await addOwnerImage(urls, selector)
+            console.log(ProfileImage, "profile imageee");
+            if (ProfileImage.data.success) {
+                toast("Image Updated Successfully!")
+            } else {
+                toast.error("Error While updating profile!")
+            }
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        }
+    };
+
+    const handleReset = () => {
+        setResetopen(!resetOpen)
+    }
+
+    const handleResetPassword = () => {
+
+    }
+
     return (
         <>
             <div className='flex justify-center items-center'>
 
-                <div className='border-2 border-black mt-5 w-[80%] h-[550px]'>
+                <div className='border-2 border-black mt-5 w-[80%] h-screen'>
                     <div className='flex items-center justify-between p-4 text-black relative border-b-2 border-black ml-4 w-[95%]'>
-                        <h1 className='font-bold text-xl relative'>Profile</h1>
-                        {!owner.is_Kyc == true ? (
-                            <button
-                                className='bg-black text-white rounded-lg  w-20 h-10'
-                                onClick={openModal} state={"kyc"}>
-                                Add KYC
-                            </button>
-                        ) : (
-                            <button
-                                className='bg-black text-white rounded-lg  w-20 h-10'
-                                onClick={KycModal}>
-                                View KYC
-                            </button>
-
-                        )}
-                        <button className='bg-black rounded-lg text-white font-bold w-16 h-10' onClick={handleLogout}>
-                            <LogoutIcon className='w-16 h-6 flex' />
-                        </button>
+                        <h1 className='font-bold text-xl relative flex flex-row gap-2 h-4'><FaUser />Profile</h1>
                     </div>
                     <div className=' '>
-                        {/* other contents */}
+                        <div className='gap-8 sm:gap-10 mt-5 flex flex-col sm:flex-row justify-center mx-auto '>
+                            <div className='shadow-md shadow-black w-full h-[40%] sm:w-[60%] md:w-[40%] lg:w-[100%] ml-0 sm:ml-4 md:ml-12 lg:ml-36 rounded-lg flex flex-row sm:flex-col '>
+                                <div className='flex flex-col '>
+                                    <div className='border-2 border-gray-400 w-full h-10 rounded-md bg-black'></div>
+                                    <h1 className='absolute lg:ml-9 lg:mt-16 uppercase font-semibold font-mono'>Profile Photo</h1>
+                                    <div className='flex flex-col sm:flex-row gap-6 mt-10 ml-8'>
+                                        <form onSubmit={handleUploadImage} className="flex flex-col items-center">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                name='imageUrls'
+                                                onChange={handleFileInputChange}
+                                                style={{ display: 'none' }}
+                                                id="imageInput"
+                                            />
+                                            <div className="relative mt-4">
+                                                {imagePreview ?
+                                                    <img
+                                                        src={imagePreview}
+                                                        alt="Preview"
+                                                        className='rounded-full w-32 h-32 transition-transform transform hover:scale-105'
+                                                    />
+                                                    :
+                                                    <img
+                                                        src={owner.imageUrls}
+                                                        alt="Preview"
+                                                        className='rounded-full w-32 h-32 transition-transform transform hover:scale-105'
+                                                    />}
+                                                <label htmlFor="imageInput" className='button uppercase font-semibold font-mono border-2 border-black px-2 rounded-md hover:bg-black hover:text-white'>
+                                                    Change Image
+                                                </label>
+                                                <button type="submit" className='absolute top-0 right-0 bg-white p-2 rounded-full'>
+                                                    <FaUpload />
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0'>
+                                            <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
+                                                <div className='flex flex-col'>
+                                                    <label className='font-semibold font-mono flex flex-row gap-2'>
+                                                        <FaUser />Fullname: {owner.username}
+                                                    </label>
+                                                </div>
+                                                <div className='flex flex-col'>
+                                                    <label className='font-semibold font-mono flex flex-row gap-2'>
+                                                        <FaMailBulk />Email: {owner.email}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
+                                                <div className='flex flex-col'>
+                                                    <label className='font-semibold font-mono flex flex-row gap-2'>
+                                                        <FaMobile />Mobile: {owner.mobile}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div className=''>
+                                                {/* <EditProfile Data={profileData} className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white' /> */}
+                                            </div>
+                                            <div className=' border-b-2 border-gray-400 w-full'></div>
+
+                                            <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
+                                                <div className='flex flex-row gap-[10%]'>
+
+                                                    <label onClick={handleReset} className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
+                                                        <FaLock />ResetPassword
+                                                    </label>
+                                                    {resetOpen ?
+                                                        <div className="flex flex-row gap-2">
+                                                            <input type="text" className='w-auto outline-double rounded-md px-1' />
+                                                            <button onClick={handleResetPassword} className='px-3 rounded-md bg-black text-white transition-all duration-300 ease-in-out hover:transform hover:scale-105'>
+                                                                Reset
+                                                            </button>
+                                                        </div>
+                                                        : ""}
+                                                </div>
+                                                <div className='border-b-2 w-full'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='border-b-2 border-black hidden sm:block '></div>
+                            <div className='flex flex-col w-full sm:w-[40%] gap-8 sm:gap-10'>
+                                <div className='shadow-md shadow-black w-full sm:w-[60%] h-[8%] md:w-[70%] lg:mr-10 rounded-md flex justify-center bg-black'></div>
+                                <div className='shadow-md shadow-black w-full sm:w-[60%] h-[90%] md:w-[70%] rounded-2xl flex flex-col gap-2'>
+                                    <h1 className='flex flex-row ml-2 py-2 font-bold '>
+                                        <FaUser className='w-10 h-5' /> General
+                                    </h1>
+                                    <Link to='/owner/bookings' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                                        Bookings
+                                    </Link>
+                                    <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                                        Notifications
+                                    </Link>
+                                    {!owner.is_Kyc == true ? (
+                                        <button
+                                            className='sm:h-10 sm:w-28 text-black rounded-md ml-9 font-mono hover:underline'
+                                            onClick={openModal} state={"kyc"}>
+                                            Add KYC
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className='sm:h-10 sm:w-28 text-black rounded-md ml-9 font-mono hover:underline'
+                                            onClick={KycModal}>
+                                            View KYC
+                                        </button>
+
+                                    )}
+                                    <h1 className='flex flex-row ml-2 py-2 font-bold '>
+                                        <FaUser className='w-10 h-5' /> Accounts
+                                    </h1>
+                                    <h1 className='sm:h-10 sm:w-28 text-black rounded-md ml-8 font-mono hover:underline flex flex-row gap-2' onClick={handleLogout}>
+                                        <LogoutIcon className='w-5 h-6' /> Log Out
+                                    </h1>
+                                </div>
+                            </div>
+                            <ToastContainer />
+                        </div>
                     </div>
                 </div>
             </div>
-            {/* add kyc modal */}
             <div >
                 <div className="flex items-center justify-center min-h-screen">
                     {/* Modal */}
@@ -285,13 +480,10 @@ function Profile() {
                 <ToastContainer />
 
             </div >
-            {/* add kyc modal */}
-
             {/* view kyc modal */}
             {open ?
                 <ViewKycModal setOpen={setOpen} />
                 : ""}
-            {/* view kyc modal */}
         </>
 
     )

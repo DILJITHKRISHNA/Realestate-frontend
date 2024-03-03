@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaRegTimesCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { WishlistData } from '../../../Api/UserApi';
+import { toast } from 'react-toastify';
 
 function Wishlist() {
     const selector = useSelector(state => state.owner.OwnerInfo)
@@ -27,7 +28,11 @@ function Wishlist() {
         fetchWishlistData()
     }, [])
 
-    const handleRemove = () => {
+    const handleRemove = async (indexToRemove) => {
+        const updatedWishlist = [...wishlist]
+        updatedWishlist.splice(indexToRemove, 1);
+        setwishlist(updatedWishlist);
+        toast("Property Removed from the wishlist!")
     }
 
     return (
@@ -59,21 +64,21 @@ function Wishlist() {
                     {wishlist && wishlist.length > 0 ? (
                         wishlist.map((data, index) => (
                             <div className="flex flex-col" key={index}>
-                                <FaRegTimesCircle onClick={() => handleRemove(index)} className='absolute h-6 w-8 ml-[78%] mt-2 text-red-800' />
+                                <FaRegTimesCircle onClick={() => handleRemove(index)} className='absolute h-6 w-8 ml-[78%] mt-2 text-red-800 cursor-pointer' />
                                 <img
-                                    src={data.imageUrls}
+                                    src={data.imageUrls[0]}
                                     alt=''
                                     className="text-gray-500 mb-8 pr-4 font-normal"
                                 />
                                 <div className="flex flex-row justify-between">
                                     <h1 className="text-sm py-1 px-2 font-bold flex flex-row">Name: <span className='text-lime-400'>{data.name}</span></h1>
                                     <h1 className="text-sm py-1 px-2 font-bold">Type: <span className='text-lime-400'>{data.type}</span> </h1>
-                                    <h1 className="text-sm py-1 px-2 font-bold">Rent: <span className='text-lime-400'>{data.rent}</span> </h1>
+                                    <h1 className="text-sm py-1 px-2 font-bold">Rent: <span className='text-lime-400'>{data.Rent}</span> </h1>
                                 </div>
                                 <div className='flex flex-row justify-center mt-4 gap-2'>
-                                    <button className="px-2 font-bold border-2 border-lime-400 text-lime-400 rounded-md hover:bg-lime-400 hover:text-white ">Details</button>
+                                    <button className="px-2 mb-2 font-bold border-2 border-lime-400 text-lime-400 rounded-md hover:bg-lime-400 hover:text-white ">Details</button>
                                 </div>
-                                <div className='border-b-2 border-black mt-2'></div>
+                                <div className='border-b-2 border-black mb-20'></div>
                             </div>
                         ))
                     ) : (

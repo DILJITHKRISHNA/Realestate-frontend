@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { ListPayment } from '../PaymentHistory/ListPayment'
-import { FaExchangeAlt, FaFunnelDollar, FaHome, FaLock, FaMailBulk, FaMobile, FaUpload, FaUser } from 'react-icons/fa'
+import { Link, useNavigate } from 'react-router-dom'
+import { FaFunnelDollar, FaHome, FaLock, FaMailBulk, FaMobile, FaUpload, FaUser } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { FetchProfileData, addProfileImage } from '../../../Api/UserApi'
 import Wishlist from './Wishlist'
-import {ToastContainer, toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
+import { EditProfile } from './EditProfile'
 
 function ProfilePage() {
 
@@ -104,10 +104,10 @@ function ProfilePage() {
             const urls = await uploadImage(imagePreview);
             console.log(urls, "image urllllll");
             const ProfileImage = await addProfileImage(urls, id)
-            console.log(ProfileImage,"profile imageee");
-            if(ProfileImage.data.success){
+            console.log(ProfileImage, "profile imageee");
+            if (ProfileImage.data.success) {
                 toast("Image Updated Successfully!")
-            }else{
+            } else {
                 toast.error("Error While updating profile!")
             }
         } catch (error) {
@@ -196,7 +196,7 @@ function ProfilePage() {
                                     </div>
                                 </div>
                                 <div className=''>
-                                    <button className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white'>Edit Profile</button>
+                                    <EditProfile Data={profileData} className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white' />
                                 </div>
                                 <div className=' border-b-2 border-gray-400 w-full'></div>
 
@@ -243,14 +243,14 @@ function ProfilePage() {
                         </h1>
                         <h1
                             className=' sm:h-10 sm:w-32 text-black rounded-md ml-14 font-mono hover:underline'>
-                            Wallet : 3000
+                            Wallet :<span className='font-bold text-amber-900'>₹{profileData.wallet}</span>
                         </h1>
                         <h1 className='sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline' onClick={handleClick}>
                             Log Out
                         </h1>
                     </div>
                 </div>
-                <ToastContainer/>
+                <ToastContainer />
             </div>
         </>
     )

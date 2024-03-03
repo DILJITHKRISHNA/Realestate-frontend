@@ -75,6 +75,7 @@ function AddDetails({ SetOpen }) {
 
             const uploadedVideoUrl = cloudinaryData.secure_url;
             console.log(uploadedVideoUrl, "uploadedVideoUrl");
+            toast("Video added Successfully")
             return uploadedVideoUrl;
         } catch (error) {
             console.log("Error during video upload:", error);
@@ -119,6 +120,7 @@ function AddDetails({ SetOpen }) {
             console.log("Error during image upload:", error);
         }
     };
+
 
 
     const handleSubmit = async (e) => {
@@ -182,7 +184,6 @@ function AddDetails({ SetOpen }) {
         const files = e.target.files;
         try {
             const urls = await uploadImage(files);
-            SetDetails(prevState => ({ ...prevState, imageUrl: urls }));
             setPreviewSource(urls);
         } catch (error) {
             console.error("Error uploading images:", error);
@@ -389,24 +390,28 @@ function AddDetails({ SetOpen }) {
                                 />
                             </div>
                             <div className="mb-4 flex flex-col">
-                                <label className="block text-sm font-medium text-gray-700">Property Image</label>
+                                <div className='flex flex-row justify-between'>
+                                    <label className="block text-sm font-medium  text-gray-700">Property Image</label>
+                                    <label className="block text-sm font-medium text-gray-700">Property Video</label>
+                                </div>
                                 <div className='flex flex-row'>
                                     <input
                                         type="file"
                                         name="imageUrls"
-                                        value={fileInputState}
                                         onChange={handleFileInputChange}
                                         multiple
                                         className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                     />
-                                    {previewSource.map((url, index) => (
-                                        <img
-                                            key={index}
-                                            src={url}
-                                            alt={`chosen-${index}`}
-                                            className='h-[50px] w-[50px] rounded-full mx-2'
-                                        />
-                                    ))}
+                                    <div className='flex flex-row'>
+                                        {previewSource.map((url, index) => (
+                                            <img
+                                                key={index}
+                                                src={url}
+                                                alt={`chosen-${index}`}
+                                                className='h-[50px] w-[50px] rounded-full mx-2'
+                                            />
+                                        ))}
+                                    </div>
                                     <div className='flex flex-row'>
                                         <input
                                             type="file"

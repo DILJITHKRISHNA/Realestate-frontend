@@ -10,6 +10,8 @@ function PropertyList({ filtered }) {
     const [propertiesToDisplay, setPropertiesToDisplay] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [isWishlisted, setWishlisted] = useState(false);
+
 
 
     const fetchProperties = async () => {
@@ -24,6 +26,7 @@ function PropertyList({ filtered }) {
 
     const handleSaved = async (name, type, rent, ownerId, imageUrls) => {
         try {
+            setWishlisted((prev) => !prev);
             const result = await SaveProperty(name, type, rent, ownerId, imageUrls)
             console.log(result, "result while wishlisting property");
             if (result.data.success) {
@@ -66,7 +69,7 @@ function PropertyList({ filtered }) {
                             <div className="relative" onClick={() => handleClick(data._id)}>
                                 <img
                                     key={index}
-                                    src={data.imageUrls}
+                                    src={data.imageUrls[0]}
                                     className="w-[100%] h-72 p-4 object-contain rounded-3xl"
                                     alt="ui/ux review check"
                                 />
@@ -103,12 +106,11 @@ function PropertyList({ filtered }) {
                                 <p className="text-gray">
                                     {data.details}
                                 </p>
-                                {}
-                                <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
-                                    <button onClick={() => handleSaved(data.name, data.type, data.Rent, data.ownerRef, data.imageUrls)} className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                                        <FaRegHeart />
-                                    </button>
-                                </div>
+                                    <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
+                                        <button onClick={() => handleSaved(data.name, data.type, data.Rent, data.ownerRef, data.imageUrls)} className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                                            <FaRegHeart />
+                                        </button>
+                                    </div>
                             </div>
                         </div>
                         <div className="pt-3">

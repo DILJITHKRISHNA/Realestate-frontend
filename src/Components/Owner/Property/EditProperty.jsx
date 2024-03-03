@@ -32,33 +32,41 @@ function EditProperty({ Data, propertyId }) {
     });
 
 
-    const uploadImage = async (file) => {
+    const uploadImage = async (files) => {
         try {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", "dev_setups");
+            const uploadedImageUrls = [];
 
-            const cloudinaryResponse = await fetch(
-                "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
-                {
-                    method: "POST",
-                    body: formData,
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", "dev_setups");
+
+                const cloudinaryResponse = await fetch(
+                    "https://api.cloudinary.com/v1_1/dqewi7vjr/image/upload",
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
+
+                if (!cloudinaryResponse.ok) {
+                    throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
                 }
-            );
-            console.log(cloudinaryResponse, "cloudinaryResponse");
 
-            if (!cloudinaryResponse.ok) {
-                throw new Error(`Failed to upload image. Status: ${cloudinaryResponse.status}`);
+                const cloudinaryData = await cloudinaryResponse.json();
+
+                if (cloudinaryData.error) {
+                    console.log(cloudinaryData.error);
+                    return;
+                }
+
+                const uploadedImageUrl = cloudinaryData.secure_url;
+                uploadedImageUrls.push(uploadedImageUrl);
             }
-            const cloudinaryData = await cloudinaryResponse.json();
-            console.log("Cloudinary response:", cloudinaryData);
-            if (cloudinaryData.error) {
-                console.log(cloudinaryData.error);
-                return;
-            }
-            const uploadedImageUrl = cloudinaryData.secure_url;
-            console.log(uploadedImageUrl, "uploadedImageUrl");
-            return uploadedImageUrl;
+
+            console.log("Uploaded Image URLs:", uploadedImageUrls);
+            toast("images Added successfully!")
+            return uploadedImageUrls;
         } catch (error) {
             console.log("Error during image upload:", error);
         }
@@ -111,14 +119,14 @@ function EditProperty({ Data, propertyId }) {
         setPreviewSource('');
         SetDetails(prevState => ({ ...prevState, imageUrl: Data ? Data.imageUrls : "" }));
     };
-
     const handleFileInputChange = async (e) => {
-        const file = e.target.files[0];
+        const files = e.target.files;
 
-        if (file) {
-            const url = await uploadImage(file);
-            SetDetails((prevState) => ({ ...prevState, imageUrl: url }));
-            setPreviewSource(url);
+        try {
+            const urls = await uploadImage(files);
+            setPreviewSource([...previewSource, ...urls]);
+        } catch (error) {
+            console.error("Error uploading images:", error);
         }
     };
 
@@ -130,29 +138,15 @@ function EditProperty({ Data, propertyId }) {
         console.log(previewVideo, "video urlll");
     }
 
-    const handleUploadImage = async (e) => {
-        e.preventDefault();
-
-        if (previewSource && previewSource !== Data.imageUrls) {
-            try {
-                const uploadedImageUrl = await uploadImage(previewSource);
-                SetDetails((prevState) => ({
-                    ...prevState,
-                    imageUrl: uploadedImageUrl,
-                }));
-                console.log("New image uploaded:", uploadedImageUrl);
-            } catch (error) {
-                console.log("Error uploading image:", error);
-            }
-        } else {
-            SetDetails((prevState) => ({
-                ...prevState,
-                imageUrl: Data.imageUrls,
-            }));
-            console.log("No new image selected, using existing image URL:", Data.imageUrls);
+    const handleUploadImage = (e) => {
+        console.log("image submitting...");
+        e.preventDefault()
+        if (!previewSource) {
+            return
         }
-    };
-
+        uploadImage(previewSource)
+    }
+    console.log(previewSource, "imagess counttt");
     const handleUploadVideo = (e) => {
         console.log("video submitting...");
         e.preventDefault()
@@ -175,7 +169,7 @@ function EditProperty({ Data, propertyId }) {
         try {
             const data = {
                 ...details,
-                imageUrl: details.imageUrl || Data.imageUrls
+                imageUrl: previewSource
             }
             if (
                 !details.title ||
@@ -242,7 +236,7 @@ function EditProperty({ Data, propertyId }) {
             </button>
             {open && Object.keys(details).map((data) => (
                 <form onSubmit={handleCombinedSubmit}>
-                    <div ke className="fixed z-10 inset-0 overflow-y-auto">
+                    <div className="fixed z-10 inset-0 overflow-y-auto">
                         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                             <div
                                 className="fixed inset-0 transition-opacity"
@@ -276,7 +270,8 @@ function EditProperty({ Data, propertyId }) {
                                                 <input
                                                     type="text"
                                                     name="title"
-                                                    value={details['title']} onChange={handleChange}
+                                                    value={details['title']}
+                                                    onChange={handleChange}
                                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                                 />
                                             </div>
@@ -419,27 +414,37 @@ function EditProperty({ Data, propertyId }) {
                                                     <input
                                                         type="file"
                                                         name="imageUrls"
+                                                        multiple
                                                         onChange={handleFileInputChange}
                                                         className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                                     />
-                                                    {previewSource ? (
-                                                        <div className='flex flex-row'>
-                                                            <img
-                                                                src={previewSource}
-                                                                alt="chosen"
-                                                                className='h-[50px] w-[50px] rounded-full'
-                                                            />
-                                                            <FaTimes className='text-xl text-red-700' onClick={handleImageDeselect}>Erase</FaTimes>
-                                                        </div>
+                                                    {previewSource.length > 0 ? (
+                                                        previewSource.map((url, index) => (
+                                                            <div key={index} className='flex flex-row'>
+                                                                <img
+                                                                    src={url}
+                                                                    alt={`chosen-${index}`}
+                                                                    className='h-[50px] w-[50px] rounded-full mx-2'
+                                                                />
+                                                                <FaTimes
+                                                                    className='text-xl text-red-700'
+                                                                    onClick={() => handleImageDeselect(index)}
+                                                                >
+                                                                    Erase
+                                                                </FaTimes>
+                                                            </div>
+                                                        ))
                                                     ) : (
                                                         <img
-                                                            src={Data.imageUrls}
+                                                            src={Data.imageUrls[0]}
                                                             alt="chosen"
                                                             className='h-[50px] w-[50px] rounded-full'
                                                         />
                                                     )}
 
+
                                                 </div>
+                                                <label className="block text-sm font-medium text-gray-700">Property Video</label>
                                                 <div className='flex flex-row gap-x-2.5'>
                                                     <input
                                                         type="file"
