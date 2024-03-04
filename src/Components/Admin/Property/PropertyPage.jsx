@@ -12,6 +12,18 @@ function PropertyPage() {
   const [propertiesToDisplay, setPropertiesToDisplay] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredProperty = propertiesToDisplay.filter(
+    (data) =>
+      String(data.type).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (data.Rent).includes(searchTerm) ||
+      String(data.Rent).includes(searchTerm)
+  );
 
   useEffect(() => {
     const handleGetProperty = async () => {
@@ -97,10 +109,20 @@ function PropertyPage() {
         <div className="flex">
           <Sidebar />
           <div className="mt-2 overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100">
-            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
-              <FaHome className='w-8 h-6' />
-              Property List
-            </h1>
+            <div className='flex justify-between lg:flex-row flex-col'>
+              <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
+                <FaHome className='w-8 h-6' />
+                Property List
+              </h1>
+              <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
+                <input
+                  type="search"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="border border-black px-2 h-6 mt-2 text-sm rounded-md"
+                />              </h1>
+            </div>
             <table className="mt-2 w-full">
               <thead>
                 <tr className="bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-black">
@@ -112,7 +134,7 @@ function PropertyPage() {
                   <th className="px-5 py-3">Manage</th>
                 </tr>
               </thead>
-              {propertiesToDisplay.map((data, index) => (
+              {filteredProperty.map((data, index) => (
                 <tbody key={index}>
                   <tr>
                     <td className="border-gray-200 bg-white px-5 py-5 text-sm">{index + 1}</td>

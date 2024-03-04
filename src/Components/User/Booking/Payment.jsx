@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Payment({ clientSecret, name, contact, email, re_location, propertyId, Rent }) {
 
     const selector = useSelector(state => state.user.userInfo.id)
-    console.log(selector,"userIddd");
+    console.log(selector, "userIddd");
     const navigate = useNavigate()
     const stripe = useStripe();
     const elements = useElements();
@@ -21,6 +21,25 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!name || !contact || !email || !re_location) {
+            toast.error("All fields are required", {
+                style: {
+                    marginTop: "4rem"
+                }
+            });
+            return;
+        }
+        const currentDate = new Date();
+        const selectedDate = new Date(re_location);
+        if (selectedDate <= currentDate) {
+            toast.error("Relocation date should be after today's date", {
+                style: {
+                    marginTop: "4rem"
+                }
+            });
+            return;
+        }
 
         if (!stripe || !elements) {
             console.error('Stripe or Elements not initialized.');
@@ -109,10 +128,10 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                             </button>
                         </div>
 
-                            <div className="mt-6 flex flex-row justify-around space-x-72">
-                                <h1 className="flex">RentAmount</h1>
-                                <span>₹{Rent}</span>
-                            </div>
+                        <div className="mt-6 flex flex-row justify-around space-x-72">
+                            <h1 className="flex">RentAmount</h1>
+                            <span>₹{Rent}</span>
+                        </div>
                         <div className="border-b-2 border-gray-400"></div>
                         <div className="mt-12">
                             <PaymentElement />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropertyList from './PropertyList'
 import { FetchData } from '../../../Api/UserApi';
+import { FaCreativeCommonsSa } from 'react-icons/fa';
 
 function PropertyPage() {
 
@@ -30,29 +31,42 @@ function PropertyPage() {
   const handleSearch = () => {
     const filteredProperties = loadData.filter((property) => {
       const isPropertyTypeMatch = !propertyType || property.type.toLowerCase().includes(propertyType.toLowerCase());
+
+      const minPrice = parseFloat(priceRange.min);
+      const maxPrice = parseFloat(priceRange.max);
+
       const isPriceInRange =
-        (!priceRange.min || property.Rent >= priceRange.min) &&
-        (!priceRange.max || property.Rent <= priceRange.max);
+        (isNaN(minPrice) || property.Rent >= minPrice) &&
+        (isNaN(maxPrice) || property.Rent <= maxPrice);
+
       const isTitleMatch = !searchTitle || property.name.toLowerCase().includes(searchTitle.toLowerCase());
       const isLocationMatch = !searchLocation || property.location.toLowerCase().includes(searchLocation.toLowerCase());
+
       return isPropertyTypeMatch && isPriceInRange && isTitleMatch && isLocationMatch;
     });
 
-    setFiltered(filteredProperties);
+    setFiltered(filteredProperties.length > 0 ? filteredProperties : []);
   };
+
+  const handleRefresh = (e) => {
+    e.preventDefault()
+    window.location.reload();
+
+  }
 
   return (
     <>
-      <div onChange={handleSearch} className='flex flex-wrap mt-16'>
+      <div  className='flex flex-wrap mt-16'>
         <div className='z-10 lg:w-[66%] lg:h-auto h-full mt-8 ml-10 rounded-2xl p-2'>
           <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
           <PropertyList filtered={filtered} />
         </div>
         <div className='absolute w-screen h-screen flex justify-end'>
-          <div className='w-[28%] h-[70%] mt-20 mr-10 bg-black rounded-2xl'>
-            <div className='p-6 mt-2'>
-              <h1 className='text-white font-league-spartan text-lg font-bold'>
-                Find Your <span className='bg-white text-black px-1'>Property</span>
+          <div className='w-full sm:w-[28%] h-[70%] lg:mt-20 mr-10 bg-black z-10 rounded-2xl '>
+            <div className='p-6 mt-2 gap-1'>
+              <h1 className='text-white font-league-spartan text-lg font-bold flex justify-between'>
+                Find Your Property
+              <button onClick={handleRefresh}><FaCreativeCommonsSa className='mr-4 w-5 h-8'/></button>
               </h1>
             </div>
             <div className='ml-6 flex flex-col w-[85%]'>
@@ -104,11 +118,12 @@ function PropertyPage() {
                   placeholder='Maximum'
                 />
               </section>
-              {/* <button
+              <button
                 onClick={handleSearch}
                 className='items-center w-auto mr-8 mt-8 border-2
                  border-white text-white rounded-md
-                hover:text-black hover:bg-white'>Search</button> */}
+                hover:text-black hover:bg-white'>Search
+              </button>
             </div>
           </div>
         </div>

@@ -12,6 +12,8 @@ function CategoryPage() {
   const [managePage, setManagePage] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [category, SetCategory] = useState({
     category: ""
   })
@@ -97,6 +99,15 @@ function CategoryPage() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredCategroy = currentItems.filter(
+    (data) =>
+      String(data.category).toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
 
     <div className="flex flex-col w-full">
@@ -104,8 +115,18 @@ function CategoryPage() {
       <div className="flex">
         <Sidebar />
         <div className='mt-2 overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100'>
-          <button className='bg-slate-950 rounded-lg text-white font-semibold w-[12%] h-[5%]' onClick={handleOpen}>ADD CATEGORY</button>
-
+          <div className='flex justify-between lg:flex-row flex-col'>
+            <button className='bg-slate-950 rounded-lg text-white font-semibold w-[18%] h-[5%]' onClick={handleOpen}>ADD CATEGORY</button>
+            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
+              <input
+                type="search"
+                placeholder="Search"
+                value={searchTerm}
+                onChange={handleSearch}
+                className="border border-black px-2 h-6 mt-2 text-sm rounded-md"
+              />
+            </h1>
+          </div>
           <table className='mt-2 w-full'>
             <thead>
               <tr className='bg-gray-400 text-left text-xs font-semibold uppercase tracking-widest text-black'>
@@ -116,7 +137,7 @@ function CategoryPage() {
               </tr>
             </thead>
             <tbody>
-              {Array.isArray(currentItems) && currentItems.map((category, index) => (
+              {Array.isArray(filteredCategroy) && filteredCategroy.map((category, index) => (
                 <tr key={index}>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm'>{index + 1}</td>
                   <td className='border-gray-200 bg-white px-5 py-5 text-sm text-black'>{category.category}</td>

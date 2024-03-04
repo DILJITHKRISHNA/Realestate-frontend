@@ -59,7 +59,7 @@ console.log(typeof property,"777777777");
                                 Property Details
                             </div>
                             <div className="h-[42rem] overflow-scroll p-4">
-                                <img src={property.imageUrls} 
+                                <img src={property.imageUrls?.[0]} 
                                 alt="Preview Image" 
                                 className="rounded-md" />
                                 <div className="p-4 font-semibold font-mono text-black space-y-10">

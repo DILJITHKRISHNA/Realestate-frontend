@@ -58,7 +58,7 @@ export function PropertyDetails({ propertyId }) {
                                 Property Details
                             </div>
                             <div className="h-[42rem] overflow-scroll p-4">
-                                <img src={data.imageUrls} alt="" className="rounded-md" />
+                                <img src={data.imageUrls?.[0]} alt="" className="rounded-md" />
                                 <div className="p-4 font-semibold font-mono text-black space-y-10">
                                     <h1 className="text-lg">Property Name: <span className="text-lime-400 font-semibold">{data.name}</span></h1>
                                     <h1>Property Details: <span className="text-lime-400 font-semibold">{data.details}</span></h1>

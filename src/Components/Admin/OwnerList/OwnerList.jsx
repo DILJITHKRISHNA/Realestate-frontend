@@ -10,6 +10,8 @@ function OwnerList() {
   const [owners, setOwners] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   useEffect(() => {
     const OwnerData = async () => {
@@ -62,6 +64,17 @@ function OwnerList() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredowner = currentItems.filter(
+    (data) =>
+      String(data.username).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(data.city).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(data.email).toLowerCase().includes(searchTerm.toLowerCase())
+
+  );
 
   return (
     <>
@@ -70,10 +83,21 @@ function OwnerList() {
         <div className="flex">
           <Sidebar />
           <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100" >
-            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
-              <FaUsers className='w-8 h-6' />
-              Owner List
-            </h1>
+            <div className='flex justify-between lg:flex-row flex-col'>
+              <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
+                <FaUsers className='w-8 h-6' />
+                Owner List
+              </h1>
+              <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
+                <input
+                  type="search"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="border border-black px-2 h-6 text-sm rounded-md"
+                />
+              </h1>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -85,10 +109,8 @@ function OwnerList() {
                     <th className="px-5 py-3">Status</th>
                   </tr>
                 </thead>
-
                 <tbody className="text-gray-500">
-                  {Array.isArray(currentItems) && currentItems.map((owner, index) => (
-
+                  {Array.isArray(filteredowner) && filteredowner.map((owner, index) => (
                     <tr >
                       <td className=" border-gray-200 bg-white px-5 py-5 text-sm">
                         <p className="whitespace-no-wrap" >{index + 1}</p>

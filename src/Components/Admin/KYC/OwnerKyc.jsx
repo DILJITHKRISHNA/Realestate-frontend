@@ -11,6 +11,8 @@ function OwnerKyc() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [showModal, setShowModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
 
     const handleOpen = () => {
         setShowModal(!showModal)
@@ -58,6 +60,22 @@ function OwnerKyc() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredKyc = currentItems.filter(
+        (data) =>
+            String(data.username).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.email).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.panCard).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.occupation).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.city).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.address).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.country).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.email).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div>
             <div className="flex flex-col w-full">
@@ -65,10 +83,21 @@ function OwnerKyc() {
                 <div className="flex">
                     <Sidebar />
                     <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100" >
-                        <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
-                            <FaUserCheck className='w-8 h-6' />
-                            Kyc List
-                        </h1>
+                        <div className='flex justify-between lg:flex-row flex-col'>
+                            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
+                                <FaUserCheck className='w-8 h-6' />
+                                Kyc List
+                            </h1>
+                            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
+                                <input
+                                    type="search"
+                                    placeholder="Search"
+                                    value={searchTerm}
+                                    onChange={handleSearch}
+                                    className="border border-black px-2 h-6 mt-2 text-sm rounded-md"
+                                />
+                            </h1>
+                        </div>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
@@ -86,7 +115,7 @@ function OwnerKyc() {
                                         <th className="px-5 py-3">Status</th>
                                     </tr>
                                 </thead>
-                                {Array.isArray(currentItems) && currentItems.map((kyc) => (
+                                {Array.isArray(filteredKyc) && filteredKyc.map((kyc) => (
 
                                     <tbody className="text-gray-500" key={kyc._id}>
                                         <tr >
@@ -122,12 +151,18 @@ function OwnerKyc() {
                                                 <p className="whitespace-no-wrap">{kyc.state}</p>
                                             </td>
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <p className="whitespace-no-wrap">photo</p>
+                                                <img src='https://th.bing.com/th/id/OIP.4cmK9d36bF0F7-V-SaVPnAHaG_?rs=1&pid=ImgDetMain' className="whitespace-no-wrap w-12 h-12" />
                                             </td>
+                                            {kyc.is_pending === true ? (
 
-                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <p className={`whitespace-no-wrap font-bold ${kyc.is_approve ? "text-green-500" : "text-red-500"}`}>{kyc.is_approve ? "Approved" : "Rejected"}</p>
-                                            </td>
+                                                <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                    <p className='whitespace-no-wrap font-bold text-red-600'>Pending</p>
+                                                </td>
+                                            ) : (
+                                                <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                    <p className={`whitespace-no-wrap font-bold ${kyc.is_approve ? "text-green-500" : "text-red-500"}`}>{kyc.is_approve ? "Approved" : "Rejected"}</p>
+                                                </td>
+                                            )}
 
                                             <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm ">
                                                 <button

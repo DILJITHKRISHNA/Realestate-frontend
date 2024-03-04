@@ -1,16 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
+import { getOwner } from '../../../Api/OwnerApi';
+import { FaTelegramPlane } from 'react-icons/fa';
 
 
 function Header() {
     const userSelector = useSelector((state) => state.owner)
-    console.log(userSelector.userInfo.username, "88888888888");
-    console.log(userSelector.OwnerInfo.username, "666666666666");
     const OwnerGoogleData = userSelector.OwnerInfo;
-    const OwnerData = userSelector.userInfo;
-    console.log(OwnerGoogleData, "datttttteewaaaaaaaa");
+    const id = userSelector.OwnerInfo.id
+    const [ownerImg, setOwnerImg] = useState('')
+
+    useEffect(() => {
+        const fetchOwner = async () => {
+            try {
+                const res = await getOwner(id);
+                console.log(res, " yeshhshhs");
+                if (res.data.success) {
+                    const data = res.data.OwnerData
+                    setOwnerImg(data)
+                    console.log(data, "yeeeeeeeeeeeeeee");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchOwner()
+    }, [])
 
     return (
         <div>
@@ -24,16 +41,16 @@ function Header() {
                             </div>
                         </Link>
 
-                        {/* Check if UserGoogleData exists before using it */}
                         {userSelector && (
                             <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
                                 <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Dashboard</Link>
                                 <Link to="/owner/property" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
-                                <Link to="/owner/bookings" className='hover:underline text-white hover:text-yellow-100'>Bookings</Link>
-                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Enquiry</Link>
+                                <Link to="/owner/chat" className='hover:underline text-white hover:text-yellow-100'><FaTelegramPlane/></Link>
                                 <Link to="/owner/profile" className='hover:underline text-white hover:text-yellow-100'>
-                                        <h1>{OwnerGoogleData.username}</h1>
-                                 
+                                    <h1 className='flex flex-row gap-2'>
+                                        <img src={ownerImg.imageUrls} alt="" className='rounded-full w-6 h-6 mt-1' />
+                                        {OwnerGoogleData.username}
+                                    </h1>
                                 </Link>
                             </div>
                         )}

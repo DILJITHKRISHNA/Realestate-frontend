@@ -1,6 +1,6 @@
 // src/components/Sidebar.js
 import React, { useState } from 'react';
-import { HomeIcon, UserIcon, ClipboardCheckIcon, UsersIcon, BookOpenIcon, DotsVerticalIcon} from '@heroicons/react/solid';
+import { HomeIcon, UserIcon, ClipboardCheckIcon, UsersIcon, BookOpenIcon, DotsVerticalIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -62,7 +62,7 @@ const Sidebar = () => {
 
                     <div className='mb-8 gap-2'>
                         <Link to='/admin/property' onClick={() => handleItemClick('property')}>
-                            <HomeIcon  
+                            <HomeIcon
                                 className={`h-8 w-8 text-white ${selectedItem === 'property' && 'text-yellow-300'
                                     }`}
                             />
@@ -70,7 +70,7 @@ const Sidebar = () => {
                                 className={`text-white text-sm mt-2 mr-4 hover:text-yellow-100 hover:underline ${selectedItem === 'property' && 'hover:text-yellow-100'
                                     }`}
                             >
-                               Property
+                                Property
                             </p>
                         </Link>
                     </div>

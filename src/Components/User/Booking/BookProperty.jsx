@@ -5,6 +5,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { BookingData, FetchData, paymentRequest } from '../../../Api/UserApi';
 import Payment from './Payment.jsx';
+import { toast } from 'react-toastify';
 
 // let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
 let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
@@ -51,11 +52,12 @@ function BookProperty() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
     } catch (error) {
       console.error(error);
     }
   };
+  const currentDate = new Date();
+
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -130,13 +132,15 @@ function BookProperty() {
                   className='border p-2 w-full border-amber-900' />
               </div>
               <div className='mb-4'>
-                <label >Re-Location</label>
+                <label>Re-Location</label>
                 <input
                   type='date'
                   value={payment.relocationDate}
                   onChange={handleClick}
                   name='relocationDate'
-                  className='border p-2 w-full border-amber-900' />
+                  min={currentDate.toISOString().split('T')[0]}
+                  className='border p-2 w-full border-amber-900'
+                />
               </div>
               <h3 className='text-xl mb-auto text-amber-900 font-mono font-semibold uppercase'>Payment Type </h3>
 
@@ -152,7 +156,7 @@ function BookProperty() {
           <div className='w-full lg:w-auto p-8 mt-8'>
             <div className='mb-6 lg:flex lg:flex-row'>
               <img
-                src={property.imageUrls}
+                src={property.imageUrls?.[0]}
                 alt='Property Preview'
                 className='mt-auto lg:w-[8%] h-auto lg:h-[10%] rounded-md'
               />
@@ -231,7 +235,7 @@ function BookProperty() {
               Property Details
             </div>
             <div className="h-[42rem] overflow-scroll p-4">
-              <img src={property.imageUrls} alt="" className="rounded-md" />
+              <img src={property.imageUrls?.[0]} alt="" className="rounded-md" />
               <div className="p-4 font-semibold font-mono text-black space-y-10">
                 <h1 className="text-lg">Property Name: <span className="text-amber-900 font-semibold">{property.name}</span></h1>
                 <h1>Property Details: <span className="text-amber-900 font-semibold">{property.details}</span></h1>

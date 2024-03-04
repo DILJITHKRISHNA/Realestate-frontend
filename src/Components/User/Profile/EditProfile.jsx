@@ -11,7 +11,7 @@ export function EditProfile({ Data }) {
         email: Data ? Data.email : "",
         mobile: Data ? Data.mobile : "",
     });
-    console.log(formData)
+    console.log(formData.name)
     const handleOpen = () => setOpen(!open);
 
     const handleChange = (e) => {
@@ -89,10 +89,16 @@ export function EditProfile({ Data }) {
                             />
                         </div>
 
-                        <div className="flex justify-end">
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={handleOpen}
+                                className="border-2 border-black hover:text-white hover:bg-black hover:border-2 hover:border-black font-bold text-black px-2 rounded"
+                            >
+                                Close
+                            </button>
                             <button
                                 onClick={handleSave}
-                                className="bg-black hover:text-black hover:bg-white hover:border-2 hover:border-black font-bold text-white py-2 px-4 rounded"
+                                className="bg-black hover:text-black hover:bg-white hover:border-2 hover:border-black font-bold text-white px-3 rounded"
                             >
                                 Save
                             </button>
