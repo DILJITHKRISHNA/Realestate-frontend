@@ -1,52 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
-import { FetchBookings } from '../../../Api/OwnerApi';
-import { HiOutlineCheckCircle, HiMiniXCircle } from "react-icons/hi2";
-import PropertyDetails from './PropertyDetails';
-import { FaCartArrowDown } from 'react-icons/fa';
 import { SearchIcon } from '@heroicons/react/solid';
+import { FaCartArrowDown, FaListOl, FaSearch } from 'react-icons/fa';
+import { HiMiniXCircle, HiOutlineCheckCircle } from 'react-icons/hi2';
+import { FetchEnquiry } from '../../../Api/UserApi';
+import { PropertyAbout } from './PropertyAbout';
 
-const BookingList = () => {
-
-    const [bookings, setBookings] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-
-
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
+function EnquiryList() {
+    const [enquiryData, setEnquiryData] = useState([])
 
     useEffect(() => {
-
-        const getBookings = async () => {
+        const FetchReservations = async () => {
             try {
-                const response = await FetchBookings()
-                console.log(response, "ressssss in fetchbooooookk");
-                if (response.data.success) {
-                    setBookings(response.data.GetData)
+                const res = await FetchEnquiry()
+                console.log(res, "res in enquiry fetching ");
+                if (res.data.success) {
+                    setEnquiryData(res.data.enquiryData)
                 }
             } catch (error) {
-                console.log("getBookings", error);
+                console.log(error);
             }
         }
-        getBookings()
+        FetchReservations()
     }, [])
 
     return (
         <>
-            <div className="flex flex-col w-full mt-12 ">
+            <div className="flex flex-col w-full mt-28 ">
                 <div className="flex">
                     <div className="overflow-y-hidden rounded-lg pt-10 bg-offgreen mx-auto h-auto w-[90%] sm:px-8 shadow-md shadow-lime-400 mr-20 mb-20">
                         <div className='flex flex-row justify-between'>
-                            <h1 className='flex justify-center text-3xl mb-4 rounded-md text-black  font-mono font-semibold uppercase gap-4'><FaCartArrowDown className='mt-1' />Booking list</h1>
-                            <SearchIcon className='absolute w-4 h-8 ml-2 text-black' />
-                            <input
-                                type='text'
-                                placeholder='Search Properties'
-                                className='border-2 text-center border-black p-1 rounded-lg h-[80%]'
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                            />
+                            <h1 className='flex justify-center text-3xl mb-4 rounded-md text-black font-mono font-semibold uppercase gap-4'>
+                                <FaListOl className='mt-1' />
+                                Your Reservations
+                            </h1>
+                            <div className='relative flex items-center'>
+                                <input
+                                    type='text'
+                                    placeholder='Search Properties'
+                                    className='border-2 text-center border-black p-1 rounded-lg h-[60%] pr-8'
+                                // value={searchQuery}
+                                // onChange={handleSearchChange}
+                                />
+                                <div className='absolute left-2'>
+                                    <FaSearch className='text-black' />
+                                </div>
+                            </div>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full">
@@ -57,16 +56,16 @@ const BookingList = () => {
                                         <th className="px-5 py-3">Email</th>
                                         <th className="px-5 py-3">Property Details</th>
                                         <th className="px-5 py-3">Mobile</th>
-                                        <th className="px-5 py-3">Status</th>
+                                        <th className="px-5 py-3">Interest</th>
                                         <th className="px-5 py-3">Connect</th>
                                     </tr>
                                 </thead>
-                                {bookings.map((data, index) => (
+                                {enquiryData.map((data, index) => (
 
                                     <tbody className="text-black font-semibold font-mono">
                                         <tr key={index}>
                                             <td className=" border-gray-200 bg-white px-5 py-5 text-sm">
-                                                <p className="whitespace-no-wrap">{index + 1}</p>
+                                                <p className="whitespace-no-wrap">1</p>
                                             </td>
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
@@ -85,7 +84,7 @@ const BookingList = () => {
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
                                                     <div className="ml-6">
-                                                        <PropertyDetails propertyId={data.property_id} className="whitespace-no-wrap border-2" />
+                                                        <PropertyAbout propertyId={data.property_id} className="whitespace-no-wrap border-2" />
                                                     </div>
                                                 </div>
                                             </td>
@@ -97,22 +96,13 @@ const BookingList = () => {
                                                 </div>
                                             </td>
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                {data.is_canceled === false ? (
-                                                    <div className="flex items-center">
-                                                        <div className="ml-6 flex flex-row ">
-                                                            <HiOutlineCheckCircle className=' w-6 h-5 text-green-900 animate-pulse' />
-                                                            <p className="whitespace-no-wrap text-green-600" >{data.bookingStatus}</p>
-                                                        </div>
+                                                <div className="flex items-center">
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap" >{data.interest}</p>
                                                     </div>
-                                                ) : (
-                                                    <div className="flex items-center">
-                                                        <div className="ml-6 flex flex-row ">
-                                                            <HiMiniXCircle className=' w-6 h-5 text-red-900 animate-pulse' />
-                                                            <p className="whitespace-no-wrap text-red-600" >Canceled</p>
-                                                        </div>
-                                                    </div>
-                                                )}
+                                                </div>
                                             </td>
+
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
                                                     <button className="ml-6 border-2 border-lime-400 py-1 px-2 text-lime-400 font-mono hover:bg-lime-400 hover:text-white">Chat</button>
@@ -134,7 +124,7 @@ const BookingList = () => {
                 <ToastContainer />
             </div>
         </>
-    );
-};
+    )
+}
 
-export default BookingList;
+export default EnquiryList

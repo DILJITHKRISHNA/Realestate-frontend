@@ -57,7 +57,7 @@ export function ListPayment() {
         <>
             <div className="flex flex-col w-full mt-36">
                 <div className="overflow-y-hidden rounded-lg bg-offgreen mx-auto h-auto w-[90%] sm:px-4 shadow-md shadow-lime-400 mr-20">
-                    <div className="flex flex-col sm:flex-row h-7 mb-10 mt-2">
+                    <div className="flex flex-col sm:flex-row h-7 mb-10 mt-2 justify-between">
                         <h1 className="flex justify-center text-3xl w-full sm:mb-0 sm:w-auto sm:mr-36 rounded-md text-black uppercase font-mono font-semibold">
                             Payment History
                         </h1>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "tailwindcss/tailwind.css";
 import { NewProfileData } from "../../../Api/UserApi";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,11 +7,21 @@ export function EditProfile({ Data }) {
     const [open, setOpen] = useState(false);
 
     const [formData, setFormData] = useState({
-        name: Data ? Data.username : "",
-        email: Data ? Data.email : "",
-        mobile: Data ? Data.mobile : "",
+        name: "",
+        email: "",
+        mobile: "",
     });
-    console.log(formData.name)
+
+    useEffect(() => {
+        if (Data) {
+            setFormData({
+                name: Data.username || "",
+                email: Data.email || "",
+                mobile: Data.mobile || "",
+            });
+        }
+    }, [Data]);
+
     const handleOpen = () => setOpen(!open);
 
     const handleChange = (e) => {

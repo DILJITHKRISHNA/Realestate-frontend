@@ -11,6 +11,7 @@ import Property from '../../pages/Owner/PropertyPage/Property.jsx';
 import Bookings from '../../pages/Owner/BookingPage/Bookings.jsx';
 import EditProperty from '../../Components/Owner/Property/EditProperty.jsx';
 import PublicRoutes from './OwnerPublic/PublicRoutes.jsx';
+import Chat from '../../pages/Owner/ChatPage/Chat.jsx';
 function OwnerRoute() {
   return (
     <Routes>
@@ -26,6 +27,7 @@ function OwnerRoute() {
           <Route path='/' element={<Home />} />
           <Route path='/property' element={<Property />} />
           <Route path='/bookings' element={<Bookings />} />
+          <Route path='/chat' element={<Chat />} />
         </Route>
       </Route>
     </Routes>

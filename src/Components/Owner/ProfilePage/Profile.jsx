@@ -7,6 +7,7 @@ import ViewKycModal from './ViewKycModal';
 import { LogoutIcon } from '@heroicons/react/solid';
 import { useSelector } from 'react-redux';
 import { FaFunnelDollar, FaHome, FaLock, FaMailBulk, FaMobile, FaUpload, FaUser } from 'react-icons/fa';
+import EditOwnerProfile from './EditOwnerProfile';
 
 
 function Profile() {
@@ -259,7 +260,7 @@ function Profile() {
                                                 </div>
                                             </div>
                                             <div className=''>
-                                                {/* <EditProfile Data={profileData} className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white' /> */}
+                                                {/* <EditOwnerProfile Data={owner} className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white' /> */}
                                             </div>
                                             <div className=' border-b-2 border-gray-400 w-full'></div>
 
@@ -297,10 +298,10 @@ function Profile() {
                                     <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                                         Notifications
                                     </Link>
-                                    <Link to='/reserve' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                                    <Link to='/owner/enquiry' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                                         Enquiry
                                     </Link>
-                                    {owner.is_Kyc == true ? (
+                                    {owner.is_Kyc == false ? (
                                         <button
                                             className='sm:h-10 sm:w-28 text-black rounded-md ml-8 font-mono hover:underline'
                                             onClick={openModal} state={"kyc"}>

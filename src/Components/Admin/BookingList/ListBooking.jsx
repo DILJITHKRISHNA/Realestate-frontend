@@ -11,6 +11,7 @@ function ListBooking() {
     const [book, setBook] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const getBookings = async () => {
@@ -34,6 +35,20 @@ function ListBooking() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredBooking = currentItems.filter(
+        (data) =>
+            String(data.username).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.city).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.email).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.Rent).toLowerCase().includes(searchTerm.toLowerCase()) ||
+            String(data.mobile).toLowerCase().includes(searchTerm.toLowerCase())
+
+    );
+
     return (
         <div>
             <div className="flex flex-col w-full">
@@ -41,10 +56,21 @@ function ListBooking() {
                 <div className="flex">
                     <Sidebar />
                     <div className="overflow-y-hidden rounded-lg pt-10 ml-1 bg-offgreen mx-auto h-auto w-screen sm:px-8 bg-gray-100">
-                        <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
-                            <FaSellsy className='w-8 h-6' />
-                            Booking List
-                        </h1>
+                        <div className='flex justify-between lg:flex-row flex-col'>
+                            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2 mb-2'>
+                                <FaSellsy className='w-8 h-6' />
+                                Booking List
+                            </h1>
+                            <h1 className='font-semibold text-xl uppercase font-mono flex flex-row gap-2'>
+                                <input
+                                    type="search"
+                                    placeholder="Search"
+                                    value={searchTerm}
+                                    onChange={handleSearch}
+                                    className="border border-black px-2 h-6 text-sm rounded-md"
+                                />
+                            </h1>
+                        </div>
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
@@ -58,7 +84,7 @@ function ListBooking() {
                                         <th className="px-5 py-3">Details</th>
                                     </tr>
                                 </thead>
-                                {currentItems.map((data, index) => (
+                                {filteredBooking.map((data, index) => (
 
                                     <tbody className="text-gray-500">
                                         <tr key={index}>

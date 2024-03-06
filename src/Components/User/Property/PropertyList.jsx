@@ -18,6 +18,7 @@ function PropertyList({ filtered }) {
         try {
             const response = await PaginateProperty(currentPage);
             setPropertiesToDisplay(response.data.PropertyData);
+            console.log(response.data,"dtttt ");
             setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('Error fetching properties:', error);

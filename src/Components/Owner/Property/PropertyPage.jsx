@@ -25,7 +25,7 @@ function PropertyPage() {
 
   const handleOpen = (e) => {
     e.preventDefault()
-    if (selector.is_kyc === false) {
+    if (selector.is_Kyc === false) {
       toast.error("Add Kyc to get access to manage property!")
     } else {
       SetOpen(true)

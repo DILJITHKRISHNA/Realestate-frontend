@@ -138,6 +138,8 @@ function AddDetails({ SetOpen }) {
             !details.FloorCount ||
             !details.location ||
             !details.country ||
+            !details.videoUrl||
+            !details.imageUrl ||
             !details.city ||
             !details.balconies
         ) {

@@ -3,7 +3,7 @@ import { FaRegLaughBeam, FaVideo } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs';
 
 
-function ChatPage() {
+function OwnerChat() {
     return (
         <>
             <div className="flex items-center justify-center h-screen">
@@ -36,12 +36,12 @@ function ChatPage() {
                     <div className="flex-1 flex flex-col">
                         <div className="border border-gray-300 text-black p-4 flex flex-row gap-2">
                             <img
-                                src="https://images.hdqwalls.com/wallpapers/spiderman-on-phone-4k-0w.jpg"
+                                src="https://th.bing.com/th/id/R.82e7b0dde3962ee48ffd188bafa56947?rik=SdapAzHczDMeng&riu=http%3a%2f%2fcdn.theatlantic.com%2fassets%2fmedia%2fimg%2fmt%2f2016%2f01%2fsuperman%2flead_960.jpg%3f1454104448&ehk=3fLCjQb2maef7OIDEleg%2bnB4Z%2fMwDr70MZCrQWGwOu4%3d&risl=&pid=ImgRaw&r=0"
                                 alt=""
                                 className="w-12 h-12 rounded-full"
                             />
                             <div className="flex flex-col">
-                                <h1 className="text-xl font-mono">Spiderman</h1>
+                                <h1 className="text-xl font-mono">Superman</h1>
                                 <span className="text-gray-400 text-sm">Online</span>
                             </div>
                             <div className="w-full flex justify-end">
@@ -77,4 +77,4 @@ function ChatPage() {
     )
 }
 
-export default ChatPage
+export default OwnerChat

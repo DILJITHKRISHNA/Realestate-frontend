@@ -233,6 +233,9 @@ function ProfilePage() {
                         <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                             Notifications
                         </Link>
+                        <Link to='/enquiry' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                            My Enquiries
+                        </Link>
                         <h1 className='flex flex-row ml-2 py-2 font-bold '>
                             <FaHome className='w-10 h-5' /> Property Management
                         </h1>

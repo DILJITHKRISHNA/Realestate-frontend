@@ -220,3 +220,23 @@ export async function NewProfileData(formData, id) {
         console.log(error);
     }
 }
+export async function PropertyReserve(propertyId, reserveData, userId, ownerId) {
+    console.log(reserveData, "PropertyReserve ");
+    try {
+        const res = await userRequest.post(`/reserve/${propertyId}`, {reserveData, userId, ownerId});
+        console.log(res, "res in PropertyReserve apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function FetchEnquiry() {
+    console.log( "FetchEnquiry ");
+    try {
+        const res = await userRequest.get('/enquiry');
+        console.log(res, "res in FetchEnquiry apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

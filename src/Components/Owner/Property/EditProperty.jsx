@@ -8,9 +8,13 @@ function EditProperty({ Data, propertyId }) {
     const [open, setOpen] = useState(false);
     const [previewVideo, setPreviewVideo] = useState('')
     const [previewSource, setPreviewSource] = useState('')
+    const [image, setImage] = useState([])
     const [category, setCategory] = useState([])
 
     const handleOpen = () => setOpen(!open);
+
+
+    console.log(Data.imageUrls, "miffjjf");
     const [details, SetDetails] = useState({
         title: Data ? Data.name : "",
         type: Data ? Data.type : "",
@@ -23,7 +27,7 @@ function EditProperty({ Data, propertyId }) {
         buildUpArea: Data ? Data.buildUpArea : "",
         FloorCount: Data ? Data.FloorCount : "",
         balconies: Data ? Data.balcony : "",
-        imageUrl: Data.imageUrls,
+        imageUrl: previewSource || Data.imageUrls,
         videoUrl: Data.videoUrls,
         location: Data ? Data.location : "",
         country: Data ? Data.country : "",
@@ -79,7 +83,7 @@ function EditProperty({ Data, propertyId }) {
             formData.append("upload_preset", "dev_setups");
 
             const cloudinaryResponse = await fetch(
-                "https://api.cloudinary.com/v1_1/dqewi7vjr/video/upload",  // Note the change to video/upload endpoint
+                "https://api.cloudinary.com/v1_1/dqewi7vjr/video/upload",
                 {
                     method: "POST",
                     body: formData,
@@ -114,11 +118,18 @@ function EditProperty({ Data, propertyId }) {
         handleUploadVideo(e)
 
     }
+    const handleImageDeselect = (index) => {
+        const updatedPreviewSource = [...previewSource];
+        updatedPreviewSource.splice(index, 1);
 
-    const handleImageDeselect = () => {
-        setPreviewSource('');
-        SetDetails(prevState => ({ ...prevState, imageUrl: Data ? Data.imageUrls : "" }));
+        setPreviewSource(updatedPreviewSource);
+
+        SetDetails(prevState => ({
+            ...prevState,
+            imageUrl: updatedPreviewSource.length > 0 ? updatedPreviewSource : Data ? Data.imageUrls : ""
+        }));
     };
+
     const handleFileInputChange = async (e) => {
         const files = e.target.files;
 
@@ -169,7 +180,7 @@ function EditProperty({ Data, propertyId }) {
         try {
             const data = {
                 ...details,
-                imageUrl: previewSource
+                imageUrl: previewSource.length > 0 ? previewSource : Data.imageUrls
             }
             if (
                 !details.title ||
@@ -182,6 +193,8 @@ function EditProperty({ Data, propertyId }) {
                 !details.FloorCount ||
                 !details.location ||
                 !details.country ||
+                !details.imageUrl ||
+                !details.videoUrl ||
                 !details.city ||
                 !details.balconies
             ) {
@@ -200,7 +213,9 @@ function EditProperty({ Data, propertyId }) {
                 const res = await PropertyEdit(data, propertyId);
                 if (res.data.success) {
                     toast.success("Property Edited Successfully")
-                    setOpen(!open)
+                    setTimeout(() => {
+                        setOpen(!open)
+                    }, 1000);
                 }
             }
         } catch (error) {
@@ -420,26 +435,28 @@ function EditProperty({ Data, propertyId }) {
                                                     />
                                                     {previewSource.length > 0 ? (
                                                         previewSource.map((url, index) => (
-                                                            <div key={index} className='flex flex-row'>
+                                                            <div key={index} className='flex flex-row items-center'>
                                                                 <img
                                                                     src={url}
                                                                     alt={`chosen-${index}`}
                                                                     className='h-[50px] w-[50px] rounded-full mx-2'
                                                                 />
                                                                 <FaTimes
-                                                                    className='text-xl text-red-700'
+                                                                    className='absolute ml-10 mb-6 text-xl text-red-700 cursor-pointer'
                                                                     onClick={() => handleImageDeselect(index)}
-                                                                >
-                                                                    Erase
-                                                                </FaTimes>
+                                                                />
                                                             </div>
                                                         ))
                                                     ) : (
-                                                        <img
-                                                            src={Data.imageUrls[0]}
-                                                            alt="chosen"
-                                                            className='h-[50px] w-[50px] rounded-full'
-                                                        />
+                                                        Data.imageUrls.map((url, index) => (
+                                                            <div key={index} className='flex flex-row items-center'>
+                                                                <img
+                                                                    src={url}
+                                                                    alt={`chosen-${index}`}
+                                                                    className='h-[50px] w-[50px] rounded-full mx-2'
+                                                                />
+                                                            </div>
+                                                        ))
                                                     )}
 
 

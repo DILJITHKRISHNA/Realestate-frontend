@@ -17,22 +17,19 @@ function EachProperty() {
   useEffect(() => {
 
     const getPropertyData = async () => {
+      
       const res = await FetchData()
       const Details = res.data.data
-      const date = Details[0].createdAt
-      const dateObject = new Date(date);
-
-
       const propertyData = Details.find((item) => item._id === id)
       setProperty(propertyData)
     }
     getPropertyData()
   }, [])
 
-  const date = property.createdAt;
-  console.log(date, "dateee");
+  const date = property?.createdAt;
   const dateObject = new Date(date);
   const formattedDate = dateObject.toLocaleDateString();
+  console.log(formattedDate, "dateee");
 
   const handleBook = async (e) => {
     e.preventDefault()
@@ -51,8 +48,16 @@ function EachProperty() {
     }
   }
 
-
-
+  const handleReserve = () => {
+    try {
+      toast.success("Property Reservation is on process!")
+      setTimeout(() => {
+        navigate('/reserve', { state: { propertyId: property._id } })
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       <div>
@@ -65,7 +70,7 @@ function EachProperty() {
             />
           )}
 
-          <div className='flex flex-col'>
+          <div className='flex flex-col '>
             {property.imageUrls && property.imageUrls.slice(1, 4).map((imageUrl, index) => (
               <img
                 key={index + 1}
@@ -153,7 +158,7 @@ function EachProperty() {
             </ul>
             <div className='flex justify-between'>
               <button className='mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400 '> SHARE</button>
-              <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400 '> Reserve</button>
+              <button to='/reserve' className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleReserve}> Reserve</button>
               <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleBook}> Book</button>
             </div>
           </div>
