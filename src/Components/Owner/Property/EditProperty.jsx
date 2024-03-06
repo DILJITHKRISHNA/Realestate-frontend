@@ -209,7 +209,7 @@ function EditProperty({ Data, propertyId }) {
             ) {
                 toast.error("Negative numbers are not allowed!");
             } else {
-
+                window.location.reload()
                 const res = await PropertyEdit(data, propertyId);
                 if (res.data.success) {
                     toast.success("Property Edited Successfully")

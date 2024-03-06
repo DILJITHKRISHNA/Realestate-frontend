@@ -84,7 +84,7 @@ function EnquiryList() {
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
                                                     <div className="ml-6">
-                                                        <PropertyAbout propertyId={data.property_id} className="whitespace-no-wrap border-2" />
+                                                        <PropertyAbout propertyId={data.Property_id} className="whitespace-no-wrap border-2" />
                                                     </div>
                                                 </div>
                                             </td>

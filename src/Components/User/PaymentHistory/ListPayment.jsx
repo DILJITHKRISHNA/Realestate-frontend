@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { CancelBookPayment, FetchPaymentData } from "../../../Api/UserApi";
 import { FaStripe } from "react-icons/fa";
 import { HiMiniXCircle, HiOutlineCheckCircle } from "react-icons/hi2";
-
+import { PropertyAbout } from '../EnquiryList/PropertyAbout.jsx'
 export function ListPayment() {
 
     const [history, setHistory] = useState([]);
@@ -77,7 +77,7 @@ export function ListPayment() {
                                     <th className="px-5 py-3">Payer</th>
                                     <th className="px-5 py-3">Payment Date</th>
                                     <th className="px-5 py-3">Payment Type</th>
-                                    <th className="px-5 py-3">Property Id</th>
+                                    <th className="px-5 py-3">Property Name</th>
                                     <th className="px-5 py-3">Mobile</th>
                                     <th className="px-5 py-3">Amount</th>
                                     <th className="px-5 py-3">Status</th>
@@ -115,7 +115,7 @@ export function ListPayment() {
                                         <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                             <div className="flex items-center">
                                                 <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" >{data.property_id}</p>
+                                                    <PropertyAbout propertyId={data.property_id} className="whitespace-no-wrap" />
                                                 </div>
                                             </div>
                                         </td>

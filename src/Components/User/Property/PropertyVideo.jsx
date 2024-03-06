@@ -25,7 +25,7 @@ function PropertyVideo({ videoUrl }) {
                     >
                         <div className="flex items-center justify-between">
                             <Typography variant="h5" color="blue-gray">
-                                <video src={videoUrl} className='rounded-lg' autoPlay/>
+                                <video src={videoUrl} className='rounded-lg' autoPlay muted/>
                             </Typography>
                             <div className="relative mb-6 flex items-start justify-between">
                                 <IconButton

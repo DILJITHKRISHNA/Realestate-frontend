@@ -123,7 +123,7 @@ function LoginPage() {
                   <strong>Sign up </strong> for a new account
                 </Link>
               </form>
-              <button className='w-full md:w-[70%] mt-4 md:mt-6 px-4 py-2 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button>
+              {/* <button className='w-full md:w-[70%] mt-4 md:mt-6 px-4 py-2 border bg-black rounded-md focus:outline-none focus:border-white text-white hover:bg-white hover:text-black'>Google</button> */}
             </div>
           </div>
         </div>

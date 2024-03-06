@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { faBed, faBath, faChair, faParking, faDownLeftAndUpRightToCenter, faHouseFloodWater } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FetchData, IsBooked } from '../../../Api/UserApi';
+import { FetchData, FetchPropertyData, IsBooked } from '../../../Api/UserApi';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify'
 import BookProperty from '../Booking/BookProperty';
@@ -17,8 +17,8 @@ function EachProperty() {
   useEffect(() => {
 
     const getPropertyData = async () => {
-      
-      const res = await FetchData()
+
+      const res = await FetchPropertyData()
       const Details = res.data.data
       const propertyData = Details.find((item) => item._id === id)
       setProperty(propertyData)
@@ -64,17 +64,17 @@ function EachProperty() {
         <div className="flex flex-col lg:flex-row ml-10">
           {property.imageUrls && property.imageUrls.length > 0 && (
             <img
-              className="object-cover object-center w-full lg:w-[60%] h-full lg:h-[100%] rounded-xl mt-4 lg:mt-24 lg:ml-14"
+              className="object-cover object-center w-2/3 h-64 md:h-96 lg:h-full rounded-xl mt-4 md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
               src={property.imageUrls[0]}
               alt="nature image"
             />
           )}
 
-          <div className='flex flex-col '>
+          <div className='flex flex-col justify-between'>
             {property.imageUrls && property.imageUrls.slice(1, 4).map((imageUrl, index) => (
               <img
                 key={index + 1}
-                className="object-cover object-center w-full lg:w-[76%] h-full lg:h-[50%] rounded-xl mt-4 lg:mt-24 lg:ml-10"
+                className="object-cover object-center w-3/5 h-64 md:h-96 lg:h-[40%] rounded-xl mt-4 md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
                 src={imageUrl}
                 alt={`nature image ${index + 1}`}
               />

@@ -34,9 +34,10 @@ function AddDetails({ SetOpen }) {
         state: "",
     });
 
-    const handleClose = () => {
+    const handleClose = (e) => {
+        window.location.reload();
         SetOpen(false);
-    }
+    };
 
     const handleClick = (e) => {
         const { name, value } = e.target;
@@ -138,8 +139,8 @@ function AddDetails({ SetOpen }) {
             !details.FloorCount ||
             !details.location ||
             !details.country ||
-            !details.videoUrl||
-            !details.imageUrl ||
+            // !details.videoUrl||
+            // !details.imageUrl ||
             !details.city ||
             !details.balconies
         ) {

@@ -92,8 +92,18 @@ export async function userLoginGoogle(userData) {
 export async function FetchData(id) {
     console.log("entert to fetch dataaa in apiii");
     try {
-        const response = await userRequest.get('/property');
+        const response = await userRequest.get(`/property/${id}`);
         console.log(response, "respnse in fetchdataa proeptuuu apii");
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function FetchPropertyData() {
+    console.log("entert to FetchPropertyData in apiii");
+    try {
+        const response = await userRequest.get('/property');
+        console.log(response, "respnse in FetchPropertyData  apii");
         return response;
     } catch (error) {
         console.log(error);
