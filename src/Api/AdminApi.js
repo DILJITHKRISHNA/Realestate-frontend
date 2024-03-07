@@ -1,4 +1,3 @@
-import axios, { Axios } from 'axios'
 import adminRequest from "../utils/adminRequest.js"
 
 
@@ -61,7 +60,7 @@ export async function FetchCategory() {
 
 export async function UserBlockUnBlock(id) {
     try {
-        const result = await adminRequest.post(`/admin/userlist/${id}`)
+        const result = await adminRequest.patch(`/admin/userlist/${id}`)
         console.log(result,"resukltttttttttttttttt");
         return result
     } catch (error) {
@@ -72,7 +71,7 @@ export async function UserBlockUnBlock(id) {
 export async function OwnerBlockUnBlock(OwnerId) {
     console.log(OwnerId,"id in apiiii")
     try {
-        const result = await adminRequest.post(`/admin/ownerlist/${OwnerId}`)
+        const result = await adminRequest.patch(`/admin/ownerlist/${OwnerId}`)
         console.log(result,"resukltttttttttttttttt");
         return result
     } catch (error) {
@@ -96,7 +95,7 @@ export async function kycList(){
 
 export async function approveOwner(kycId){
     try {
-        const res = await adminRequest.get(`/approveKyc/${kycId}`)
+        const res = await adminRequest.patch(`/approveKyc/${kycId}`)
         return res
     } catch (error) {
         console.log(error);
@@ -105,7 +104,7 @@ export async function approveOwner(kycId){
 
 export async function blockCategory(id){
     try {
-        const result = await adminRequest.post(`/admin/category/${id}`)
+        const result = await adminRequest.patch(`/admin/category/${id}`)
         console.log(result,"rstttt");
         return result
     } catch (error) {
@@ -156,7 +155,7 @@ export async function PropertGet(id){
 export async function EditCat(id, category){
     console.log(id,"idd in edit cat aopiiii");
     try {
-        const response = await adminRequest.post(`/admin/editcategory/${id}`, category);
+        const response = await adminRequest.patch(`/admin/editcategory/${id}`, category);
         console.log(response,"res in edit cat admin apiii");
         return response
     } catch (error) {

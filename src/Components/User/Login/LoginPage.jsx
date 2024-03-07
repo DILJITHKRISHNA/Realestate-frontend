@@ -106,10 +106,11 @@ function LoginPage() {
                 setTimeout(() => {
                     navigate('/');
                 }, 1000);
-            } else if (response.data.success === false && response.data.user.is_block === true) {
+            } else if (response.data.success === false ) {
+                toast.error("Invalid credentials!");
+            }else if(response.data.user.is_block === true) {
                 toast.error("You are blocked by Admin");
-                // } else {
-                //     toast.error("Invalid credentials. Please try again.");
+
             }
         } catch (error) {
             console.error('Login failed:', error.message);

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import ownerRequest from '../utils/ownerRequest'
 
 // const OwnerApi = axios.create({
@@ -111,7 +110,7 @@ export async function FetchProperty(id) {
 export async function PropertyEdit(details, id) {
     console.log(id,'edit propertyyy');
     try {
-        const response = await ownerRequest.post(`/owner/editproperty/${id}`,details)
+        const response = await ownerRequest.put(`/owner/editproperty/${id}`,details)
         console.log(response," response in oowner EDit property apiiiiii");
         return response
     } catch (error) {
@@ -121,7 +120,7 @@ export async function PropertyEdit(details, id) {
 export async function HideProperty(id) {
     console.log(id,'hide propertyyy');
     try {
-        const response = await ownerRequest.post(`/owner/hideproperty/${id}`)
+        const response = await ownerRequest.patch(`/owner/hideproperty/${id}`)
         console.log(response," response in oowner hide property apiiiiii");
         return response
     } catch (error) {
@@ -172,7 +171,7 @@ export async function getOwner(id) {
 export async function addOwnerImage(imageUrl, ownerId) {
     console.log(imageUrl, ownerId, "addProfileImage ");
     try {
-        const res = await ownerRequest.post(`/profileimage/${ownerId}`, imageUrl);
+        const res = await ownerRequest.patch(`/profileimage/${ownerId}`, imageUrl);
         console.log(res, "res in addOwnerProfileImage apii");
         return res
     } catch (error) {

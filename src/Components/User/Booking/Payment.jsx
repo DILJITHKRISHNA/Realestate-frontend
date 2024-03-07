@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Payment({ clientSecret, name, contact, email, re_location, propertyId, Rent }) {
 
     const selector = useSelector(state => state.user.userInfo.id)
+    const ownerId = useSelector(state => state.owner.OwnerInfo.id)
     console.log(selector, "userIddd");
     const navigate = useNavigate()
     const stripe = useStripe();
@@ -63,7 +64,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                     email: email
                 }
                 console.log(bookData, "booked data");
-                const response = await SuccessRequest(bookData, propertyId, selector)
+                const response = await SuccessRequest(bookData, propertyId, selector, ownerId)
                 console.log(response, "response when it is sucecss");
                 if (response.data.success) {
                     toast.success("Property Booked Successfully", {

@@ -4,8 +4,9 @@ import { CancelBookPayment, FetchPaymentData } from "../../../Api/UserApi";
 import { FaStripe } from "react-icons/fa";
 import { HiMiniXCircle, HiOutlineCheckCircle } from "react-icons/hi2";
 import { PropertyAbout } from '../EnquiryList/PropertyAbout.jsx'
+import { useSelector } from "react-redux";
 export function ListPayment() {
-
+    const selector = useSelector(state => state.user.userInfo);
     const [history, setHistory] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -15,9 +16,11 @@ export function ListPayment() {
         const getPaymentData = async () => {
             try {
                 const response = await FetchPaymentData()
+                const data = response.data.history
+                const details = data.find((item)=>item.user_id === selector.id)
                 console.log(response, "Ress in payment historyyy ");
-                if (response.data.success) {
-                    setHistory(response.data.history)
+                if (details) {
+                    setHistory(data)
                 }
             } catch (error) {
                 console.log("getPaymentData", error);

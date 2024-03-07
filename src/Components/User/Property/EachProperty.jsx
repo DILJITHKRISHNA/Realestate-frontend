@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify'
 import BookProperty from '../Booking/BookProperty';
 import PropertyVideo from './PropertyVideo';
+import PropertyShare from './PropertyShare';
 
 function EachProperty() {
   const location = useLocation()
@@ -58,6 +59,7 @@ function EachProperty() {
       console.log(error);
     }
   }
+
   return (
     <>
       <div>
@@ -157,7 +159,7 @@ function EachProperty() {
               <li className='mt-6 font-mono'>Bathrooms:  {property.bathrooms} </li>
             </ul>
             <div className='flex justify-between'>
-              <button className='mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400 '> SHARE</button>
+              <PropertyShare propertyId={property._id} className=''/>
               <button to='/reserve' className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleReserve}> Reserve</button>
               <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleBook}> Book</button>
             </div>

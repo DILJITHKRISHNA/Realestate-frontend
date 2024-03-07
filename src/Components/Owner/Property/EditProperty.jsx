@@ -3,39 +3,68 @@ import { ToastContainer, toast } from 'react-toastify'
 import { FaTimes } from 'react-icons/fa'
 import { FetchCategory, PropertyEdit } from '../../../Api/OwnerApi';
 
-function EditProperty({ Data, propertyId }) {
-
+function EditProperty({ propertyId, property , index }) {  
+    console.log(propertyId,"]]333333333333]]");
     const [open, setOpen] = useState(false);
     const [previewVideo, setPreviewVideo] = useState('')
     const [previewSource, setPreviewSource] = useState('')
     const [image, setImage] = useState([])
+    const [Data,setData]=useState()
     const [category, setCategory] = useState([])
 
     const handleOpen = () => setOpen(!open);
 
-
-    console.log(Data.imageUrls, "miffjjf");
-    const [details, SetDetails] = useState({
-        title: Data ? Data.name : "",
-        type: Data ? Data.type : "",
-        rent: Data ? Data.Rent : "",
-        additionalDetails: Data ? Data.details : "",
-        bedroom: Data ? Data.bedrooms : "",
-        bathroom: Data ? Data.bathrooms : "",
-        parking: Data ? Data.parking : "",
-        furnished: Data ? Data.furnished : "",
-        buildUpArea: Data ? Data.buildUpArea : "",
-        FloorCount: Data ? Data.FloorCount : "",
-        balconies: Data ? Data.balcony : "",
-        imageUrl: previewSource || Data.imageUrls,
+useEffect(()=>{
+    const data=property.find((item)=>item._id===propertyId)
+    if (data){
+        setData(data)
+    }
+},[propertyId])
+    
+const [details, setDetails] = useState({
+    title: "",
+    type: "",
+    rent: "",
+    additionalDetails: "",
+    bedroom: "",
+    bathroom: "",
+    parking: "",
+    furnished: false,
+    buildUpArea: "",
+    FloorCount: "",
+    balconies: "",
+    imageUrl: "",
+    videoUrl: [],
+    location: "",
+    country: "",
+    city: "",
+    state: "",
+  });
+  
+  useEffect(() => {
+    if (Data) {
+      setDetails({
+        title: Data.name,
+        type: Data.type,
+        rent: Data.Rent,
+        additionalDetails: Data.details,
+        bedroom: Data.bedrooms,
+        bathroom: Data.bathrooms,
+        parking: Data.parking,
+        furnished: Data.furnished,
+        buildUpArea: Data.buildUpArea,
+        FloorCount: Data.FloorCount,
+        balconies: Data.balcony,
+        imageUrl: Data.imageUrls, 
         videoUrl: Data.videoUrls,
-        location: Data ? Data.location : "",
-        country: Data ? Data.country : "",
-        city: Data ? Data.city : "",
-        state: Data ? Data.state : "",
-    });
-
-
+        location: Data.location,
+        country: Data.country,
+        city: Data.city,
+        state: Data.state,
+      });
+    }
+  }, [Data]); 
+  
     const uploadImage = async (files) => {
         try {
             const uploadedImageUrls = [];
@@ -124,7 +153,7 @@ function EditProperty({ Data, propertyId }) {
 
         setPreviewSource(updatedPreviewSource);
 
-        SetDetails(prevState => ({
+        setDetails(prevState => ({
             ...prevState,
             imageUrl: updatedPreviewSource.length > 0 ? updatedPreviewSource : Data ? Data.imageUrls : ""
         }));
@@ -144,18 +173,27 @@ function EditProperty({ Data, propertyId }) {
     const handleVideoInputChange = async (e) => {
         const file = e.target.files[0];
         const url = await uploadVideo(file);
-        SetDetails(prevState => ({ ...prevState, videoUrl: url }));
+        setDetails(prevState => ({ ...prevState, videoUrl: url }));
         setPreviewVideo(url);
         console.log(previewVideo, "video urlll");
     }
 
-    const handleUploadImage = (e) => {
-        console.log("image submitting...");
+    const handleUploadImage = async(e) => {
         e.preventDefault()
-        if (!previewSource) {
-            return
+        if (!previewSource || previewSource.length === 0) {
+            return;
         }
-        uploadImage(previewSource)
+    
+        try {
+            const uploadedImageUrls = await uploadImage(previewSource);
+            setDetails((prevState) => ({
+                ...prevState,
+                imageUrl: uploadedImageUrls,
+            }));
+            console.log(uploadedImageUrls,"image urllss");
+        } catch (error) {
+            console.error("Error uploading images:", error);
+        }
     }
     console.log(previewSource, "imagess counttt");
     const handleUploadVideo = (e) => {
@@ -170,7 +208,7 @@ function EditProperty({ Data, propertyId }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log(name, value, "pppppppppppppppp");
-        SetDetails((prevState) => ({
+        setDetails((prevState) => ({
             ...prevState,
             [name]: value,
         }));
@@ -180,8 +218,8 @@ function EditProperty({ Data, propertyId }) {
         try {
             const data = {
                 ...details,
-                imageUrl: previewSource.length > 0 ? previewSource : Data.imageUrls
-            }
+                imageUrl: previewSource.length > 0 ? previewSource : Data.imageUrls,
+            };
             if (
                 !details.title ||
                 !details.type ||
@@ -209,12 +247,12 @@ function EditProperty({ Data, propertyId }) {
             ) {
                 toast.error("Negative numbers are not allowed!");
             } else {
-                window.location.reload()
-                const res = await PropertyEdit(data, propertyId);
+                const res = await PropertyEdit(data, Data._id);
                 if (res.data.success) {
                     toast.success("Property Edited Successfully")
                     setTimeout(() => {
                         setOpen(!open)
+                        window.location.reload()
                     }, 1000);
                 }
             }
@@ -235,11 +273,7 @@ function EditProperty({ Data, propertyId }) {
             }
         }
         getCat()
-    }, [])
-
-    const handlePropertyTypeChange = (event) => {
-        setPropertyType(event.target.value);
-    };
+    }, [Data,])
 
     return (
         <>
@@ -291,16 +325,18 @@ function EditProperty({ Data, propertyId }) {
                                                 />
                                             </div>
                                             <div className="mb-4">
-                                                <div className="mb-4">
-                                                    <label className="block text-sm font-medium text-gray-700">Property Type</label>
-                                                    <input
-                                                        type="text"
-                                                        name="type"
-                                                        value={details['type']}
-                                                        onChange={handleChange}
-                                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                                    />
-                                                </div>
+                                                <label className="block text-sm font-medium text-gray-700">Property Type</label>
+                                                <select
+                                                    name="type"
+                                                    value={details['type']}
+                                                    onChange={handleChange}
+                                                    className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                                >
+                                                    <option value="" disabled>Select Property Type</option>
+                                                    {category.map((data) => (
+                                                        <option value={data.category} >{data.category}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                             <div className="mb-4">
                                                 <label className="block text-sm font-medium text-gray-700">Expected Rent</label>

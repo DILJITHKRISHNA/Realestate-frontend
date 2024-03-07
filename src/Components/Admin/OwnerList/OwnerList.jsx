@@ -45,10 +45,10 @@ function OwnerList() {
       setOwners(updatedOwners);
 
       // Update localStorage
-      localStorage.setItem('owners', JSON.stringify(updatedOwners));
+      localStorage.setItem('ownertok', JSON.stringify(updatedOwners));
 
       if (!is_block) {
-        localStorage.removeItem('token');
+        localStorage.removeItem('ownertok');
         toast.success("Owner blocked");
       } else {
         toast.success("Owner unblocked");

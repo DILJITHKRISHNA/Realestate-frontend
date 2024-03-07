@@ -5,21 +5,24 @@ import { WishlistData } from '../../../Api/UserApi';
 import { toast } from 'react-toastify';
 
 function Wishlist() {
-    const selector = useSelector(state => state.owner.OwnerInfo)
+    const selector = useSelector(state => state.user.userInfo)
+    console.log(selector,"88888888888");
     const [openRight, setOpenRight] = useState(false);
     const [wishlist, setwishlist] = useState([]);
-    console.log(wishlist, "wishlist");
-    console.log(wishlist[1], "wishlist");
+ 
 
     const handleDrawer = () => setOpenRight(!openRight);
 
     useEffect(() => {
         const fetchWishlistData = async () => {
             try {
-                const fetchData = await WishlistData(selector.id)
-                console.log(fetchData, "fetch wishlist dataa");
-                if (fetchData.data.success) {
-                    setwishlist(fetchData.data.getData)
+                const fetchData = await WishlistData()
+                console.log(fetchData,"data in wishlist");
+                const details = fetchData.data.getData
+                console.log(details,"detaiillsss");
+                const data = details.find((item)=>item.userRef === selector.id)
+                if (data) {
+                    setwishlist(details)
                 }
             } catch (error) {
                 console.log(error);

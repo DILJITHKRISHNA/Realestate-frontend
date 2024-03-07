@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../AdminSidebar/Sidebar';
 import Header from '../AdminHeader/Header';
-import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify'
 import { FetchUserDetails, UserBlockUnBlock } from '../../../Api/AdminApi';
 import { FaUser } from 'react-icons/fa';
@@ -39,28 +38,24 @@ function UserList() {
 
   const userBlockHandle = async (id, is_block) => {
     console.log(id, "iddddddddddddd enter to userblock handleeeeee");
+
     try {
-
-
       const res = await UserBlockUnBlock(id);
       console.log(res, "ressssssssss in useblockHandle in userlist");
 
-      const updatedUsers = users.map((user) => {
-        if (user._id === id) {
-          return { ...user, is_block: !is_block };
-        }
-        return user;
-      });
+      const updatedUsers = users.map((user) =>
+        user._id === id ? { ...user, is_block: !is_block } : user
+      );
 
       setUsers(updatedUsers);
 
+      const blockAction = !is_block ? "blocked" : "unblocked";
+      console.log(is_block, `User ${blockAction}`);
+      toast.success(`User ${blockAction}`);
+
       if (!is_block) {
         console.log(is_block, "blocked status 1");
-        toast.success("User blocked");
         localStorage.removeItem('token');
-      } else {
-        console.log(is_block, "blocked status 2");
-        toast.success("User unblocked");
       }
     } catch (error) {
       console.log("Error during user blocking:", error);
@@ -79,7 +74,7 @@ function UserList() {
   const filtereduser = currentItems.filter(
     (data) =>
       String(data.username).toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(data.mobile).includes(searchTerm) || 
+      String(data.mobile).includes(searchTerm) ||
       String(data.email).toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -143,19 +138,13 @@ function UserList() {
 
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <td className="border-b border-gray-200 bg-white px-1 py-5 text-sm">
-                          {!state ? (
-                            <button
-                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-red-700 text-white `}
-                              onClick={() => userBlockHandle(user._id, user.is_block)}>
-                              Block
-                            </button>
-                          ) : (
-                            <button
-                              className={`rounded-full px-3 py-1 text-xs font-semibold bg-black text-white `}
-                              onClick={() => userBlockHandle(user._id, user.is_block)}>
-                              Unblock
-                            </button>
-                          )}
+                          <button
+                            className={`rounded-full px-3 py-1 text-xs font-semibold ${user.is_block ? "bg-black text-white" : "bg-red-700 text-white"
+                              }`}
+                            onClick={() => userBlockHandle(user._id, user.is_block)}
+                          >
+                            {user.is_block ? "Unblock" : "Block"}
+                          </button>
                         </td>
                       </td>
                     </tr>

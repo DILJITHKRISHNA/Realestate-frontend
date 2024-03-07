@@ -5,17 +5,21 @@ import { FaCartArrowDown, FaListOl, FaSearch } from 'react-icons/fa';
 import { HiMiniXCircle, HiOutlineCheckCircle } from 'react-icons/hi2';
 import { FetchEnquiry } from '../../../Api/UserApi';
 import { PropertyAbout } from './PropertyAbout';
+import { useSelector } from 'react-redux'
 
 function EnquiryList() {
+    const selector = useSelector(state => state.user.userInfo)
     const [enquiryData, setEnquiryData] = useState([])
 
     useEffect(() => {
         const FetchReservations = async () => {
             try {
                 const res = await FetchEnquiry()
+                const data = res.data.enquiryData
+                const details = data.find((item)=>item.UserRef === selector.id)
                 console.log(res, "res in enquiry fetching ");
-                if (res.data.success) {
-                    setEnquiryData(res.data.enquiryData)
+                if (details) {
+                    setEnquiryData(data)
                 }
             } catch (error) {
                 console.log(error);

@@ -3,7 +3,7 @@ import { HomeIcon, SearchIcon } from '@heroicons/react/solid';
 import { FaCheckCircle, FaEdit } from 'react-icons/fa'
 import { useLocation, useNavigate } from 'react-router-dom';
 import AddDetails from './AddDetails';
-import { GetProperty, HideProperty, PaginateProperty } from '../../../Api/OwnerApi';
+import { GetProperty, HideProperty, PaginateProperty, getOwner } from '../../../Api/OwnerApi';
 import EditProperty from './EditProperty';
 import { useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,21 +16,42 @@ function PropertyPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [propertiesToDisplay, setPropertiesToDisplay] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [owner, setOwner] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const selector = useSelector(state => state.owner.OwnerInfo)
+
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
+  console.log(propertyData, "d");
   const handleOpen = (e) => {
     e.preventDefault()
-    if (selector.is_Kyc === false) {
+    if (owner.is_Kyc === false) {
       toast.error("Add Kyc to get access to manage property!")
+      setTimeout(() => {
+        navigate('/owner/profile')
+      }, 2000);
     } else {
       SetOpen(true)
     }
   }
+
+  useEffect(() => {
+    const fetchOwner = async () => {
+      try {
+        const res = await getOwner(selector.id);
+        console.log(res, "rrrrrrrrrespons fetchowner");
+        if (res.data.success) {
+          const data = res.data.OwnerData
+          setOwner(data)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchOwner()
+  }, [])
 
   useEffect(() => {
 
@@ -49,7 +70,7 @@ function PropertyPage() {
   }, [])
   const fetchProperties = async () => {
     try {
-      const response = await PaginateProperty(currentPage, selector.id);
+      const response = await PaginateProperty(currentPage);
       console.log(response, "resppppp in ownere paginate");
       const datas = response.data.PropertyData
       const filteredData = datas.filter((item) => item.ownerRef === selector.id)
@@ -109,12 +130,12 @@ function PropertyPage() {
         </div>
         {propertiesToDisplay.filter((property) =>
           property.name.toLowerCase().includes(searchQuery.toLowerCase())
-        ).map((data) => (
+        ).map((data, index) => (
           <div className='flex w-[90%] justify-center'>
             <div className='flex flex-col pb-4 mb-4 w-[90%] bg-white rounded-sm shadow-md shadow-black'>
               <div className='flex flex-col'>
-              {data.imageUrls.length > 0 && (
-                  <div  className='flex flex-row '>
+                {data.imageUrls.length > 0 && (
+                  <div className='flex flex-row '>
                     <img
                       src={data.imageUrls[0]}
                       alt="image"
@@ -155,7 +176,7 @@ function PropertyPage() {
                           className='ml-96 bg-red-600 h-8 mt-24 px-6 font-semibold text-white hover:bg-white hover:border-2
                          hover:border-red-600 hover:text-red-600 rounded-md'>Unhide</button>
                       )}
-                      < EditProperty Data={data} propertyId={data._id} />
+                      < EditProperty propertyId={data._id} index={index} property={propertiesToDisplay} />
                     </div>
                   </div>
                 )}

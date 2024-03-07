@@ -5,9 +5,10 @@ import { HiOutlineCheckCircle, HiMiniXCircle } from "react-icons/hi2";
 import PropertyDetails from './PropertyDetails';
 import { FaCartArrowDown } from 'react-icons/fa';
 import { SearchIcon } from '@heroicons/react/solid';
+import { useSelector } from 'react-redux';
 
 const BookingList = () => {
-
+    const selector = useSelector(state=> state.owner.OwnerInfo.id);
     const [bookings, setBookings] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -21,9 +22,11 @@ const BookingList = () => {
         const getBookings = async () => {
             try {
                 const response = await FetchBookings()
+                const data = response.data.GetData
+                const details = data.find((item)=>item.owner_id === selector)
                 console.log(response, "ressssss in fetchbooooookk");
-                if (response.data.success) {
-                    setBookings(response.data.GetData)
+                if (details) {
+                    setBookings(data)
                 }
             } catch (error) {
                 console.log("getBookings", error);

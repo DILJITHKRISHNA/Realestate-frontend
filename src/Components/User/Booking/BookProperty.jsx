@@ -3,7 +3,7 @@ import { FaStripe } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { BookingData, FetchData, paymentRequest } from '../../../Api/UserApi';
+import { BookingData, FetchPropertyData, paymentRequest } from '../../../Api/UserApi';
 import Payment from './Payment.jsx';
 import { toast } from 'react-toastify';
 
@@ -73,7 +73,7 @@ function BookProperty() {
 
   useEffect(() => {
     const getPropertyData = async () => {
-      const res = await FetchData();
+      const res = await FetchPropertyData();
       const Details = res.data.data;
       const date = Details[0].createdAt;
       const dateObject = new Date(date);

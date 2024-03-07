@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { FetchData, PaginateProperty, SaveProperty } from '../../../Api/UserApi'
+import { FetchCategory, FetchData, PaginateProperty, SaveProperty } from '../../../Api/UserApi'
 import { Link, useNavigate } from 'react-router-dom'
 import { Image } from 'cloudinary-react';
 import { FaRegHeart } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 function PropertyList({ filtered }) {
     const navigate = useNavigate()
+    const selector = useSelector(state => state.user.userInfo.id)
     const [propertiesToDisplay, setPropertiesToDisplay] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [category, setCategory] = useState([])
     const [isWishlisted, setWishlisted] = useState(false);
 
 
@@ -28,7 +31,7 @@ function PropertyList({ filtered }) {
     const handleSaved = async (name, type, rent, ownerId, imageUrls) => {
         try {
             setWishlisted((prev) => !prev);
-            const result = await SaveProperty(name, type, rent, ownerId, imageUrls)
+            const result = await SaveProperty(name, type, rent, ownerId, imageUrls, selector)
             console.log(result, "result while wishlisting property");
             if (result.data.success) {
                 toast("Property Saved to Wishlist!", {
@@ -60,6 +63,21 @@ function PropertyList({ filtered }) {
         navigate(`/propertyeach`, { state: { id } })
     }
     const FilteredProperties = filtered && filtered.length > 0 ? filtered : propertiesToDisplay;
+
+    useEffect(() => {
+        const getCat = async () => {
+            try {
+                const res = await FetchCategory()
+                console.log(res, "reddddddddddddddd");
+                if (res.data.success) {
+                    setCategory(res.data.categoryList);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getCat()
+    }, [])
 
     return (
         <>

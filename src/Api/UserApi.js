@@ -1,4 +1,3 @@
-import axios from 'axios'
 import userRequest from "../utils/userRequest";
 
 
@@ -134,9 +133,9 @@ export async function paymentRequest(propertyId) {
         console.log(error);
     }
 }
-export async function SuccessRequest(bookData, id ,userId) {
+export async function SuccessRequest(bookData, id ,userId, ownerId) {
     try {
-        const res = await userRequest.post(`/property/success/${id}`, { data:  bookData, userId : userId })
+        const res = await userRequest.post(`/property/success/${id}`, { data:  bookData, userId : userId, ownerId: ownerId })
         return res
     } catch (error) {
         console.log(error);
@@ -192,18 +191,27 @@ export async function PaginateProperty(currentPage) {
         console.log(error);
     }
 }
-export async function SaveProperty(name, type, rent, ownerId, imageUrls) {
+export async function propertiesData(id) {
+    console.log(id, "propertiesData ");
     try {
-        const res = await userRequest.post('/wishlist', {name, type, rent, ownerId, imageUrls});
+        const res = await userRequest.get(`/propertiesData/${id}`);
+        console.log(res, "res in propertiesData apii");
         return res
     } catch (error) {
         console.log(error);
     }
 }
-export async function WishlistData(id) {
-    console.log(id, "WishlistData ");
+export async function SaveProperty(name, type, rent, ownerId, imageUrls, userRef) {
     try {
-        const res = await userRequest.get(`/wishlist/${id}`);
+        const res = await userRequest.post('/wishlist', {name, type, rent, ownerId, imageUrls, userRef});
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function WishlistData() {
+    try {
+        const res = await userRequest.get('/wishlistdata');
         console.log(res, "res in WishlistData apii");
         return res
     } catch (error) {
@@ -223,7 +231,7 @@ export async function addProfileImage(imageUrl, userId) {
 export async function NewProfileData(formData, id) {
     console.log(formData, "NewProfileData ");
     try {
-        const res = await userRequest.post(`/editprofile/${id}`, formData);
+        const res = await userRequest.put(`/editprofile/${id}`, formData);
         console.log(res, "res in NewProfileData apii");
         return res
     } catch (error) {
@@ -246,6 +254,26 @@ export async function FetchEnquiry() {
         const res = await userRequest.get('/enquiry');
         console.log(res, "res in FetchEnquiry apii");
         return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function ShareProperty(share, propId) {
+    console.log(propId,share, "ShareProperty ");
+    try {
+        const res = await userRequest.post(`/shareproperty/${propId}`, share);
+        console.log(res, "res in ShareProperty apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function FetchCategory() {
+    console.log('FetchCategory user');
+    try {
+        const response = await userRequest.get('/fetchcategory');
+        return response
     } catch (error) {
         console.log(error);
     }

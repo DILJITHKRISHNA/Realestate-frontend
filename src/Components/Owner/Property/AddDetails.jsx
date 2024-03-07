@@ -252,14 +252,17 @@ function AddDetails({ SetOpen }) {
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Property Type</label>
-                                <input
-                                    type="text"
+                                <select
                                     name="type"
                                     value={details.type}
                                     onChange={handleClick}
-                                    placeholder="Enter Property Type"
                                     className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                />
+                                >
+                                    <option value="" disabled>Select Property Type</option>
+                                    {category.map((data) => (
+                                        <option value={data.category} >{data.category}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">Expected Rent</label>

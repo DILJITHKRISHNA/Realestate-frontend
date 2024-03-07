@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropertyList from './PropertyList'
-import { FetchData } from '../../../Api/UserApi';
+import { FetchCategory, FetchPropertyData } from '../../../Api/UserApi';
 import { FaCreativeCommonsSa } from 'react-icons/fa';
 
 function PropertyPage() {
@@ -11,13 +11,14 @@ function PropertyPage() {
   const [searchLocation, setSearchLocation] = useState('');
   const [loadData, SetLoadData] = useState([])
   const [filtered, setFiltered] = useState([])
+  const [category, setCategory] = useState([])
 
 
   useEffect(() => {
     const FetchProperty = async () => {
       console.log("--------========---------");
       try {
-        const res = await FetchData()
+        const res = await FetchPropertyData()
         console.log(res.data, "responseee to fetch properttyy");
         const property = res.data.data
         SetLoadData(property || []);
@@ -30,7 +31,7 @@ function PropertyPage() {
 
   const handleSearch = () => {
     const filteredProperties = loadData.filter((property) => {
-      const isPropertyTypeMatch = !propertyType || property.type.toLowerCase().includes(propertyType.toLowerCase());
+      const isPropertyTypeMatch = !category || property.type.toLowerCase().includes(propertyType.toLowerCase());
 
       const minPrice = parseFloat(priceRange.min);
       const maxPrice = parseFloat(priceRange.max);
@@ -54,30 +55,50 @@ function PropertyPage() {
 
   }
 
+  useEffect(() => {
+    const getCat = async () => {
+      try {
+        const res = await FetchCategory()
+        console.log(res, "reddddddddddddddd");
+        if (res.data.success) {
+          setCategory(res.data.categoryList);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCat()
+  }, [])
+  console.log(category, "cattttlee");
+
   return (
     <>
-      <div  className='flex flex-wrap mt-16'>
+      <div className='flex flex-wrap mt-16'>
         <div className='z-10 lg:w-[66%] lg:h-auto h-full mt-8 ml-10 rounded-2xl p-2'>
           <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
           <PropertyList filtered={filtered} />
         </div>
-        <div className='absolute w-screen h-screen flex justify-end'>
-          <div className='w-full sm:w-[28%] h-[70%] lg:mt-20 mr-10 bg-black z-10 rounded-2xl '>
+        <div onChange={handleSearch} className='absolute w-screen h-screen flex justify-end'>
+          <div className='w-full sm:w-[28%] h-[70%] lg:mt-20 mr-10 bg-black  rounded-2xl '>
             <div className='p-6 mt-2 gap-1'>
               <h1 className='text-white font-league-spartan text-lg font-bold flex justify-between'>
                 Find Your Property
-              <button onClick={handleRefresh}><FaCreativeCommonsSa className='mr-4 w-5 h-8'/></button>
+                <button onClick={handleRefresh}><FaCreativeCommonsSa className='mr-4 w-5 h-8' /></button>
               </h1>
             </div>
+
             <div className='ml-6 flex flex-col w-[85%]'>
               <label className='text-white font-jura'>Property Type</label>
-              <input
-                type="text"
+              <select
                 value={propertyType}
                 onChange={(e) => setPropertyType(e.target.value)}
-                className='mt-4 h-8 rounded-lg p-2'
-                placeholder='Search By Type'
-              />
+                className='mt-4 h-8 rounded-lg'
+              >
+                <option value="" disabled>Select Property Type</option>
+                {category.map((data, index) => (
+                  <option  value={data.category}>{data.category}</option>
+                ))}
+              </select>
             </div>
             <div className='ml-6 flex flex-col w-[85%] mt-2'>
               <label className='text-white font-jura'>Search By Title</label>
@@ -118,12 +139,12 @@ function PropertyPage() {
                   placeholder='Maximum'
                 />
               </section>
-              <button
+              {/* <button
                 onClick={handleSearch}
                 className='items-center w-auto mr-8 mt-8 border-2
                  border-white text-white rounded-md
                 hover:text-black hover:bg-white'>Search
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

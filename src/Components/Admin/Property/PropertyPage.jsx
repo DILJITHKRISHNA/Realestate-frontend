@@ -139,7 +139,7 @@ function PropertyPage() {
                   <tr>
                     <td className="border-gray-200 bg-white px-5 py-5 text-sm">{index + 1}</td>
                     <td className="border-gray-200 bg-white px-5 py-5 text-sm">
-                      <PropertyDetails propertyId={data._id} className='text-lime-400 border-2 border-lime-400 px-2 rounded-md font-semibold hover:bg-lime-400 hover:text-white' />
+                      <PropertyDetails propertyId={data._id} property={data} className='text-lime-400 border-2 border-lime-400 px-2 rounded-md font-semibold hover:bg-lime-400 hover:text-white' />
                     </td>
                     <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.type}</td>
                     <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.Rent}</td>
