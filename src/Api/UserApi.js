@@ -221,7 +221,7 @@ export async function WishlistData() {
 export async function addProfileImage(imageUrl, userId) {
     console.log(imageUrl, userId, "addProfileImage ");
     try {
-        const res = await userRequest.post(`/profileimage/${userId}`, imageUrl);
+        const res = await userRequest.patch(`/profileimage/${userId}`, imageUrl);
         console.log(res, "res in addProfileImage apii");
         return res
     } catch (error) {
@@ -273,6 +273,53 @@ export async function FetchCategory() {
     console.log('FetchCategory user');
     try {
         const response = await userRequest.get('/fetchcategory');
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function walletPayment(propertyId, userId, name, contact, email, re_locationDate, ownerId) {
+    console.log(propertyId, userId,'walletPayment user');
+    console.log(name, contact, email, re_locationDate,'data');
+    try {
+        const response = await userRequest.put('/walletpayment',{propId: propertyId, userId: userId, ownerId: ownerId, data: {name: name, contact: contact, email: email, re_locationDate: re_locationDate}});
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function FetchWalletHistory() {
+    console.log('FetchWalletHistory user');
+    try {
+        const response = await userRequest.get('/wallethistory');
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function fetchAllUser() {
+    console.log('fetchAllUser user');
+    try {
+        const response = await userRequest.get('/getchatusers');
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function SendMessages(userId, message) {
+    console.log(message,'SendMessages user');
+    try {
+        const response = await userRequest.post(`/sendmessages/${userId}`, {message: message});
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function GetMessages(id) {
+    console.log(id,'GetMessages user');
+    try {
+        const response = await userRequest.get(`/getmessages/${id}`);
         return response
     } catch (error) {
         console.log(error);

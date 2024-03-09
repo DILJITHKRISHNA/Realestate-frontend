@@ -1,22 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { FaStripe } from 'react-icons/fa';
-import { useLocation } from 'react-router-dom';
-import { Elements } from '@stripe/react-stripe-js';
+import { FaInfoCircle, FaStripe, FaWallet } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { CardElement, Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { BookingData, FetchPropertyData, paymentRequest } from '../../../Api/UserApi';
+import { BookingData, FetchProfileData, FetchPropertyData, paymentRequest, walletPayment } from '../../../Api/UserApi';
 import Payment from './Payment.jsx';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 // let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
 let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
 console.log(StripePromise, "pkk");
 
 function BookProperty() {
+
+  const selector = useSelector(state => state.user.userInfo)
+  const ownerId = useSelector(state => state.owner.OwnerInfo.id)
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [walletOpen, setWalletOpen] = useState(false)
   const location = useLocation();
   const propertyId = location.state?.propertyId;
   const [clientSecret, setClientSecret] = useState("");
   const [rent, setRent] = useState();
+  const [user, setUser] = useState();
   const [payment, setPayment] = useState({
     name: '',
     contact: '',
@@ -39,6 +46,7 @@ function BookProperty() {
       fetchPaymentIntent();
     }
   }, [propertyId]);
+
   console.log(rent, "ttttt");
 
   const appearance = {
@@ -57,7 +65,6 @@ function BookProperty() {
     }
   };
   const currentDate = new Date();
-
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -89,6 +96,53 @@ function BookProperty() {
 
   const handleOpen = () => {
     setOpen(!open)
+  }
+
+  const handleWallet = () => {
+    setWalletOpen(!walletOpen)
+  }
+
+  useEffect(() => {
+    const ProfileData = async () => {
+      try {
+        const res = await FetchProfileData(selector.id)
+        if (res.data.success) {
+          setUser(res.data.userData)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    ProfileData()
+  }, [])
+
+  const handlePaymentWallet = async (name, contact, email, re_locationDate) => {
+    try {
+      if (contact === "" || email === "" || name === "" || re_locationDate === "") {
+        toast.error("Please fill all fields")
+      } else {
+        const res = await walletPayment(propertyId, selector.id, name, contact, email, re_locationDate, ownerId)
+        console.log(res, "ress in handlepayment wallet");
+        if (res.data.success) {
+
+          toast("Payment successfull through wallet!")
+          setTimeout(() => {
+            navigate('/success')
+          }, 2000);
+        } else {
+          console.log(res.data, "wallettt in frontt");
+          const userWallet = res.data.userList.wallet
+          const PropertyRent = res.data.propertyList.Rent
+          if (userWallet <= PropertyRent) {
+            toast.error("Wallet balance is not enough to buy this!")
+          } else {
+            toast.error("Error occured while processing your request.")
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -152,7 +206,6 @@ function BookProperty() {
               </div>
             </form>
           </div>
-
           <div className='w-full lg:w-auto p-8 mt-8'>
             <div className='mb-6 lg:flex lg:flex-row'>
               <img
@@ -189,12 +242,21 @@ function BookProperty() {
                 <li className='mb-2 text-amber-900 font-mono'>City: <span className='text-black font-semibold'>{property.city}</span></li>
                 <li className='mb-2 text-amber-900 font-mono'>State: <span className='text-black font-semibold'>{property.state}</span></li>
               </ul>
-
+              <div className='flex flex-row items-center mt-8 gap-2' onClick={handleWallet}>
+                <FaInfoCircle className='' />
+                <p className='font-extralight'>Pay through wallet</p>
+              </div>
+              {walletOpen ?
+                <div className='flex flex-row gap-4 mt-2'>
+                  <h1 className='font-bold'>Your wallet: <span className='text-amber-900'>₹{user.wallet}</span></h1>
+                  <button onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)} className='border-2 border-black px-4 rounded-md hover:bg-black hover:text-white'>Pay Now</button>
+                </div>
+                : ""}
             </div>
-            <div className='mt-auto border-b border-amber-900 w-auto mb-10'></div>
+            <div className='mt-auto border-b border-amber-900 w-auto mb-5'></div>
             {clientSecret ? (
               <div onClick={handleSubmit}
-                className='mb-12 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
+                className='mb-20 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
                 style={{ cursor: 'pointer' }}
               >
                 <FaStripe className=" ml-[40%] text-white" style={{ width: '30px', height: '39px' }} />
@@ -205,6 +267,7 @@ function BookProperty() {
             ) : ""}
           </div>
         </div>
+        <ToastContainer />
       </div>
 
       {/* modal */}

@@ -31,7 +31,17 @@ function PropertyPage() {
 
   const handleSearch = () => {
     const filteredProperties = loadData.filter((property) => {
-      const isPropertyTypeMatch = !category || property.type.toLowerCase().includes(propertyType.toLowerCase());
+      console.log('Selected Property Type:', propertyType);
+      console.log('Current Property Type:', property.type);
+  
+      const normalizedSelectedType = propertyType.trim().toLowerCase();
+      const normalizedCurrentType = property.type.trim().toLowerCase();
+  
+      console.log('Normalized Selected Type:', normalizedSelectedType);
+      console.log('Normalized Current Type:', normalizedCurrentType);
+  
+      const isPropertyTypeMatch = !normalizedSelectedType || normalizedCurrentType.includes(normalizedSelectedType);
+  
 
       const minPrice = parseFloat(priceRange.min);
       const maxPrice = parseFloat(priceRange.max);
@@ -96,7 +106,7 @@ function PropertyPage() {
               >
                 <option value="" disabled>Select Property Type</option>
                 {category.map((data, index) => (
-                  <option  value={data.category}>{data.category}</option>
+                  <option value={data.category}>{data.category}</option>
                 ))}
               </select>
             </div>

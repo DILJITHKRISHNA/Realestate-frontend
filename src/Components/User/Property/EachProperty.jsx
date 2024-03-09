@@ -22,7 +22,9 @@ function EachProperty() {
       const res = await FetchPropertyData()
       const Details = res.data.data
       const propertyData = Details.find((item) => item._id === id)
-      setProperty(propertyData)
+      if(propertyData){
+        setProperty(propertyData)
+      }
     }
     getPropertyData()
   }, [])

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 export function ListPayment() {
     const selector = useSelector(state => state.user.userInfo);
     const [history, setHistory] = useState([]);
+    const [Dates, setDates] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -29,6 +30,9 @@ export function ListPayment() {
         getPaymentData()
     }, [])
 
+    const dateArray = history.map((item) => new Date(item.createdAt));
+    const formattedDates = dateArray.map((dateObject) => dateObject.toLocaleDateString())
+
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -48,7 +52,7 @@ export function ListPayment() {
             const CancelBook = await CancelBookPayment(id, { propId: propertyId })
             console.log(CancelBook, "Cancel book ");
             if (CancelBook.data.success) {
-                toast("Your Payment has been cancelled successfully")
+                toast.error("Your Payment has been cancelled")
             } else {
                 toast("Something went wrong! Please try again later.")
             }
@@ -104,14 +108,14 @@ export function ListPayment() {
                                         <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                             <div className="flex items-center">
                                                 <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" >{data.createdAt}</p>
+                                                    <p className="whitespace-no-wrap" >{formattedDates[index]}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                             <div className="flex items-center">
                                                 <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" ><FaStripe className="w-10 h-8 ml-2" /></p>
+                                                    <p className="whitespace-no-wrap  font-extrabold" >{data.payment_type}</p>
                                                 </div>
                                             </div>
                                         </td>

@@ -233,6 +233,9 @@ function ProfilePage() {
                         <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                             Notifications
                         </Link>
+                        <Link to='/wallethistory' className=' sm:h-10 sm:w-36 text-black rounded-md ml-14 font-mono hover:underline'>
+                            Wallet History
+                        </Link>
                         <Link to='/enquiry' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                             My Enquiries
                         </Link>
