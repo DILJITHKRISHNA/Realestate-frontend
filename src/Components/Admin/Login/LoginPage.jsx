@@ -27,7 +27,7 @@ function LoginPage() {
     e.preventDefault()
     try {
       if(adminData.email.trim() === "" && adminData.password.trim()){
-        return toast("Please enter both fields", {type:"error"})
+        return toast.error("Please enter both fields")
       }
       const response = await AdminLogin(adminData)
       console.log(response);
@@ -43,7 +43,7 @@ function LoginPage() {
             mobile: response.data.admin.mobile
           })
         )
-        toast("Login Successfull")
+        toast.success("Login Successfull")
         setTimeout(() => {
           navigate('/admin/')
         }, 1000);

@@ -130,7 +130,7 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                         </div>
 
                         <div className="mt-6 flex flex-row justify-around space-x-72">
-                            <h1 className="flex">RentAmount</h1>
+                            <h1 className="flex">Advance</h1>
                             <span>₹{Rent}</span>
                         </div>
                         <div className="border-b-2 border-gray-400"></div>

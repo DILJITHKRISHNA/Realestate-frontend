@@ -221,7 +221,7 @@ export async function WishlistData() {
 export async function addProfileImage(imageUrl, userId) {
     console.log(imageUrl, userId, "addProfileImage ");
     try {
-        const res = await userRequest.patch(`/profileimage/${userId}`, imageUrl);
+        const res = await userRequest.post(`/profileimage/${userId}`, imageUrl);
         console.log(res, "res in addProfileImage apii");
         return res
     } catch (error) {
@@ -298,6 +298,15 @@ export async function FetchWalletHistory() {
         console.log(error);
     }
 }
+export async function fetchAllowner() {
+    console.log('fetchAllowner user');
+    try {
+        const response = await userRequest.get('/getchatowners');
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
 export async function fetchAllUser() {
     console.log('fetchAllUser user');
     try {
@@ -321,6 +330,27 @@ export async function GetMessages(id) {
     try {
         const response = await userRequest.get(`/getmessages/${id}`);
         return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function getOwner() {
+    console.log( id,"getOwner ");
+    try {
+        const res = await userRequest.get('/profile');
+        console.log(res, "res in getOwner apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function resetPassword(id, details) {
+    console.log( id,details,"ResetPassword ");
+    try {
+        const res = await userRequest.patch(`/resetsecurity/${id}`, details);
+        console.log(res, "res in getOwner apii");
+        return res
     } catch (error) {
         console.log(error);
     }

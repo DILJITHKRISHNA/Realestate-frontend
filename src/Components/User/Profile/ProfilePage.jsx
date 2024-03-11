@@ -6,6 +6,7 @@ import { FetchProfileData, addProfileImage } from '../../../Api/UserApi'
 import Wishlist from './Wishlist'
 import { ToastContainer, toast } from 'react-toastify'
 import { EditProfile } from './EditProfile'
+import ResetPassword from './ResetPassword'
 
 function ProfilePage() {
 
@@ -14,7 +15,6 @@ function ProfilePage() {
     const userData = useSelector(state => state.user)
     const id = userData.userInfo.id
     const [profileData, setProfileData] = useState([])
-    const [open, setOpen] = useState(false)
     const [details, SetDetails] = useState({
         imageUrl: null,
     });
@@ -106,7 +106,7 @@ function ProfilePage() {
             const ProfileImage = await addProfileImage(urls, id)
             console.log(ProfileImage, "profile imageee");
             if (ProfileImage.data.success) {
-                toast("Image Updated Successfully!")
+                toast.success("Image Updated Successfully!")
             } else {
                 toast.error("Error While updating profile!")
             }
@@ -115,13 +115,7 @@ function ProfilePage() {
         }
     };
 
-    const handleOpen = () => {
-        setOpen(!open)
-    }
-
-    const handleResetPassword = () => {
-
-    }
+    
 
     return (
         <>
@@ -202,17 +196,7 @@ function ProfilePage() {
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                     <div className='flex flex-row gap-[10%]'>
 
-                                        <label onClick={handleOpen} className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
-                                            <FaLock />ResetPassword
-                                        </label>
-                                        {open ?
-                                            <div className="flex flex-row gap-2">
-                                                <input type="text" className='w-auto outline-double rounded-md px-1' />
-                                                <button onClick={handleResetPassword} className='px-3 rounded-md bg-black text-white transition-all duration-300 ease-in-out hover:transform hover:scale-105'>
-                                                    Reset
-                                                </button>
-                                            </div>
-                                            : ""}
+                                        <ResetPassword />
                                     </div>
                                     <div className='border-b-2 w-full'></div>
                                 </div>

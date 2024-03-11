@@ -32,7 +32,7 @@ function PropertyShare({ propertyId }) {
                 const res = await ShareProperty(share, propertyId)
                 console.log(res, "Res in share property");
                 if (res.data.success) {
-                    toast("Property Shared to the mentioned email!", {
+                    toast.success("Property Shared to the mentioned email!", {
                         style: {
                             marginTop: '4rem'
                         }

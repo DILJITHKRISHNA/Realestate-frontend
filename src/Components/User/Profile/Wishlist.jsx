@@ -35,7 +35,7 @@ function Wishlist() {
         const updatedWishlist = [...wishlist]
         updatedWishlist.splice(indexToRemove, 1);
         setwishlist(updatedWishlist);
-        toast("Property Removed from the wishlist!")
+        toast.success("Property Removed from the wishlist!")
     }
 
     return (

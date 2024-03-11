@@ -43,15 +43,26 @@ function Header() {
 
                         {userSelector && (
                             <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">
-                                <Link to="/owner" className='hover:underline text-white hover:text-yellow-100'>Dashboard</Link>
-                                <Link to="/owner/property" className='hover:underline text-white hover:text-yellow-100'>Properties</Link>
-                                <Link to="/owner/chat" className='hover:underline text-white hover:text-yellow-100'><FaTelegramPlane/></Link>
-                                <Link to="/owner/profile" className='hover:underline text-white hover:text-yellow-100'>
+                                <a href="/owner" className="flex  group relative ml-0 mr-0 font-bold md:ml-0 md:mr-2 sm:mr-4 transition-color hover:text-yellow-300 transition-transform duration-300 hover:translate-x-1">
+                                    Dashboard
+                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
+                                <a href="/owner/property" className="flex  group relative ml-0 mr-0 font-bold md:ml-0 md:mr-2 sm:mr-4 transition-color hover:text-yellow-300 transition-transform duration-300 hover:translate-x-1">
+                                    Property
+                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
+                                <a href="/owner/chat" className="flex  group relative ml-0 mr-0 font-bold md:ml-0 md:mr-2 sm:mr-4 transition-color hover:text-yellow-300 transition-transform duration-300 hover:translate-x-1">
+                                    <FaTelegramPlane />
+
+                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
+                                <a href="/owner/profile" className="flex  group relative ml-0 mr-0 font-bold md:ml-0 md:mr-2 sm:mr-4 transition-color hover:text-yellow-300 transition-transform duration-300 hover:translate-x-1">
                                     <h1 className='flex flex-row gap-2'>
                                         <img src={ownerImg.imageUrls} alt="" className='rounded-full w-6 h-6 mt-1' />
                                         {OwnerGoogleData.username}
                                     </h1>
-                                </Link>
+                                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+                                </a>
                             </div>
                         )}
 

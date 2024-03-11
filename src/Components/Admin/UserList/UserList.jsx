@@ -122,7 +122,7 @@ function UserList() {
                       <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                         <div className="flex items-center">
                           <div className="h-10 w-10 flex-shrink-0">
-                            <img className="h-full w-full rounded-full" src="https://cdn-icons-png.freepik.com/512/219/219988.png" alt="" />
+                            <img className="h-full w-full rounded-full" src={user.imageUrls} alt="" />
                           </div>
                           <div className="ml-3">
                             <p className="whitespace-no-wrap text-grey" >{user.username}</p>

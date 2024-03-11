@@ -4,7 +4,7 @@ import ChatPage from '../../../Components/User/Chat/ChatPage'
 function Chat() {
   return (
     <div>
-      <ChatPage/>
+      <ChatPage />
     </div>
   )
 }

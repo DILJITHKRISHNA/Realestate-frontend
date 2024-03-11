@@ -13,7 +13,7 @@ function useGetMessages() {
                 if (selectedConversations?._id) {
                     console.log(selectedConversations._id, "id in getmessage");
                     const res = await GetMessages(selectedConversations._id);
-                    const data = res.data;
+                    const data = res.data.messages;
                     console.log(data,"ansif");
                     const messageData = data.map((item)=>item)
                     console.log(messageData, "data in response get message");
