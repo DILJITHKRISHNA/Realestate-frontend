@@ -8,27 +8,32 @@ import { FetchProfileData } from '../../../Api/UserApi';
 import useSendMessage from '../../../CustomHookes/useSendMessage';
 import useGetMessages from '../../../CustomHookes/useGetMessages';
 import MessageSkeleton from './MessageSkeleton';
-import userRequest from '../../../utils/userRequest';
-
+import { TimeMange } from '../../../helper/TimeManage'
+import InputEmoji from 'react-input-emoji'
 
 function ChatPage() {
     const selector = useSelector(state => state.user.userInfo);
     const [profileData, setProfileData] = useState([])
+    const [open, setOpen] = useState(false)
     const { loading, conversations } = useGetConversations()
+    console.log(conversations, "llllll");
     const { selectedConversations, setSelectedConversations } = useConversations()
     const { messages, Loading } = useGetMessages()
     const [message, setMessage] = useState("")
     const { sendMessage } = useSendMessage()
-    const fromMe = messages === selector.id;
-    const chatClassName = fromMe ? 'chat-end' : 'chat-start'
-    const profilepic = fromMe ? selector?.imageUrls : profileData?.imageUrls
+    const fromMe = messages.senderId === selector.id;
+    const chatClassName = fromMe ? 'flex justify-end' : 'flex justify-start'
+    const profilepic = fromMe ? profileData?.imageUrls : selectedConversations?.imageUrls
     const bubbleBgColor = fromMe ? "bg-black" : "";
+
+
     useEffect(() => {
         const ProfileData = async () => {
             try {
                 const res = await FetchProfileData(selector.id)
-                if (res.data.success) {
-                    setProfileData(res.data.userData)
+                const data = res.data.userData
+                if (data) {
+                    setProfileData(data)
                 }
             } catch (error) {
                 console.log(error);
@@ -41,7 +46,8 @@ function ChatPage() {
         //cleanup function (unmount)
         return () => setSelectedConversations(null)
     }, [setSelectedConversations])
-
+    console.log(messages, "zooooo");
+    console.log(selector.id, "bye");
 
     const handelSubmit = async (e) => {
         e.preventDefault()
@@ -49,6 +55,9 @@ function ChatPage() {
         await sendMessage(message)
         setMessage("")
     }
+
+
+
 
     return (
         <>
@@ -81,6 +90,7 @@ function ChatPage() {
                                     <h1 className='mt-1'>{text.username}</h1>
                                 </div>
                             ))}
+                           
                         </div>
                         <ul className="space-y-2">
                             <li className="flex items-center"></li>
@@ -109,48 +119,60 @@ function ChatPage() {
 
                         <div className="flex-1 overflow-y-auto p-4 border border-gray-500">
                             {selectedConversations ? (
+                                <div className={`px-4 flex flex-col space-y-4 overflow-auto`}>
+                                    {!Loading && messages && messages.length > 0 && messages.map((chats) => (
+                                        <div key={chats._id} className={`flex gap-2 flex-col ${chats.senderId === selector.id ? 'justify-end items-end' : 'justify-start items-start'}`}>
+                                            {chats.senderId !== selector.id && (
+                                                <img
+                                                    src={profilepic}
+                                                    alt=""
+                                                    className="w-8 h-8 rounded-full"
+                                                />
+                                            )}
 
-                                <div className='px-4 flex-1 overflow-auto'>
-                                    {!Loading && messages && messages.length > 0 && messages
-                                        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-                                        .map((chats, index, array) => (
-                                            <div key={chats._id} className={`chat ${chatClassName} flex flex-col space-y-4`}>
-                                                <div className={`flex items-start gap-2 flex-row ${chats.senderId === selector.id ? 'justify-end' : 'justify-start'}`}>
-                                                    {chats.senderId !== selector.id && <img src={fromMe ? selector?.imageUrls : selectedConversations?.imageUrls} alt="" className='w-8 h-8 rounded-full' />}
-                                                    <div className={`bg-gray-200 p-2 rounded-lg ${bubbleBgColor}`}>
-                                                        <p className={`text-sm ${chats.senderId === selector.id ? 'text-right' : 'text-left'}`}>
-                                                            {chats.message}
-                                                        </p>
-                                                        <span className='text-sm font-extralight'>{index === array.length - 1 ? 'Just now' : "12:42"}</span>
-                                                    </div>
-                                                    {chats.senderId === selector.id && <img src={profilepic} alt="" className='w-8 h-8 rounded-full' />}
-                                                </div>
+                                            <div className={`p-2 max-w-[10rem] bg-gray-200 rounded-lg ${bubbleBgColor} ${chats.senderId === selector.id ? 'ml-auto' : 'mr-auto'}`}>
+                                                <p className={`text-sm`}>
+                                                    {chats.message}
+                                                </p>
+                                                <span className="text-sm font-extralight">
+                                                    {TimeMange(chats.createdAt) === "NaN years ago"
+                                                        ? "just now"
+                                                        : TimeMange(chats.createdAt)}
+                                                </span>
                                             </div>
-                                        ))}
 
-
+                                            {chats.senderId === selector.id && (
+                                                <img
+                                                    src={!profilepic}
+                                                    alt=""
+                                                    className="w-8 h-8 rounded-full"
+                                                />
+                                            )}
+                                        </div>
+                                    ))}
                                     {Loading && [...Array(3)].map((index) => <MessageSkeleton key={index} />)}
                                     {!Loading && messages && messages.length === 0 && (
                                         <p className='text-center font-bold '>Send a message to start the conversation</p>
                                     )}
                                 </div>
                             ) : (
-                                <div className=' px-4 py-2 mb-2 flex items-center mt-[20%] flex-col gap-4'>
+                                <div className='px-4 py-2 mb-2 flex items-center mt-[20%] flex-col gap-4'>
                                     <span className='text-gray-900 font-bold'>Welcome 👋<span className='text-amber-900'>{selector.username}</span></span>
                                     <span className='text-gray-900 font-bold'>Select a Chat to start messaging</span>
                                     <FaRegComments className='w-12 h-12 text-gray-800' />
                                 </div>
                             )}
                         </div>
+
                         <form onSubmit={handelSubmit}>
                             <div className=" border border-gray-400 p-4 flex flex-row gap-2">
-                                <FaRegLaughBeam className='h-12 w-6' />
-                                <input
-                                    type="text"
-                                    placeholder="Type your message..."
-                                    className="w-full p-2 border rounded-md"
+                                <InputEmoji
                                     value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
+                                    onChange={setMessage}
+                                    cleanOnEnter
+                                    onEnter={(e) => {
+                                        setMessage(e.target.value);
+                                    }}
                                 />
                                 <button type='submit' className="border-2 border-black hover:bg-black hover:text-white flex text-center text-black px-4 h-12 rounded-md">
                                     {loading ? <span className='loading loading-spinner mx-auto'></span> : <BsSend className='text-xl mt-3' />}

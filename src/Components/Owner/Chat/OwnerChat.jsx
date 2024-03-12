@@ -10,6 +10,7 @@ import useGetMessages from '../../../CustomHookes/useGetMessages';
 import useSendMessage from '../../../CustomHookes/useSendMessage';
 import { getOwner } from '../../../Api/OwnerApi';
 import MessageSkeleton from '../../User/Chat/MessageSkeleton';
+import { TimeMange } from '../../../helper/TimeManage';
 
 
 function OwnerChat() {
@@ -22,8 +23,8 @@ function OwnerChat() {
     const [message, setMessage] = useState("")
     const { sendMessage } = useSendMessage()
     const fromMe = messages === selector.id;
-    const chatClassName = fromMe ? 'text-end' : 'text-start'
-    const profilepic = fromMe ? selector?.imageUrls : profileData?.imageUrls
+    const chatClassName = fromMe ? 'flex justify-end' : 'flex justify-start'
+    const profilepic = fromMe ? profileData?.imageUrls : selectedConversations?.imageUrls
     const bubbleBgColor = fromMe ? "bg-black" : "border-2 border-black text-black";
     useEffect(() => {
         const ProfileData = async () => {
@@ -112,26 +113,33 @@ function OwnerChat() {
 
                         <div className="flex-1 overflow-y-auto p-4 border border-gray-300">
                             {selectedConversations ? (
-
-                                <div className='px-4 flex-1 overflow-auto'>
+                                <div className={`px-4 flex flex-col space-y-4 overflow-auto`}>
                                     {!Loading && messages && messages.length > 0 && messages
                                         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-                                        .map((chats, index, array) => (
-                                            <div key={chats._id}  className={`flex  flex-col space-y-4`}>
-                                                <div className={`flex items-start gap-2 flex-row ${chats.senderId === selector.id ? 'justify-end' : 'justify-start'}`}>
-                                                    {chats.senderId !== selector.id && <img src={fromMe ? selector?.imageUrls : selectedConversations?.imageUrls} alt="" className='w-8 h-8 rounded-full' />}
-                                                    <div className={`px-4 rounded-lg ${bubbleBgColor}`}>
-                                                        <p className={`text-sm ${chatClassName}`}>
-                                                            {chats.message}
-                                                        </p>
-                                                        <span className='text-sm font-extralight'>{index === array.length - 1 ? 'Just now' : "12:42"}</span>
-                                                    </div>
-                                                    {chats.senderId === selector.id && <img src={profilepic} alt="" className='w-8 h-8 rounded-full' />}
+                                        .map((chats) => (
+                                            <div key={chats._id} className={`flex items-start gap-2 flex-row`}>
+                                                {chats.senderId !== selector.id && (
+                                                    <img
+                                                        src={profilepic}
+                                                        alt=""
+                                                        className="w-8 h-8 rounded-full"
+                                                    />
+                                                )}
+                                                <div className={`bg-gray-200 p-2 rounded-lg ${bubbleBgColor}`}>
+                                                    <p className={`text-sm ${chatClassName}`}>
+                                                        {chats.message}
+                                                    </p>
+                                                    <span className="text-sm font-extralight">
+                                                        {TimeMange(chats.createdAt) === "NaN years ago"
+                                                            ? "just now"
+                                                            : TimeMange(chats.createdAt)}
+                                                    </span>
                                                 </div>
+                                                {chats.senderId === selector.id && (
+                                                    <img src={profilepic} alt="" className="w-8 h-8 rounded-full" />
+                                                )}
                                             </div>
                                         ))}
-
-
                                     {Loading && [...Array(3)].map((index) => <MessageSkeleton key={index} />)}
                                     {!Loading && messages && messages.length === 0 && (
                                         <p className='text-center font-bold '>Send a message to start the conversation</p>
