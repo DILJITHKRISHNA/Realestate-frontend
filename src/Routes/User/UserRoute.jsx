@@ -13,10 +13,10 @@ import Booking from '../../pages/User/BookingPage/Booking.jsx';
 import Success from '../../pages/User/SuccessPage/Success.jsx';
 import History from '../../pages/User/PaymentHistory/History.jsx';
 import PublicRoute from './Protect/PublicRoute.jsx';
-import Chat from '../../pages/User/ChatPage/Chat.jsx';
 import Reserve from '../../pages/User/ReservePage/Reserve.jsx';
 import Enquiry from '../../pages/User/EnquiryListPage/Enquiry.jsx';
 import WalletHistory from '../../pages/User/WalletHistory/WalletHistory.jsx';
+import Chat from '../../pages/User/ChatPage/Chat.jsx'
 
 function UserRoute() {
   return (

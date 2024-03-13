@@ -11,10 +11,8 @@ function HeaderNav() {
 
   const userSelector = useSelector((state) => state.user)
   const id = userSelector.userInfo.id
-  console.log(userSelector, "use selectorrrrrrfgdfgrrrrrr");
   const UserGoogleData = userSelector.userInfo
   const OwnerGoogleData = userSelector.OwnerInfo
-  console.log(OwnerGoogleData, "seleeeeee");
   const [storedToken, setStoredToken] = useState('')
   const [profileImg, setProfileImg] = useState('')
 

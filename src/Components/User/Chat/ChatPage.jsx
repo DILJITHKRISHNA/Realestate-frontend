@@ -1,190 +1,202 @@
-import React, { useEffect, useState } from 'react'
-import { FaRegComments, FaRegLaughBeam, FaVideo } from 'react-icons/fa'
-import { BsSearch, BsSend } from 'react-icons/bs';
-import useGetConversations from '../../../CustomHookes/useGetConversations';
-import useConversations from '../../../zustand/useConversation';
-import { useSelector } from "react-redux"
-import { FetchProfileData } from '../../../Api/UserApi';
-import useSendMessage from '../../../CustomHookes/useSendMessage';
-import useGetMessages from '../../../CustomHookes/useGetMessages';
-import MessageSkeleton from './MessageSkeleton';
-import { TimeMange } from '../../../helper/TimeManage'
+// src/App.js
+import React, { useEffect, useRef, useState } from 'react';
+import { FaCog, FaCommentDots, FaSearch, FaSignOutAlt, FaVideo } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { FetchProfileData, addMessages, getMessages, userChats } from '../../../Api/UserApi';
+import { Link } from 'react-router-dom'
+import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
-
-function ChatPage() {
-    const selector = useSelector(state => state.user.userInfo);
-    const [profileData, setProfileData] = useState([])
-    const [open, setOpen] = useState(false)
-    const { loading, conversations } = useGetConversations()
-    console.log(conversations, "llllll");
-    const { selectedConversations, setSelectedConversations } = useConversations()
-    const { messages, Loading } = useGetMessages()
-    const [message, setMessage] = useState("")
-    const { sendMessage } = useSendMessage()
-    const fromMe = messages.senderId === selector.id;
-    const chatClassName = fromMe ? 'flex justify-end' : 'flex justify-start'
-    const profilepic = fromMe ? profileData?.imageUrls : selectedConversations?.imageUrls
-    const bubbleBgColor = fromMe ? "bg-black" : "";
+import io from 'socket.io-client'
 
 
-    useEffect(() => {
-        const ProfileData = async () => {
-            try {
-                const res = await FetchProfileData(selector.id)
-                const data = res.data.userData
-                if (data) {
-                    setProfileData(data)
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        ProfileData()
-    }, [selector.id])
+const OwnerChat = () => {
+  const user = useSelector(state => state.user.userInfo)
+  const [userData, setUserData] = useState(null)
+  const [profile, setProfile] = useState([])
+  const [messages, setMessages] = useState([])
+  const [onlineUsers, setOnlineUsers] = useState([])
+  const [newMessage, setNewMessage] = useState('')
+  const [selectedUser, setSelectedUser] = useState(null);
+  const socket = useRef()
 
-    useEffect(() => {
-        //cleanup function (unmount)
-        return () => setSelectedConversations(null)
-    }, [setSelectedConversations])
-    console.log(messages, "zooooo");
-    console.log(selector.id, "bye");
 
-    const handelSubmit = async (e) => {
-        e.preventDefault()
-        if (!message) { return }
-        await sendMessage(message)
-        setMessage("")
+  useEffect(() => {
+    socket.current = io('http://localhost:5173')
+    socket.current.emit("new-user-add", user.id)
+    socket.current.on('get-users', (users) => {
+      setOnlineUsers(users);
+      console.log(onlineUsers, "online userss");
+    })
+  }, [user])
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const response = await getMessages(selectedUser._id)
+      if (response.data) {
+        setMessages(response.data)
+      }
     }
+    if (selectedUser) {
+      fetchMessages()
+    }
+  }, [selectedUser])
 
+  useEffect(() => {
+    if (user.id) {
+      const getUserData = async () => {
+        try {
+          const response = await userChats(user.id);
+          if (response.data) {
+            setUserData(response.data);
+          }
 
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
 
+      getUserData();
+    }
+  }, []);
+  useEffect(() => {
+    if (user.id) {
+      const getCurrentUser = async () => {
+        try {
+          const response = await FetchProfileData(user.id);
+          console.log(response.data.userData, "responsee in get user");
+          if (response.data) {
+            setProfile(response.data.userData);
+          }
 
-    return (
-        <>
-            <div className="flex items-center justify-center h-screen mt-10 ">
-                <div className="h-screen w-screen mt-10 flex bg-white p-4 border border-gray-800">
-                    <div className="w-1/4">
-                        <h2 className="text-xl font-semibold mb-4">
-                            <img
-                                src={profileData.imageUrls}
-                                alt=""
-                                className="w-12 h-12 rounded-full"
-                            />
-                        </h2>
-                        <div className="text-xl font-semibold mb-4 ">
-                            <div className="relative">
-                                <input
-                                    type="search"
-                                    placeholder="Search Here"
-                                    className="bg-transparent border border-gray-300 rounded-md w-[90%] p-1 pl-8 text-sm"
-                                />
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <BsSearch className="text-gray-400 w-4 h-4" />
-                                </div>
-                            </div>
-                            {conversations.map((text) => (
-                                <div key={text._id} className={`cursor-pointer mt-5 hover:bg-gray-200 bg-transparent border border-gray-500 rounded-md w-[90%] p-1 pl-2 gap-2 text-sm flex flex-row
-                                ${selectedConversations?._id === text._id ? "bg-zinc-300" : ""}
-                            `} onClick={() => setSelectedConversations(text)}>
-                                    <img src={text.imageUrls} alt="" className='rounded-full w-8 h-8' />
-                                    <h1 className='mt-1'>{text.username}</h1>
-                                </div>
-                            ))}
-                           
-                        </div>
-                        <ul className="space-y-2">
-                            <li className="flex items-center"></li>
-                        </ul>
-                    </div>
-                    <div className="flex-1 flex flex-col">
-                        {selectedConversations ? (
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
 
-                            <div className="border border-gray-500 text-black p-4 flex flex-row gap-2">
-                                <img
-                                    src={selectedConversations.imageUrls}
-                                    alt=""
-                                    className="w-12 h-12 rounded-full"
-                                />
-                                <div className="flex flex-col">
-                                    <h1 className="text-xl font-mono">{selectedConversations.username}</h1>
-                                    <span className="text-gray-400 text-sm">Online</span>
-                                </div>
-                                <div className="w-full flex justify-end">
-                                    <FaVideo className="h-8 w-5" />
-                                </div>
-                            </div>
-                        ) : (
-                            ""
-                        )}
+      getCurrentUser();
+    }
+  }, []);
 
-                        <div className="flex-1 overflow-y-auto p-4 border border-gray-500">
-                            {selectedConversations ? (
-                                <div className={`px-4 flex flex-col space-y-4 overflow-auto`}>
-                                    {!Loading && messages && messages.length > 0 && messages.map((chats) => (
-                                        <div key={chats._id} className={`flex gap-2 flex-col ${chats.senderId === selector.id ? 'justify-end items-end' : 'justify-start items-start'}`}>
-                                            {chats.senderId !== selector.id && (
-                                                <img
-                                                    src={profilepic}
-                                                    alt=""
-                                                    className="w-8 h-8 rounded-full"
-                                                />
-                                            )}
+  const handeleChange = (newMessage) => {
+    console.log('newMessage:', newMessage);
+    setNewMessage(newMessage);
+  }
+  const handleSend = async (e) => {
+    e.preventDefault();
+    const texts = {
+      senderId: user.id,
+      text: newMessage,
+      chatId: selectedUser._id
+    };
 
-                                            <div className={`p-2 max-w-[10rem] bg-gray-200 rounded-lg ${bubbleBgColor} ${chats.senderId === selector.id ? 'ml-auto' : 'mr-auto'}`}>
-                                                <p className={`text-sm`}>
-                                                    {chats.message}
-                                                </p>
-                                                <span className="text-sm font-extralight">
-                                                    {TimeMange(chats.createdAt) === "NaN years ago"
-                                                        ? "just now"
-                                                        : TimeMange(chats.createdAt)}
-                                                </span>
-                                            </div>
+    try {
+      const data = await addMessages(texts);
+      console.log('Data after sending:', texts);
+      setMessages(prevMessages => [...prevMessages, data]);
+      setNewMessage("");
+    } catch (error) {
+      console.log('Error sending message:', error);
+    }
+  };
 
-                                            {chats.senderId === selector.id && (
-                                                <img
-                                                    src={!profilepic}
-                                                    alt=""
-                                                    className="w-8 h-8 rounded-full"
-                                                />
-                                            )}
-                                        </div>
-                                    ))}
-                                    {Loading && [...Array(3)].map((index) => <MessageSkeleton key={index} />)}
-                                    {!Loading && messages && messages.length === 0 && (
-                                        <p className='text-center font-bold '>Send a message to start the conversation</p>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className='px-4 py-2 mb-2 flex items-center mt-[20%] flex-col gap-4'>
-                                    <span className='text-gray-900 font-bold'>Welcome 👋<span className='text-amber-900'>{selector.username}</span></span>
-                                    <span className='text-gray-900 font-bold'>Select a Chat to start messaging</span>
-                                    <FaRegComments className='w-12 h-12 text-gray-800' />
-                                </div>
-                            )}
-                        </div>
+  return (
+    <>
+      <div className="flex flex-col md:flex-row h-screen mt-16 bg-white">
+        <div className="md:w-[7%] bg-black flex flex-col justify-between">
+          <img
+            src={profile?.imageUrls}
+            alt="image2"
+            className="rounded-full w-12 h-12 ml-6 mt-4"
+          />
+          <h1>
+            <Link to='/' >
+              <FaSignOutAlt className='text-white mb-10 ml-8 w-8 h-8' />
+            </Link>
+            <FaCog className='text-white mb-10 ml-8 w-8 h-8' />
+          </h1>
+        </div>
 
-                        <form onSubmit={handelSubmit}>
-                            <div className=" border border-gray-400 p-4 flex flex-row gap-2">
-                                <InputEmoji
-                                    value={message}
-                                    onChange={setMessage}
-                                    cleanOnEnter
-                                    onEnter={(e) => {
-                                        setMessage(e.target.value);
-                                    }}
-                                />
-                                <button type='submit' className="border-2 border-black hover:bg-black hover:text-white flex text-center text-black px-4 h-12 rounded-md">
-                                    {loading ? <span className='loading loading-spinner mx-auto'></span> : <BsSend className='text-xl mt-3' />}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+        {/* User Listing Sidebar */}
+        <div className="w-full md:w-1/4 h-full bg-[#132328] p-4">
+          <input
+            className="w-full px-2 py-1 rounded-md bg-transparent border-2 border-white"
+            placeholder="Search Here"
+          />
+          {userData && userData.map((data, index) => (
+            <ul key={index} className="mt-4" >
+              <li
+                onClick={() => setSelectedUser(data)}
+
+                className={`cursor-pointer flex flex-row gap-2 text-lg mt-2 items-center text-white font-bold p-2 rounded hover:bg-gray-300 transition-all duration-300`}
+              >
+                <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
+                {data?.members[0]?.username}
+              </li>
+              <hr />
+            </ul>
+          ))}
+        </div>
+
+        {/* Chat Display */}
+
+        <div className="flex-1">
+          <div className="h-full overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow p-2">
+
+            <div className="flex flex-row justify-between">
+              <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
+                {selectedUser && (
+                  <div className='flex felx-col gap-2'>
+                    <img src={selectedUser?.members[0]?.imageUrls} alt='image of user in header' className='w-8 h-8 rounded-full' />
+                    <h4 className="flex flex-col">
+                      {selectedUser?.members[0]?.username}
+                    </h4>
+                  </div>
+                )}
+              </h1>
+              {selectedUser ?
+                <FaVideo className="mr-5 w-6 h-6 mt-2 text-white" />
+                : ""}
+            </div>
+            {selectedUser ?
+              <div className="border-b-2 border-white mb-[80%]"></div>
+              : ""}
+            {messages && messages.length > 0 ? (
+              messages.map((message) => (
+                <div className={` ${message.senderId === user.id ? "message own" : "message"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`} key={message.id}>
+                  <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
+                  <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                 </div>
-                {loading ? <span className='loading loading-spinner mx-auto'></span> : null}
-            </div >
-        </>
-    )
-}
+              ))
+            ) : (
+              <div className="text-white mb-[50%] text-center">
+                <p className='font-extrabold'>Select a conversation to start</p>
+                <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
+              </div>
+            )}
 
-export default ChatPage
+            <div className="absolute w-full md:w-2/3 mt-[41%]">
+              <div className="flex items-center mt-2">
+                <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#132328] rounded-md'>+</div>
+                <InputEmoji
+                  type="text"
+                  value={newMessage}
+                  onChange={handeleChange}
+                  placeholder="Type your message..."
+                  className="flex-1 border p-2 mr-2 rounded"
+                />
+                <button
+                  onClick={handleSend}
+                  className="bg-[#132328] text-white p-2 rounded hover:bg-white hover:border-2 hover:border-amber-900 hover:text-amber-900 transition-all duration-300"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default OwnerChat;

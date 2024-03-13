@@ -307,38 +307,19 @@ export async function fetchAllowner() {
         console.log(error);
     }
 }
-export async function fetchAllUser() {
-    console.log('fetchAllUser user');
+export async function getUser(data) {
+    console.log(data,'getuser');
     try {
-        const response = await userRequest.get('/getchatusers');
+        const response = await userRequest.get(`/getuser/${data._id}`);
         return response
     } catch (error) {
         console.log(error);
     }
 }
-export async function SendMessages(userId, message) {
-    console.log(message,'SendMessages user');
-    try {
-        const response = await userRequest.post(`/sendmessages/${userId}`, {message: message});
-        return response
-    } catch (error) {
-        console.log(error);
-    }
-}
-export async function GetMessages(id) {
-    console.log(id,'GetMessages user');
-    try {
-        const response = await userRequest.get(`/getmessages/${id}`);
-        return response
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export async function getOwner() {
+export async function getOwner(id) {
     console.log( id,"getOwner ");
     try {
-        const res = await userRequest.get('/profile');
+        const res = await userRequest.get(`/profile/${id}`);
         console.log(res, "res in getOwner apii");
         return res
     } catch (error) {
@@ -346,11 +327,37 @@ export async function getOwner() {
     }
 }
 export async function resetPassword(id, details) {
-    console.log( id,details,"ResetPassword ");
     try {
         const res = await userRequest.patch(`/resetsecurity/${id}`, details);
-        console.log(res, "res in getOwner apii");
         return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function userChats(userId) {
+    console.log(userId,'userChats');
+    try {
+        const response = await userRequest.get(`/chat/${userId}`);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function getMessages(chatId) {
+    console.log(chatId,"iddd chatddd");
+    try {
+        const response = await userRequest.get(`/message/chat/${chatId}`);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function addMessages(text) {
+    console.log(text,"iddd chatddd");
+    try {
+        const response = await userRequest.post('/message/chat', text);
+        return response
     } catch (error) {
         console.log(error);
     }

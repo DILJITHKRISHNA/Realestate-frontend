@@ -23,6 +23,8 @@ function BookProperty() {
   const propertyId = location.state?.propertyId;
   const [clientSecret, setClientSecret] = useState("");
   const [rent, setRent] = useState();
+  const [count, setCount] = useState(1);
+  const [payRent, setPayRent] = useState(false);
   const [user, setUser] = useState();
   const [payment, setPayment] = useState({
     name: '',
@@ -145,6 +147,11 @@ function BookProperty() {
     }
   }
 
+  const handlePayRent = () => {
+    setPayRent(!payRent)
+    // walletOpen(false)
+  }
+
   return (
     <>
       <div className='flex justify-center items-center h-screen'>
@@ -246,15 +253,25 @@ function BookProperty() {
                 <FaInfoCircle className='' />
                 <p className='font-extralight'>Pay through wallet</p>
               </div>
+              <div className='flex flex-row items-center  gap-2' onClick={handlePayRent}>
+                <FaInfoCircle className='' />
+                <p className='font-extralight'>Pay Rent</p>
+              </div>
               {walletOpen ?
                 <div className='flex flex-row gap-4 mt-2'>
                   <h1 className='font-bold'>Your wallet: <span className='text-amber-900'>₹{user.wallet}</span></h1>
                   <button onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)} className='border-2 border-black px-4 rounded-md hover:bg-black hover:text-white'>Pay Now</button>
                 </div>
                 : ""}
+              {payRent? 
+                <div className='flex flex-col'>
+                <p>{count}/12 payments of ${rent} each.</p>
+                <button onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)} className='border-2 border-black px-4 rounded-md hover:bg-black hover:text-white'>Pay Now</button>
+              </div>
+              :""}
             </div>
             <div className='mt-auto border-b border-amber-900 w-auto mb-5'></div>
-            {clientSecret ? (
+            { clientSecret ? (
               <div onClick={handleSubmit}
                 className='mb-20 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
                 style={{ cursor: 'pointer' }}

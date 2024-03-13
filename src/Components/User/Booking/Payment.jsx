@@ -7,7 +7,7 @@ import { SuccessRequest } from "../../../Api/UserApi";
 import { ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
 
-function Payment({ clientSecret, name, contact, email, re_location, propertyId, Rent }) {
+function Payment({ clientSecret, name, contact, email, re_location, propertyId, Rent, state }) {
 
     const selector = useSelector(state => state.user.userInfo.id)
     const ownerId = useSelector(state => state.owner.OwnerInfo.id)
@@ -130,7 +130,8 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                         </div>
 
                         <div className="mt-6 flex flex-row justify-around space-x-72">
-                            <h1 className="flex">Advance</h1>
+                            {state="Advance"}
+                            <h1 className="flex">Advance+Rent</h1>
                             <span>₹{Rent}</span>
                         </div>
                         <div className="border-b-2 border-gray-400"></div>
