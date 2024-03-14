@@ -336,7 +336,6 @@ export async function resetPassword(id, details) {
 }
 
 export async function userChats(userId) {
-    console.log(userId,'userChats');
     try {
         const response = await userRequest.get(`/chat/${userId}`);
         return response
@@ -344,9 +343,17 @@ export async function userChats(userId) {
         console.log(error);
     }
 }
-export async function getMessages(chatId) {
-    console.log(chatId,"iddd chatddd");
+export async function ownerChats(ownerId) {
+    console.log(ownerId,"11111111111111111111111111");
     try {
+        const response = await userRequest.get(`/chat/getownerchat/${ownerId}`);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function getMessages(chatId) {
+    try { 
         const response = await userRequest.get(`/message/chat/${chatId}`);
         return response
     } catch (error) {

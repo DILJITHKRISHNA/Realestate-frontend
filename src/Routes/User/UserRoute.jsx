@@ -39,9 +39,7 @@ function UserRoute() {
         <Route path="/history" element={<ProtectRoutes />}>
           <Route index element={<History />} />
         </Route>
-        <Route path="/chat" element={<ProtectRoutes />}>
-          <Route index element={<Chat />} />
-        </Route>
+      
         <Route path="/reserve" element={<ProtectRoutes />}>
           <Route index element={<Reserve />} />
         </Route>
@@ -56,6 +54,9 @@ function UserRoute() {
         <Route path="/property" element={<Property />} />
         <Route path="/propertyeach" element={<SingleProperty />} />
       </Route>
+      <Route path="/chat" element={<ProtectRoutes />}>
+          <Route index element={<Chat />} />
+        </Route>
     </Routes>
   );
 }

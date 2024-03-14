@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom'
 import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
 import io from 'socket.io-client'
+import HeaderNav from '../Header/HeaderNav';
 
 
-const OwnerChat = () => {
+const ChatPage = () => {
   const user = useSelector(state => state.user.userInfo)
   const [userData, setUserData] = useState(null)
   const [profile, setProfile] = useState([])
@@ -17,17 +18,25 @@ const OwnerChat = () => {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [newMessage, setNewMessage] = useState('')
   const [selectedUser, setSelectedUser] = useState(null);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [receiveMessage, setReceiveMessage] = useState(null);
   const socket = useRef()
 
 
   useEffect(() => {
-    socket.current = io('http://localhost:5173')
+    socket.current = io('http://localhost:5000', {
+      withCredentials: true,
+    })
     socket.current.emit("new-user-add", user.id)
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users);
       console.log(onlineUsers, "online userss");
     })
+    socket.current.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
   }, [user])
+
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -41,11 +50,14 @@ const OwnerChat = () => {
     }
   }, [selectedUser])
 
+  console.log(messages,"8888")
+
   useEffect(() => {
     if (user.id) {
       const getUserData = async () => {
         try {
           const response = await userChats(user.id);
+          console.log(response, "9900(())");
           if (response.data) {
             setUserData(response.data);
           }
@@ -58,6 +70,7 @@ const OwnerChat = () => {
       getUserData();
     }
   }, []);
+
   useEffect(() => {
     if (user.id) {
       const getCurrentUser = async () => {
@@ -80,6 +93,7 @@ const OwnerChat = () => {
   const handeleChange = (newMessage) => {
     console.log('newMessage:', newMessage);
     setNewMessage(newMessage);
+
   }
   const handleSend = async (e) => {
     e.preventDefault();
@@ -98,9 +112,34 @@ const OwnerChat = () => {
       console.log('Error sending message:', error);
     }
   };
+  //send message to the socket server
+  useEffect(() => {
+    const receiverId = selectedUser?.members.find(member => member)?._id;
+    setSendMessage({ ...messages, receiverId })
+  }, [selectedUser, messages]);
+  console.log(sendMessage, "senedmnaaa");
+  useEffect(() => {
+    if (sendMessage !== null) {
+      socket.current.emit('send-message', sendMessage)
+    }
+  }, [sendMessage])
+
+  // receive message from the socekt server
+  useEffect(() => {
+    socket.current.on("receive-message", (data) => {
+      setReceiveMessage(data)
+    })
+  }, [])
+console.log();
+  useEffect(() => {
+    if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
+      setMessages([...messages, receiveMessage]);
+    }
+  }, [receiveMessage])
 
   return (
     <>
+      <HeaderNav />
       <div className="flex flex-col md:flex-row h-screen mt-16 bg-white">
         <div className="md:w-[7%] bg-black flex flex-col justify-between">
           <img
@@ -140,7 +179,7 @@ const OwnerChat = () => {
         {/* Chat Display */}
 
         <div className="flex-1">
-          <div className="h-full overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow p-2">
+          <div className="h-[89%] overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow ">
 
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
@@ -158,25 +197,24 @@ const OwnerChat = () => {
                 : ""}
             </div>
             {selectedUser ?
-              <div className="border-b-2 border-white mb-[80%]"></div>
+              <div className="border-b-2 border-white mb-[40%]"></div>
               : ""}
             {messages && messages.length > 0 ? (
               messages.map((message) => (
-                <div className={` ${message.senderId === user.id ? "message own" : "message"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`} key={message.id}>
+                <div key={message.id} className={` ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`}>
                   <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
                   <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                 </div>
               ))
             ) : (
               <div className="text-white mb-[50%] text-center">
-                <p className='font-extrabold'>Select a conversation to start</p>
-                <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
+                <p className='font-extrabold'>No messages yet</p>
               </div>
             )}
 
-            <div className="absolute w-full md:w-2/3 mt-[41%]">
+            <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[41%]">
               <div className="flex items-center mt-2">
-                <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#132328] rounded-md'>+</div>
+                <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
                 <InputEmoji
                   type="text"
                   value={newMessage}
@@ -199,4 +237,4 @@ const OwnerChat = () => {
   );
 };
 
-export default OwnerChat;
+export default ChatPage;
