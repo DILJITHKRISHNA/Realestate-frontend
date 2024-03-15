@@ -3,13 +3,14 @@ import { ToastContainer } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
 import { FaCartArrowDown, FaListOl, FaSearch } from 'react-icons/fa';
 import { HiMiniXCircle, HiOutlineCheckCircle } from 'react-icons/hi2';
-import { FetchEnquiry } from '../../../Api/UserApi';
+import { FetchEnquiry, createUserChat } from '../../../Api/UserApi';
 import { PropertyAbout } from './PropertyAbout';
 import { useSelector } from 'react-redux'
 
 function EnquiryList() {
     const selector = useSelector(state => state.user.userInfo)
     const [enquiryData, setEnquiryData] = useState([])
+    const [ownerId, setOwnerID] = useState([])
 
     useEffect(() => {
         const FetchReservations = async () => {
@@ -27,6 +28,19 @@ function EnquiryList() {
         }
         FetchReservations()
     }, [])
+    useEffect(()=>{
+        const data = enquiryData.find((item)=>setOwnerID(item.OwnerRef))
+    },[enquiryData])
+
+    const HandleCreateChat = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await createUserChat(selector.id, enquiryData.OwnerRef)
+            console.log(res,"response in creating chat");
+        } catch (error) {
+            
+        }
+    }
 
     return (
         <>
@@ -109,7 +123,7 @@ function EnquiryList() {
 
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
-                                                    <button className="ml-6 border-2 border-lime-400 py-1 px-2 text-lime-400 font-mono hover:bg-lime-400 hover:text-white">Chat</button>
+                                                    <button onClick={HandleCreateChat} className="ml-6 border-2 border-lime-400 py-1 px-2 text-lime-400 font-mono hover:bg-lime-400 hover:text-white">Chat</button>
                                                 </div>
                                             </td>
 

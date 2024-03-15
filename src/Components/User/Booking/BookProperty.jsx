@@ -253,22 +253,12 @@ function BookProperty() {
                 <FaInfoCircle className='' />
                 <p className='font-extralight'>Pay through wallet</p>
               </div>
-              <div className='flex flex-row items-center  gap-2' onClick={handlePayRent}>
-                <FaInfoCircle className='' />
-                <p className='font-extralight'>Pay Rent</p>
-              </div>
               {walletOpen ?
                 <div className='flex flex-row gap-4 mt-2'>
                   <h1 className='font-bold'>Your wallet: <span className='text-amber-900'>₹{user.wallet}</span></h1>
                   <button onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)} className='border-2 border-black px-4 rounded-md hover:bg-black hover:text-white'>Pay Now</button>
                 </div>
                 : ""}
-              {payRent? 
-                <div className='flex flex-col'>
-                <p>{count}/12 payments of ${rent} each.</p>
-                <button onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)} className='border-2 border-black px-4 rounded-md hover:bg-black hover:text-white'>Pay Now</button>
-              </div>
-              :""}
             </div>
             <div className='mt-auto border-b border-amber-900 w-auto mb-5'></div>
             { clientSecret ? (
@@ -278,7 +268,7 @@ function BookProperty() {
               >
                 <FaStripe className=" ml-[40%] text-white" style={{ width: '30px', height: '39px' }} />
                 <Elements stripe={StripePromise} options={options}>
-                  <Payment name={payment.name} Rent={rent} contact={payment.contact} email={payment.contact} re_location={payment.relocationDate} propertyId={propertyId} clientSecret={clientSecret} />
+                  <Payment setCount={setCount} name={payment.name} Rent={rent} contact={payment.contact} email={payment.contact} re_location={payment.relocationDate} propertyId={propertyId} clientSecret={clientSecret} />
                 </Elements>
               </div>
             ) : ""}

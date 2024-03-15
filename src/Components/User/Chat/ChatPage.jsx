@@ -108,11 +108,10 @@ const ChatPage = () => {
       console.log('Error sending message:', error);
     }
   };
-console.log(messages,"77^^^^^");
 
   useEffect(() => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
-    console.log(chats);
+    console.log(receiverId,"*******");
 
     setSendMessage({ messages, receiverId })
   }, [selectedUser, messages]);
@@ -129,13 +128,17 @@ console.log(messages,"77^^^^^");
       console.log(data, '================');
       setMessages(data.messages);
     })
-  }, [])
+  }, [messages])
 
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
       setMessages([...messages, receiveMessage]);
     }
   }, [receiveMessage])
+
+  const HandleVideoCall = () => {
+    alert("Connecting....")
+  }
 
   return (
     <>
@@ -193,7 +196,7 @@ console.log(messages,"77^^^^^");
                 )}
               </h1>
               {selectedUser ?
-                <FaVideo className="mr-5 w-6 h-6 mt-2 text-white" />
+                <FaVideo onClick={HandleVideoCall} className="mr-5 w-6 h-6 mt-2 text-white" />
                 : ""}
             </div>
             {selectedUser ?
@@ -209,6 +212,7 @@ console.log(messages,"77^^^^^");
             ) : (
               <div className="text-white mb-[50%] text-center">
                 <p className='font-extrabold'>No messages yet</p>
+                <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
               </div>
             )}
             {selectedUser ?
@@ -225,7 +229,7 @@ console.log(messages,"77^^^^^");
                   />
                   <button
                     onClick={handleSend}
-                    className="bg-[#132328] text-white p-2 rounded hover:bg-white hover:border-2 hover:border-amber-900 hover:text-amber-900 transition-all duration-300"
+                    className="bg-[#132328] text-white p-2 roundedborder-2 border-white hover:border-2 hover:bg-[#2c5b63] hover:text-white rounded-md transition-all duration-100"
                   >
                     Send
                   </button>

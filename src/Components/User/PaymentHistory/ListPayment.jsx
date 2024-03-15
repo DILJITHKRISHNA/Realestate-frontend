@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { CancelBookPayment, FetchPaymentData } from "../../../Api/UserApi";
-import { FaStripe } from "react-icons/fa";
+import { CancelBookPayment, FetchPaymentData, paymentRequest } from "../../../Api/UserApi";
 import { HiMiniXCircle, HiOutlineCheckCircle } from "react-icons/hi2";
 import { PropertyAbout } from '../EnquiryList/PropertyAbout.jsx'
 import { useSelector } from "react-redux";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import Payment from "../Booking/Payment.jsx";
+
+let StripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC);
+
 export function ListPayment() {
     const selector = useSelector(state => state.user.userInfo);
     const [history, setHistory] = useState([]);
-    const [Dates, setDates] = useState([]);
+    const [propertyId, setPropertyId] = useState([]);
+    const [clientSecret, setClientSecret] = useState('')
     const [searchTerm, setSearchTerm] = useState("");
-
 
     useEffect(() => {
 
@@ -18,7 +23,7 @@ export function ListPayment() {
             try {
                 const response = await FetchPaymentData()
                 const data = response.data.history
-                const details = data.find((item)=>item.user_id === selector.id)
+                const details = data.find((item) => item.user_id === selector.id)
                 console.log(response, "Ress in payment historyyy ");
                 if (details) {
                     setHistory(data)
@@ -60,6 +65,36 @@ export function ListPayment() {
             console.log(error);
         }
     }
+
+
+    useEffect(() => {
+        const id = history.find((item) => setPropertyId(item.property_id))
+    }, [history])
+
+    useEffect(() => {
+        if (propertyId) {
+            const fetchPaymentIntent = async () => {
+                try {
+                    const res = await paymentRequest(propertyId);
+                    console.log(res, "Response in payment requestttt");
+                    setClientSecret(res.data.clientSecret);
+                } catch (error) {
+                    console.error("Error while making the request:", error);
+                }
+            };
+            fetchPaymentIntent();
+        }
+    }, [propertyId]);
+
+    const appearance = {
+        theme: 'stripe',
+    };
+
+    const options = {
+        clientSecret,
+        appearance,
+    };
+    console.log(options, "client secreat");
     return (
         <>
             <div className="flex flex-col w-full mt-36">
@@ -89,6 +124,7 @@ export function ListPayment() {
                                     <th className="px-5 py-3">Amount</th>
                                     <th className="px-5 py-3">Status</th>
                                     <th className="px-5 py-3">Cancel</th>
+                                    {/* <th className="px-5 py-3">Pay Rent</th> */}
                                 </tr>
                             </thead>
                             {filteredHistory.map((data, index) => (
@@ -165,6 +201,14 @@ export function ListPayment() {
                                                 </div>
                                                 : ""}
                                         </td>
+                                        {/* <td className="">
+                                            <button >PayNow</button>
+                                            {clientSecret  && data.is_canceled === false && (
+                                                <Elements stripe={StripePromise} options={options}>
+                                                    <Payment Rent={data.Rent} propertyId={data.property_id} />
+                                                </Elements>
+                                            )}
+                                        </td> */}
                                     </tr>
                                 </tbody>
                             ))}

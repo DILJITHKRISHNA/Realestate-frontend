@@ -118,7 +118,7 @@ const OwnerChat = () => {
       console.log(data, '================');
       setMessages(data.messages);
     })
-  }, [socket.current])
+  }, [messages])
 
 
   useEffect(() => {
@@ -197,7 +197,7 @@ const OwnerChat = () => {
               ))
             ) : (
               <div className="text-white mb-[50%] text-center">
-                <p className='font-extrabold'>Select a conversation to start</p>
+                <p className='font-extrabold'>No messages yet</p>
                 <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
               </div>
             )}

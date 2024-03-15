@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
-import { FetchWalletHistory } from '../../../Api/UserApi';
+import { FetchProfileData, FetchWalletHistory } from '../../../Api/UserApi';
 import { useSelector } from 'react-redux';
 import { HiOutlineCheckCircle } from 'react-icons/hi2';
 import { PropertyAbout } from '../EnquiryList/PropertyAbout';
 
 function History() {
+    const user = useSelector(state => state.user.userInfo);
     const selector = useSelector(state => state.user.userInfo)
     const [searchTerm, setSearchTerm] = useState("");
     const [walletHistory, setWalletHistory] = useState([]);
+    const [wallet, setWallet] = useState([]);
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
@@ -32,6 +34,19 @@ function History() {
         }
         getWalletHistory()
     }, [])
+
+    useEffect(()=>{
+        const walletMoney = async () => {
+            const res = await FetchProfileData(user.id)
+            console.log(res, "Res in wallet money profile");
+            if(res.data.success){
+                setWallet(res.data.userData)
+            }
+        }
+        if(user){
+            walletMoney()
+        }
+    },[])
 
     const date = walletHistory.map((item)=>item.createdAt)
     const FormattedDate = new Date(date)
@@ -72,7 +87,8 @@ function History() {
                                         <th className="px-5 py-3">Payment Type</th>
                                         <th className="px-5 py-3">Property Details</th>
                                         <th className="px-5 py-3">Mobile</th>
-                                        <th className="px-5 py-3">Amount</th>
+                                        <th className="px-5 py-3">Wallet</th>
+                                        <th className="px-5 py-3">Debited</th>
                                         <th className="px-5 py-3">Status</th>
                                     </tr>
                                 </thead>
@@ -117,11 +133,18 @@ function History() {
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <div className="flex items-center">
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap" >₹{wallet.wallet + data.Rent}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
 
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
                                                     <div className="ml-6">
-                                                        <p className="whitespace-no-wrap" >₹{data.Rent}</p>
+                                                        <p className="whitespace-no-wrap text-red-600" >-₹{data.Rent}</p>
                                                     </div>
                                                 </div>
                                             </td>
