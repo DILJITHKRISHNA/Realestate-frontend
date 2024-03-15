@@ -369,3 +369,12 @@ export async function addMessages(text) {
         console.log(error);
     }
 }
+export async function createUserChat(senderId, receiverId) {
+    console.log(senderId, receiverId,"createUserChat");
+    try {
+        const response = await userRequest.post(`/chat/${senderId}/${receiverId}`);
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}
