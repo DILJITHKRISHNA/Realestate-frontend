@@ -24,14 +24,17 @@ const OwnerChat = () => {
   const socket = useRef()
 
   useEffect(() => {
-    socket.current = io('http://localhost:5173')
+    socket.current = io('http://localhost:5000')
     socket.current.emit("new-user-add", owner.id)
     socket.current.on('get-users', (owners) => {
       setOnlineUsers(owners);
       console.log(onlineUsers, "online userss");
     })
   }, [owner])
-  console.log(onlineUsers,"99000^^^^");
+  useEffect(() => {
+    console.log("owner socket connected:", socket.current);
+  }, [socket.current]);
+
   useEffect(() => {
     const fetchMessages = async () => {
       const response = await getMessages(selectedUser._id)
@@ -69,7 +72,7 @@ const OwnerChat = () => {
       const getCurrentUser = async () => {
         try {
           const response = await getOwner(owner.id);
-          console.log(response.data.OwnerData, "responsee in get user");
+          // console.log(response.data.OwnerData, "responsee in get user");
           if (response.data) {
             setProfile(response.data.OwnerData);
           }
@@ -84,23 +87,23 @@ const OwnerChat = () => {
   }, []);
 
   const handeleChange = (newMessage) => {
-    console.log('newMessage:', newMessage);
     setNewMessage(newMessage);
   }
 
   const handleSend = async (e) => {
     e.preventDefault();
-    const texts = {
-      senderId: owner.id,
-      text: newMessage,
-      chatId: selectedUser._id
-    };
-
     try {
+      if (selectedUser) {
+      const texts = {
+        senderId: owner.id,
+        text: newMessage,
+        chatId: selectedUser._id
+      };
       const data = await addMessages(texts);
-      console.log('Data after sending:', texts);
-      setMessages(prevMessages => [...prevMessages, data]);
+      setMessages(data.data);
       setNewMessage("");
+      setSendMessage({ messages, receiverId: selectedUser._id });
+    }
     } catch (error) {
       console.log('Error sending message:', error);
     }
@@ -108,21 +111,24 @@ const OwnerChat = () => {
 
   useEffect(() => {
     const receiverId = selectedUser?.members.find(member => member)?._id;
-    setSendMessage({ ...messages, receiverId })
+    // console.log(receiverId,"reciverdiid");
+    setSendMessage({ messages, receiverId })
   }, [selectedUser, messages]);
 
   useEffect(() => {
     if (sendMessage !== null) {
+      console.log(sendMessage,"sending message");
       socket.current.emit('send-message', sendMessage)
     }
   }, [sendMessage])
 
-  // receive message from the socekt server
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
-      setReceiveMessage(data)
+      console.log(data, '================');
+      setMessages(data.messages);
     })
-  }, [])
+  }, [socket.current, selectedUser])
+
 
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
@@ -204,25 +210,27 @@ const OwnerChat = () => {
                 <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
               </div>
             )}
+            {selectedUser ?
 
-            <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[41%]">
-              <div className="flex items-center mt-2">
-                <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
-                <InputEmoji
-                  type="text"
-                  value={newMessage}
-                  onChange={handeleChange}
-                  placeholder="Type your message..."
-                  className="flex-1 border p-2 mr-2 rounded"
-                />
-                <button
-                  onClick={handleSend}
-                  className="bg-[#132328] text-white p-2 rounded hover:bg-white hover:border-2 hover:border-amber-900 hover:text-amber-900 transition-all duration-300"
-                >
-                  Send
-                </button>
+              <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[41%]">
+                <div className="flex items-center mt-2">
+                  <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
+                  <InputEmoji
+                    type="text"
+                    value={newMessage}
+                    onChange={handeleChange}
+                    placeholder="Type your message..."
+                    className="flex-1 border p-2 mr-2 rounded"
+                  />
+                  <button
+                    onClick={handleSend}
+                    className="bg-[#132328] text-white p-2 rounded hover:bg-white hover:border-2 hover:border-amber-900 hover:text-amber-900 transition-all duration-300"
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
-            </div>
+              : ""}
           </div>
         </div>
       </div>

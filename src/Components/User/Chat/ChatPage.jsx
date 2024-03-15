@@ -20,6 +20,7 @@ const ChatPage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
+  const [chats, setChats] = useState(null)
   const socket = useRef()
 
 
@@ -30,12 +31,15 @@ const ChatPage = () => {
     socket.current.emit("new-user-add", user.id)
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users);
-      console.log(onlineUsers, "online userss");
     })
     socket.current.on('connect_error', (error) => {
       console.error('Socket connection error:', error);
     });
   }, [user])
+
+  useEffect(() => {
+    console.log("User socket connected:", socket.current);
+  }, [socket.current]);
 
 
   useEffect(() => {
@@ -50,16 +54,15 @@ const ChatPage = () => {
     }
   }, [selectedUser])
 
-  console.log(messages,"8888")
 
   useEffect(() => {
     if (user.id) {
       const getUserData = async () => {
         try {
           const response = await userChats(user.id);
-          console.log(response, "9900(())");
           if (response.data) {
-            setUserData(response.data);
+            setUserData(response.data.chat);
+            setChats(response.data.Members);
           }
 
         } catch (error) {
@@ -76,11 +79,10 @@ const ChatPage = () => {
       const getCurrentUser = async () => {
         try {
           const response = await FetchProfileData(user.id);
-          console.log(response.data.userData, "responsee in get user");
+          // console.log(response.data.userData, "responsee in get user");
           if (response.data) {
             setProfile(response.data.userData);
           }
-
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -91,46 +93,48 @@ const ChatPage = () => {
   }, []);
 
   const handeleChange = (newMessage) => {
-    console.log('newMessage:', newMessage);
     setNewMessage(newMessage);
-
   }
   const handleSend = async (e) => {
     e.preventDefault();
-    const texts = {
-      senderId: user.id,
-      text: newMessage,
-      chatId: selectedUser._id
-    };
 
     try {
+      const texts = {
+        senderId: user.id,
+        text: newMessage,
+        chatId: selectedUser._id
+      };
+
       const data = await addMessages(texts);
-      console.log('Data after sending:', texts);
-      setMessages(prevMessages => [...prevMessages, data]);
+      setMessages(data.data);
       setNewMessage("");
     } catch (error) {
       console.log('Error sending message:', error);
     }
   };
-  //send message to the socket server
+
+
   useEffect(() => {
-    const receiverId = selectedUser?.members.find(member => member)?._id;
-    setSendMessage({ ...messages, receiverId })
-  }, [selectedUser, messages]);
-  console.log(sendMessage, "senedmnaaa");
+    // Ensure that chats is not null or undefined before accessing its elements
+    const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id);
+    setSendMessage({ messages, receiverId });
+  }, [selectedUser, chats]);
+
+  
   useEffect(() => {
     if (sendMessage !== null) {
+      console.log(sendMessage, 'sendMessage');
       socket.current.emit('send-message', sendMessage)
     }
   }, [sendMessage])
 
-  // receive message from the socekt server
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
-      setReceiveMessage(data)
+      console.log(data, '================');
+      setMessages(data.messages);
     })
   }, [])
-console.log();
+
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
       setMessages([...messages, receiveMessage]);
@@ -208,28 +212,31 @@ console.log();
               ))
             ) : (
               <div className="text-white mb-[50%] text-center">
-                <p className='font-extrabold'>No messages yet</p>
+                <p className='font-extrabold'>Select a conversation to start</p>
+                <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
               </div>
             )}
+            {selectedUser ?
 
-            <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[41%]">
-              <div className="flex items-center mt-2">
-                <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
-                <InputEmoji
-                  type="text"
-                  value={newMessage}
-                  onChange={handeleChange}
-                  placeholder="Type your message..."
-                  className="flex-1 border p-2 mr-2 rounded"
-                />
-                <button
-                  onClick={handleSend}
-                  className="bg-[#132328] text-white p-2 rounded hover:bg-white hover:border-2 hover:border-amber-900 hover:text-amber-900 transition-all duration-300"
-                >
-                  Send
-                </button>
+              <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[41%]">
+                <div className="flex items-center mt-2">
+                  <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
+                  <InputEmoji
+                    type="text"
+                    value={newMessage}
+                    onChange={handeleChange}
+                    placeholder="Type your message..."
+                    className="flex-1 border p-2 mr-2 rounded"
+                  />
+                  <button
+                    onClick={handleSend}
+                    className="bg-[#132328] text-white p-2 rounded hover:bg-white hover:border-2 hover:border-amber-900 hover:text-amber-900 transition-all duration-300"
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
-            </div>
+              : ""}
           </div>
         </div>
       </div>
@@ -238,3 +245,5 @@ console.log();
 };
 
 export default ChatPage;
+
+
