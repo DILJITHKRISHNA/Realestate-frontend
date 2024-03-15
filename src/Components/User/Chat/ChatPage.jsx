@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useEffect, useRef, useState } from 'react';
 import { FaCog, FaCommentDots, FaSearch, FaSignOutAlt, FaVideo } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -31,15 +30,12 @@ const ChatPage = () => {
     socket.current.emit("new-user-add", user.id)
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users);
+      console.log(onlineUsers, "online userss");
     })
     socket.current.on('connect_error', (error) => {
       console.error('Socket connection error:', error);
     });
   }, [user])
-
-  useEffect(() => {
-    console.log("User socket connected:", socket.current);
-  }, [socket.current]);
 
 
   useEffect(() => {
@@ -112,15 +108,15 @@ const ChatPage = () => {
       console.log('Error sending message:', error);
     }
   };
-
+console.log(messages,"77^^^^^");
 
   useEffect(() => {
-    // Ensure that chats is not null or undefined before accessing its elements
-    const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id);
-    setSendMessage({ messages, receiverId });
-  }, [selectedUser, chats]);
+    const receiverId = chats[0]?.members?.find((member) => member !== user.id)
+    console.log(chats);
 
-  
+    setSendMessage({ messages, receiverId })
+  }, [selectedUser, messages]);
+
   useEffect(() => {
     if (sendMessage !== null) {
       console.log(sendMessage, 'sendMessage');
@@ -212,8 +208,7 @@ const ChatPage = () => {
               ))
             ) : (
               <div className="text-white mb-[50%] text-center">
-                <p className='font-extrabold'>Select a conversation to start</p>
-                <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
+                <p className='font-extrabold'>No messages yet</p>
               </div>
             )}
             {selectedUser ?
@@ -244,6 +239,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
-
-
+export default ChatPage

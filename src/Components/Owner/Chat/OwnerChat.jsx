@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useEffect, useRef, useState } from 'react';
 import { FaCog, FaCommentDots, FaSearch, FaSignOutAlt, FaVideo } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -31,10 +30,7 @@ const OwnerChat = () => {
       console.log(onlineUsers, "online userss");
     })
   }, [owner])
-  useEffect(() => {
-    console.log("owner socket connected:", socket.current);
-  }, [socket.current]);
-
+  // console.log(onlineUsers,"99000^^^^");
   useEffect(() => {
     const fetchMessages = async () => {
       const response = await getMessages(selectedUser._id)
@@ -55,7 +51,7 @@ const OwnerChat = () => {
           const response = await ownerChats(owner.id);
           console.log(response, "owner chats");
           if (response) {
-            setOwnerData(response.data);
+            setOwnerData(response.data.chat);
           }
 
         } catch (error) {
@@ -93,7 +89,6 @@ const OwnerChat = () => {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
-      if (selectedUser) {
       const texts = {
         senderId: owner.id,
         text: newMessage,
@@ -102,8 +97,6 @@ const OwnerChat = () => {
       const data = await addMessages(texts);
       setMessages(data.data);
       setNewMessage("");
-      setSendMessage({ messages, receiverId: selectedUser._id });
-    }
     } catch (error) {
       console.log('Error sending message:', error);
     }
@@ -111,13 +104,11 @@ const OwnerChat = () => {
 
   useEffect(() => {
     const receiverId = selectedUser?.members.find(member => member)?._id;
-    // console.log(receiverId,"reciverdiid");
     setSendMessage({ messages, receiverId })
   }, [selectedUser, messages]);
 
   useEffect(() => {
     if (sendMessage !== null) {
-      console.log(sendMessage,"sending message");
       socket.current.emit('send-message', sendMessage)
     }
   }, [sendMessage])
@@ -127,7 +118,7 @@ const OwnerChat = () => {
       console.log(data, '================');
       setMessages(data.messages);
     })
-  }, [socket.current, selectedUser])
+  }, [socket.current])
 
 
   useEffect(() => {
