@@ -3,68 +3,68 @@ import { ToastContainer, toast } from 'react-toastify'
 import { FaTimes } from 'react-icons/fa'
 import { FetchCategory, PropertyEdit } from '../../../Api/OwnerApi';
 
-function EditProperty({ propertyId, property , index }) {  
-    console.log(propertyId,"]]333333333333]]");
+function EditProperty({ propertyId, property, index }) {
+    console.log(propertyId, "]]333333333333]]");
     const [open, setOpen] = useState(false);
     const [previewVideo, setPreviewVideo] = useState('')
     const [previewSource, setPreviewSource] = useState('')
     const [image, setImage] = useState([])
-    const [Data,setData]=useState()
+    const [Data, setData] = useState()
     const [category, setCategory] = useState([])
 
     const handleOpen = () => setOpen(!open);
 
-useEffect(()=>{
-    const data=property.find((item)=>item._id===propertyId)
-    if (data){
-        setData(data)
-    }
-},[propertyId])
-    
-const [details, setDetails] = useState({
-    title: "",
-    type: "",
-    rent: "",
-    additionalDetails: "",
-    bedroom: "",
-    bathroom: "",
-    parking: "",
-    furnished: false,
-    buildUpArea: "",
-    FloorCount: "",
-    balconies: "",
-    imageUrl: "",
-    videoUrl: [],
-    location: "",
-    country: "",
-    city: "",
-    state: "",
-  });
-  
-  useEffect(() => {
-    if (Data) {
-      setDetails({
-        title: Data.name,
-        type: Data.type,
-        rent: Data.Rent,
-        additionalDetails: Data.details,
-        bedroom: Data.bedrooms,
-        bathroom: Data.bathrooms,
-        parking: Data.parking,
-        furnished: Data.furnished,
-        buildUpArea: Data.buildUpArea,
-        FloorCount: Data.FloorCount,
-        balconies: Data.balcony,
-        imageUrl: Data.imageUrls, 
-        videoUrl: Data.videoUrls,
-        location: Data.location,
-        country: Data.country,
-        city: Data.city,
-        state: Data.state,
-      });
-    }
-  }, [Data]); 
-  
+    useEffect(() => {
+        const data = property.find((item) => item._id === propertyId)
+        if (data) {
+            setData(data)
+        }
+    }, [propertyId])
+
+    const [details, setDetails] = useState({
+        title: "",
+        type: "",
+        rent: "",
+        additionalDetails: "",
+        bedroom: "",
+        bathroom: "",
+        parking: "",
+        furnished: false,
+        buildUpArea: "",
+        FloorCount: "",
+        balconies: "",
+        imageUrl: "",
+        videoUrl: [],
+        location: "",
+        country: "",
+        city: "",
+        state: "",
+    });
+
+    useEffect(() => {
+        if (Data) {
+            setDetails({
+                title: Data.name,
+                type: Data.type,
+                rent: Data.Rent,
+                additionalDetails: Data.details,
+                bedroom: Data.bedrooms,
+                bathroom: Data.bathrooms,
+                parking: Data.parking,
+                furnished: Data.furnished,
+                buildUpArea: Data.buildUpArea,
+                FloorCount: Data.FloorCount,
+                balconies: Data.balcony,
+                imageUrl: Data.imageUrls,
+                videoUrl: Data.videoUrls,
+                location: Data.location,
+                country: Data.country,
+                city: Data.city,
+                state: Data.state,
+            });
+        }
+    }, [Data]);
+
     const uploadImage = async (files) => {
         try {
             const uploadedImageUrls = [];
@@ -178,19 +178,19 @@ const [details, setDetails] = useState({
         console.log(previewVideo, "video urlll");
     }
 
-    const handleUploadImage = async(e) => {
+    const handleUploadImage = async (e) => {
         e.preventDefault()
         if (!previewSource || previewSource.length === 0) {
             return;
         }
-    
+
         try {
             const uploadedImageUrls = await uploadImage(previewSource);
             setDetails((prevState) => ({
                 ...prevState,
                 imageUrl: uploadedImageUrls,
             }));
-            console.log(uploadedImageUrls,"image urllss");
+            console.log(uploadedImageUrls, "image urllss");
         } catch (error) {
             console.error("Error uploading images:", error);
         }
@@ -273,16 +273,17 @@ const [details, setDetails] = useState({
             }
         }
         getCat()
-    }, [Data,])
+    }, [Data])
 
     return (
         <>
             <button
                 onClick={handleOpen}
-                className="ml-96 bg-lime-400 h-8 mt-2 px-6 font-semibold text-white hover:bg-white hover:border-2 hover:border-lime-400 hover:text-lime-400 rounded-md"
+                className="bg-lime-400 h-8 px-6 font-semibold text-white hover:bg-white hover:border-2 hover:border-lime-400 hover:text-lime-400 rounded-md mt-2 md:mt-2 w-full sm:w-auto"
             >
                 Edit
             </button>
+
             {open && Object.keys(details).map((data) => (
                 <form onSubmit={handleCombinedSubmit}>
                     <div className="fixed z-10 inset-0 overflow-y-auto">

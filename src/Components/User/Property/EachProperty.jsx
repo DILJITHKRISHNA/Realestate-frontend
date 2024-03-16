@@ -22,7 +22,7 @@ function EachProperty() {
       const res = await FetchPropertyData()
       const Details = res.data.data
       const propertyData = Details.find((item) => item._id === id)
-      if(propertyData){
+      if (propertyData) {
         setProperty(propertyData)
       }
     }
@@ -68,7 +68,7 @@ function EachProperty() {
         <div className="flex flex-col lg:flex-row ml-10">
           {property.imageUrls && property.imageUrls.length > 0 && (
             <img
-              className="object-cover object-center w-2/3 h-64 md:h-96 lg:h-full rounded-xl mt-4 md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
+              className="object-cover  object-center w-full lg:w-2/3 h-64 md:h-96 lg:h-full rounded-xl mt-[6rem] md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
               src={property.imageUrls[0]}
               alt="nature image"
             />
@@ -78,13 +78,13 @@ function EachProperty() {
             {property.imageUrls && property.imageUrls.slice(1, 4).map((imageUrl, index) => (
               <img
                 key={index + 1}
-                className="object-cover object-center w-3/5 h-64 md:h-96 lg:h-[40%] rounded-xl mt-4 md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
+                className="object-cover object-center w-full md:w-3/5 h-64 md:h-96 lg:h-[40%] rounded-xl mt-4 md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
                 src={imageUrl}
                 alt={`nature image ${index + 1}`}
               />
             ))}
           </div>
-          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 lg:ml-8 flex w-full lg:w-[calc(60%-4rem)] justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-full lg:w-[calc(60%-4rem)] lg:ml-8 ml-10 flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
             <div>
               <h5 className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {property.type}
@@ -106,14 +106,14 @@ function EachProperty() {
             <button className='mt-6 border-2 border-lime-400 text-lime-400 p-2 font-mono hover:text-white hover:bg-lime-400'>LEARN MORE</button>
             <h2 className='mt-6 font-bold text-2xl'>₹{property.Rent}/month</h2>
             <div className='mt-8 border-b-2 border-black'></div>
-            <div className='flex justify-around items-center mb-4 sm:mb-0 gap-20'>
-              <div className='flex items-center mt-6'>
+            <div className='mt-6 flex flex-col lg:flex-row justify-between lg:gap-20'>
+              <div className='flex items-center'>
                 <div className='text-lime-400'>
                   <FontAwesomeIcon icon={faBed} size='2x' />
                 </div>
                 <span className='ml-2 text-lg font-thin'>Bedrooms <span className='text-lime-700 font-mono'>0{property.bedrooms}</span></span>
               </div>
-              <div className='flex items-center ml-4 mt-6'>
+              <div className='flex items-center mt-6 lg:mt-0'>
                 <div className='text-lime-400'>
                   <FontAwesomeIcon icon={faBath} size='2x' />
                 </div>
@@ -127,20 +127,20 @@ function EachProperty() {
               </div>
             </div>
             <div className='mt-8 border-b-2 border-black'></div>
-            <div className='flex justify-around ml-2 items-center mt-4 sm:mb-0 gap-24'>
+            <div className='mt-6 flex flex-col lg:flex-row justify-between lg:gap-24'>
               <div className='flex items-center'>
                 <div className='text-lime-400 mr-4'>
                   <FontAwesomeIcon icon={faChair} size='2x' />
                 </div>
                 <span className=' text-lg font-thin'>Balconies <span className='text-lime-700 font-mono'>0{property.balcony}</span></span>
               </div>
-              <div className='flex items-center ml-14'>
+              <div className='flex items-center mt-6 lg:mt-0'>
                 <div className='text-lime-400'>
                   <FontAwesomeIcon icon={faParking} size='2x' />
                 </div>
                 <span className='ml-2 text-lg font-thin'>Parking: <span className='text-lime-700 font-mono'>{property.parking === false ? "Available" : "No"}</span></span>
               </div>
-              <div className='flex items-center ml-4'>
+              <div className='flex items-center mt-6'>
                 <div className='text-lime-400'>
                   <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} size='2x' />
                 </div>
@@ -160,33 +160,39 @@ function EachProperty() {
               <li className='mt-6 font-mono'>Furnished: {property.furnished ? 'Yes' : 'No'}</li>
               <li className='mt-6 font-mono'>Bathrooms:  {property.bathrooms} </li>
             </ul>
-            <div className='flex justify-between'>
-              <PropertyShare propertyId={property._id} className=''/>
+            <div className='flex justify-between mt-6'>
+              <PropertyShare propertyId={property._id} className='' />
               <button to='/reserve' className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleReserve}> Reserve</button>
               <button className='ml-8 mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400' onClick={handleBook}> Book</button>
             </div>
           </div>
         </div>
 
+
         <div className='border-2 border-lime-200 shadow-md shadow-lime-200 w-full lg:w-[89%] h-[60vh] mt-4 lg:ml-24 flex flex-col lg:flex-row'>
-          {property.imageUrls && property.imageUrls.length > 0 && (
-            <img src={property.imageUrls[1]} alt="" className='top-0 h-full w-full object-cover' />
-          )}
-          <div className='text-black text-2xl font-bold  ml-12 p-2 mr-2 uppercase w-[45%] h-[74%]'>
-            <h1 className='mt-2 font-bold text-lg bg-lime-400  w-[100%] text-white text-center'>LOCATION DETAILS</h1>
-            <ul className='mt-2 ml-1 uppercase text-lg'>
-              <li className='mt-6 font-mono'>Location: {property.location}</li>
-              <li className='mt-6 font-mono'>State: {property.state}</li>
-              <li className='mt-6 font-mono'>Country: {property.country}</li>
-              <li className='mt-6 font-mono'>City: {property.city}</li>
-              <div className='flex flex-col'>
-                <button className='mt-28 mr-2 border-2 border-lime-400 text-lime-400 px-2  font-mono hover:text-white hover:bg-lime-400 text-center'>Contact</button>
+          <div className='w-full lg:w-1/2 order-1 lg:order-1'>
+            {property.imageUrls && property.imageUrls.length > 0 && (
+              <img src={property.imageUrls[1]} alt="" className='top-0 h-full w-full object-cover' />
+            )}
+          </div>
+          <div className='w-full lg:w-1/2 order-2 lg:order-2'>
+            <div className='text-black text-2xl font-bold p-2 uppercase'>
+              <h1 className='mt-2 font-bold text-lg bg-lime-400 w-[100%] text-white text-center'>LOCATION DETAILS</h1>
+              <ul className='mt-2 ml-1 uppercase text-lg'>
+                <li className='mt-6 font-mono'>Location: {property.location}</li>
+                <li className='mt-6 font-mono'>State: {property.state}</li>
+                <li className='mt-6 font-mono'>Country: {property.country}</li>
+                <li className='mt-6 font-mono'>City: {property.city}</li>
+              </ul>
+              <div className='flex justify-center mt-auto'>
+                <button className='mt-4 border-2 border-lime-400 text-lime-400 px-2 font-mono hover:text-white hover:bg-lime-400'>Contact</button>
               </div>
-            </ul>
+            </div>
           </div>
         </div>
+
         <ToastContainer />
-      </div>
+      </div >
     </>
   )
 }

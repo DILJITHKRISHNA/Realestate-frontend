@@ -197,7 +197,7 @@ function Profile() {
         <>
             <div className='flex justify-center items-center'>
 
-                <div className='border-2 border-black mt-5 w-[80%] h-screen'>
+                <div className='border-2  mt-20 w-[80%] h-[37rem]'>
                     <div className='flex items-center justify-between p-4 text-black relative border-b-2 border-black ml-4 w-[95%]'>
                         <h1 className='font-bold text-xl relative flex flex-row gap-2 h-4'><FaUser />Profile</h1>
                     </div>
@@ -206,7 +206,7 @@ function Profile() {
                             <div className='shadow-md shadow-black w-full h-[40%] sm:w-[60%] md:w-[40%] lg:w-[100%] ml-0 sm:ml-4 md:ml-12 lg:ml-36 rounded-lg flex flex-row sm:flex-col '>
                                 <div className='flex flex-col '>
                                     <div className='border-2 border-gray-400 w-full h-10 rounded-md bg-black'></div>
-                                    <h1 className='absolute lg:ml-9 lg:mt-16 uppercase font-semibold font-mono'>Profile Photo</h1>
+                                    <h1 className='absolute lg:ml-9 ml-[6rem] mt-[8px] lg:mt-16 uppercase font-semibold font-mono text-white'>Profile Photo</h1>
                                     <div className='flex flex-col sm:flex-row gap-6 mt-10 ml-8'>
                                         <form onSubmit={handleUploadImage} className="flex flex-col items-center">
                                             <input
@@ -267,7 +267,7 @@ function Profile() {
                                             <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                                 <div className='flex flex-row gap-[10%]'>
 
-                                                    <label onClick={handleReset} className='font-semibold font-mono flex flex-row gap-2 hover:underline'>
+                                                    <label onClick={handleReset} className='font-semibold mt-4 font-mono flex flex-row gap-2 hover:underline'>
                                                         <FaLock />ResetPassword
                                                     </label>
                                                     {resetOpen ?
@@ -288,7 +288,7 @@ function Profile() {
                             <div className='border-b-2 border-black hidden sm:block '></div>
                             <div className='flex flex-col w-full sm:w-[40%] gap-8 sm:gap-10'>
                                 <div className='shadow-md shadow-black w-full sm:w-[60%] h-[8%] md:w-[70%] lg:mr-10 rounded-md flex justify-center bg-black'></div>
-                                <div className='shadow-md shadow-black w-full mt-2 sm:w-[60%] h-[90%] md:w-[70%] rounded-2xl flex flex-col gap-2'>
+                                <div className='shadow-md shadow-black w-full mt-2 sm:w-[60%] md:h-full h-[16rem] md:w-[70%] rounded-2xl flex flex-col gap-2'>
                                     <h1 className='flex flex-row ml-2 py-2 font-bold '>
                                         <FaUser className='w-10 h-5' /> General
                                     </h1>
@@ -309,7 +309,7 @@ function Profile() {
                                         </button>
                                     ) : (
                                         <button
-                                            className='sm:h-10 sm:w-28 text-black rounded-md ml-9 font-mono hover:underline'
+                                            className='sm:h-10 sm:w-28 text-black rounded-md md:ml-9 mr-[7rem] font-mono hover:underline'
                                             onClick={KycModal}>
                                             View KYC
                                         </button>

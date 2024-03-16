@@ -84,12 +84,11 @@ function PropertyPage() {
   return (
     <>
       <div className='flex flex-wrap mt-16'>
-        <div className='z-10 lg:w-[66%] lg:h-auto h-full mt-8 ml-10 rounded-2xl p-2'>
-          <h1 className='text-white font-league-spartan text-lg font-bold'>Left Box</h1>
+        <div className='lg:w-[66%] mt-[29rem] lg:h-auto h-full lg:mt-8 ml-10 rounded-2xl p-2 '>
           <PropertyList filtered={filtered} />
         </div>
         <div onChange={handleSearch} className='absolute w-screen h-screen flex justify-end'>
-          <div className='w-full sm:w-[28%] h-[70%] lg:mt-20 mr-10 bg-black  rounded-2xl '>
+          <div className='w-full sm:w-[28%] h-[26rem] mt-2 ml-12 lg:mt-20 mr-4 bg-black  rounded-2xl '>
             <div className='p-6 mt-2 gap-1'>
               <h1 className='text-white font-league-spartan text-lg font-bold flex justify-between'>
                 Find Your Property
@@ -149,12 +148,7 @@ function PropertyPage() {
                   placeholder='Maximum'
                 />
               </section>
-              {/* <button
-                onClick={handleSearch}
-                className='items-center w-auto mr-8 mt-8 border-2
-                 border-white text-white rounded-md
-                hover:text-black hover:bg-white'>Search
-              </button> */}
+             
             </div>
           </div>
         </div>
