@@ -21,6 +21,7 @@ const ChatPage = () => {
   const [receiveMessage, setReceiveMessage] = useState(null);
   const [chats, setChats] = useState(null)
   const socket = useRef()
+  const [refresh, setRefresh] = useState(false)
 
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const ChatPage = () => {
       console.error('Socket connection error:', error);
     });
   }, [user])
-
+  console.log(chats, "heyy");
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -48,8 +49,8 @@ const ChatPage = () => {
     if (selectedUser) {
       fetchMessages()
     }
+    console.log('kkkkkkkkkkkkkkkkkk')
   }, [selectedUser])
-
 
   useEffect(() => {
     if (user.id) {
@@ -111,30 +112,38 @@ const ChatPage = () => {
 
   useEffect(() => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
-    console.log(receiverId,"*******");
+    console.log(receiverId, "*******");
 
     setSendMessage({ messages, receiverId })
   }, [selectedUser, messages]);
 
   useEffect(() => {
     if (sendMessage !== null) {
-      console.log(sendMessage, 'sendMessage');
       socket.current.emit('send-message', sendMessage)
     }
   }, [sendMessage])
 
   useEffect(() => {
-    socket.current.on("receive-message", (data) => {
-      console.log(data, '================');
-      setMessages(data.messages);
-    })
+    // socket.current.on("receive-message", (data) => {
+    //   console.log(data, '================1111111111111111111');
+    //   setMessages(data.messages);
+    // })
+    const messageGet = async () => {
+      const response = await getMessages(selectedUser._id)
+      if (response.data) {
+        setMessages(response.data)
+      }
+    }
+    messageGet()
+
+    console.log('theeeeeeeeeeeeeee')
   }, [messages])
 
-  useEffect(() => {
-    if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
-      setMessages([...messages, receiveMessage]);
-    }
-  }, [receiveMessage])
+  // useEffect(() => {
+  //   if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
+  //     setMessages([...messages, receiveMessage]);
+  //   }
+  // }, [receiveMessage])
 
   const HandleVideoCall = () => {
     alert("Connecting....")
@@ -164,26 +173,28 @@ const ChatPage = () => {
             className="w-full px-2 py-1 rounded-md bg-transparent border-2 border-white"
             placeholder="Search Here"
           />
-          {userData && userData.map((data, index) => (
-            <ul key={index} className="mt-4" >
-              <li
-                onClick={() => setSelectedUser(data)}
-
-                className={`cursor-pointer flex flex-row gap-2 text-lg mt-2 items-center text-white font-bold p-2 rounded hover:bg-gray-300 transition-all duration-300`}
-              >
-                <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
-                {data?.members[0]?.username}
-              </li>
-              <hr />
-            </ul>
-          ))}
+          {userData && userData.length > 0 ? (
+            userData.map((data, index) => (
+              <ul key={index} className="mt-4">
+                <li
+                  onClick={() => setSelectedUser(data)}
+                  className={`cursor-pointer flex flex-row gap-2 text-lg mt-2 items-center text-white font-bold p-2 rounded hover:bg-gray-300 transition-all duration-300`}
+                >
+                  <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
+                  {data?.members[0]?.username}
+                </li>
+                <hr />
+              </ul>
+            ))
+          ) : (
+            <p className='text-center mt-10 text-white font-extrabold'>No conversations</p>
+          )}
         </div>
 
         {/* Chat Display */}
 
-        <div className="flex-1">
-          <div className="h-[89%] overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow ">
-
+        <div className="flex-1 relative">
+          <div className="h-full overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
                 {selectedUser && (
@@ -195,38 +206,43 @@ const ChatPage = () => {
                   </div>
                 )}
               </h1>
-              {selectedUser ?
+              {selectedUser &&
                 <FaVideo onClick={HandleVideoCall} className="mr-5 w-6 h-6 mt-2 text-white" />
-                : ""}
+              }
             </div>
-            {selectedUser ?
-              <div className="border-b-2 border-white mb-[40%]"></div>
-              : ""}
-            {messages && messages.length > 0 ? (
-              messages.map((message) => (
-                <div key={message.id} className={` ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`}>
-                  <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
-                  <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
-                </div>
-              ))
-            ) : (
-              <div className="text-white mb-[50%] text-center">
-                <p className='font-extrabold'>No messages yet</p>
-                <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
-              </div>
-            )}
-            {selectedUser ?
 
-              <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[41%]">
-                <div className="flex items-center mt-2">
-                  <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
-                  <InputEmoji
-                    type="text"
-                    value={newMessage}
-                    onChange={handeleChange}
-                    placeholder="Type your message..."
-                    className="flex-1 border p-2 mr-2 rounded"
-                  />
+            {selectedUser &&
+              <div className="border-b-2 border-white mb-[40%]"></div>
+            }
+
+            <div className="messages-container flex-1 relative">
+              {messages && messages.length > 0 ? (
+                messages.map((message) => (
+                  <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`}>
+                    <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
+                    <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-messages text-white mb-[50%] text-center">
+                  <p className='font-extrabold'>No messages yet</p>
+                  <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
+                </div>
+              )}
+            </div>
+
+            {selectedUser && (
+              <div className="message-input absolute bottom-0 left-0 right-0 p-4 bg-[#132328]">
+                <div className="flex items-center">
+                  <div className='mr-2 w-[80rem]'>
+                    <InputEmoji
+                      type="text"
+                      value={newMessage}
+                      onChange={handeleChange}
+                      placeholder="Type your message..."
+                      className="border p-2 rounded "
+                    />
+                  </div>
                   <button
                     onClick={handleSend}
                     className="bg-[#132328] text-white p-2 roundedborder-2 border-white hover:border-2 hover:bg-[#2c5b63] hover:text-white rounded-md transition-all duration-100"
@@ -235,9 +251,10 @@ const ChatPage = () => {
                   </button>
                 </div>
               </div>
-              : ""}
+            )}
           </div>
         </div>
+
       </div>
     </>
   );

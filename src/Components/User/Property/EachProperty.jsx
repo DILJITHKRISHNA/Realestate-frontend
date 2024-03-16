@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import BookProperty from '../Booking/BookProperty';
 import PropertyVideo from './PropertyVideo';
 import PropertyShare from './PropertyShare';
+import PropertyReview from './PropertyReview';
 
 function EachProperty() {
   const location = useLocation()
@@ -84,7 +85,7 @@ function EachProperty() {
               />
             ))}
           </div>
-          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-full lg:w-[calc(60%-4rem)] lg:ml-8 ml-10 flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-[20rem] lg:w-[calc(60%-4rem)] lg:ml-8 ml-[5rem] flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
             <div>
               <h5 className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {property.type}
@@ -190,7 +191,7 @@ function EachProperty() {
             </div>
           </div>
         </div>
-
+        {/* <PropertyReview property={property}/> */}
         <ToastContainer />
       </div >
     </>

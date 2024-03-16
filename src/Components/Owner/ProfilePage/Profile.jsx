@@ -313,7 +313,6 @@ function Profile() {
                                             onClick={KycModal}>
                                             View KYC
                                         </button>
-
                                     )}
                                     <h1 className='flex flex-row ml-2 py-2 font-bold '>
                                         <FaUser className='w-10 h-5' /> Accounts

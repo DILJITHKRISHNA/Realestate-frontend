@@ -1,23 +1,47 @@
 import React, { useEffect, useState } from 'react'
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { SearchIcon } from '@heroicons/react/solid';
 import { FaCartArrowDown, FaListOl, FaSearch } from 'react-icons/fa';
 import { HiMiniXCircle, HiOutlineCheckCircle } from 'react-icons/hi2';
-import { FetchEnquiry, createUserChat } from '../../../Api/UserApi';
+import { FetchEnquiry, createUserChat, userChats } from '../../../Api/UserApi';
 import { PropertyAbout } from './PropertyAbout';
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 
 function EnquiryList() {
     const selector = useSelector(state => state.user.userInfo)
+    const [userData, setUserData] = useState(null)
+    const [chatId, setChatId] = useState(null)
+    const navigate = useNavigate()
     const [enquiryData, setEnquiryData] = useState([])
     const [ownerId, setOwnerID] = useState([])
+
+
+
+    useEffect(() => {
+        if (selector.id) {
+            const getUserData = async () => {
+                try {
+                    const response = await userChats(selector.id);
+                    if (response.data) {
+                        setUserData(response.data.chat);
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                }
+            };
+
+            getUserData();
+        }
+    }, []);
 
     useEffect(() => {
         const FetchReservations = async () => {
             try {
                 const res = await FetchEnquiry()
                 const data = res.data.enquiryData
-                const details = data.find((item)=>item.UserRef === selector.id)
+                const details = data.find((item) => item.UserRef === selector.id)
                 console.log(res, "res in enquiry fetching ");
                 if (details) {
                     setEnquiryData(data)
@@ -28,19 +52,27 @@ function EnquiryList() {
         }
         FetchReservations()
     }, [])
-    useEffect(()=>{
-        const data = enquiryData.find((item)=>setOwnerID(item.OwnerRef))
-    },[enquiryData])
+    useEffect(() => {
+        const id = userData?.filter((item)=>setChatId(item._id))
+        const data = enquiryData.find((item) => setOwnerID(item.OwnerRef))
+    }, [enquiryData, userData])
 
     const HandleCreateChat = async (e) => {
         e.preventDefault()
         try {
-            const res = await createUserChat(selector.id, enquiryData.OwnerRef)
-            console.log(res,"response in creating chat");
+            const res = await createUserChat(selector.id, ownerId)
+            console.log(res, "response in creating chat");
+            if (res.data) {
+                toast.success("Chat created!")
+                setTimeout(() => {
+                    navigate('/chat')
+                }, 2000);
+            }
         } catch (error) {
-            
+            console.log(error);
         }
     }
+
 
     return (
         <>
