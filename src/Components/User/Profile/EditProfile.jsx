@@ -38,7 +38,7 @@ export function EditProfile({ Data }) {
             const response = await NewProfileData(formData, Data._id);
             console.log(response, "responseeeee99");
             if (response.data.success) {
-                toast("Profile Updated Successfully!")
+                toast.success("Profile Updated Successfully!")
             } else {
                 toast.error("Error while updating profile!")
             }

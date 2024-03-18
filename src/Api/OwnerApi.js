@@ -178,3 +178,23 @@ export async function addOwnerImage(imageUrl, ownerId) {
         console.log(error);
     }
 }
+
+export async function resetOwnerPassword(id, details) {
+    try {
+        const res = await ownerRequest.patch(`/resetownersecurity/${id}`, details);
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function NewOwnerProfileData(formData, id) {
+    console.log(formData, "NewOwnerProfileData ");
+    try {
+        const res = await ownerRequest.put(`/editprofile/${id}`, formData);
+        console.log(res, "res in NewProfileData apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

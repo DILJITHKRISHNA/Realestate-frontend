@@ -115,16 +115,17 @@ function ProfilePage() {
         }
     };
 
-    
+
 
     return (
         <>
-            <div className='mt-8 sm:mt-16 md:mt-24 lg:mt-32 items-center p-2 w-full sm:w-[80%] lg:w-[60%] mx-auto'>
+            <div className='mt-20 sm:mt-16 md:mt-24 lg:mt-32 lg:ml-36 items-center p-2 w-full sm:w-[80%] lg:w-[60%] mx-auto'>
                 <div className='flex flex-col sm:flex-row'>
-                    <div className='flex items-center mt-10 '>
-                        <FaUser className='w-8 h-8 text-black' />
-                        <h1 className='text-lg sm:text-2xl font-bold '>My Profile</h1>
-                    </div>
+
+                    <h1 className='text-start font-bold text-xl flex flex-row items-center gap-2'>
+                        <FaUser className='' />
+                        My Profile
+                    </h1>
                 </div>
             </div>
 
@@ -214,9 +215,9 @@ function ProfilePage() {
                         <Link to='/history' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                             My Bookings
                         </Link>
-                        <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                        {/* <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                             Notifications
-                        </Link>
+                        </Link> */}
                         <Link to='/wallethistory' className=' sm:h-10 sm:w-36 text-black rounded-md ml-14 font-mono hover:underline'>
                             Wallet History
                         </Link>

@@ -112,8 +112,6 @@ const ChatPage = () => {
 
   useEffect(() => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
-    console.log(receiverId, "*******");
-
     setSendMessage({ messages, receiverId })
   }, [selectedUser, messages]);
 
@@ -153,7 +151,7 @@ const ChatPage = () => {
     <>
       <HeaderNav />
       <div className="flex flex-col md:flex-row h-screen mt-16 bg-white">
-        <div className="md:w-[7%] bg-black flex flex-col justify-between">
+        <div className="md:w-[7%] h-[50rem] bg-black flex flex-col justify-between">
           <img
             src={profile?.imageUrls}
             alt="image2"
@@ -168,7 +166,7 @@ const ChatPage = () => {
         </div>
 
         {/* User Listing Sidebar */}
-        <div className="w-full md:w-1/4 h-full bg-[#132328] p-4">
+        <div className="w-full h-[50rem] md:w-1/4 bg-[#132328] p-4">
           <input
             className="w-full px-2 py-1 rounded-md bg-transparent border-2 border-white"
             placeholder="Search Here"
@@ -193,7 +191,7 @@ const ChatPage = () => {
 
         {/* Chat Display */}
 
-        <div className="flex-1 relative">
+        <div className="flex-1 ">
           <div className="h-full overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
@@ -232,15 +230,17 @@ const ChatPage = () => {
             </div>
 
             {selectedUser && (
-              <div className="message-input absolute bottom-0 left-0 right-0 p-4 bg-[#132328]">
+              <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[44rem]">
                 <div className="flex items-center">
-                  <div className='mr-2 w-[80rem]'>
+                  <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
+
+                  <div className=' w-[80rem]'>
                     <InputEmoji
                       type="text"
                       value={newMessage}
                       onChange={handeleChange}
                       placeholder="Type your message..."
-                      className="border p-2 rounded "
+                      className="border p-2 rounded"
                     />
                   </div>
                   <button

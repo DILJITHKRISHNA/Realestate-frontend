@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 import { FetchProfileData } from '../../../Api/UserApi';
-import { FaTelegramPlane } from 'react-icons/fa';
+import { FaCommentDots } from 'react-icons/fa';
 
 function HeaderNav() {
 
@@ -95,7 +95,7 @@ function HeaderNav() {
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
             </a>
             <a href="/chat" className="hidden lg:flex group relative ml-0 mr-0 font-bold md:ml-0 md:mr-2 sm:mr-4 transition-color hover:text-yellow-300 transition-transform duration-300 hover:translate-x-1">
-              <FaTelegramPlane />
+              <FaCommentDots />
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
             </a>
             {storedToken && userSelector ? (

@@ -1,48 +1,142 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { FetchProperty, NewOwnerProfileData } from '../../../Api/OwnerApi';
 
-function EditOwnerProfile() {
+function EditOwnerProfile({ Data }) {
 
     const [open, setOpen] = useState(false)
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        mobile: "",
+    });
 
-    const handleOpen = () => {
-        setOpen(!open)
-    }
+    const handleOpen = () => setOpen(!open);
+
+    useEffect(() => {
+        if (Data) {
+            setFormData({
+                name: Data.username || "",
+                email: Data.email || "",
+                mobile: Data.mobile || "",
+            });
+        }
+    }, [Data]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSave = async () => {
+        try {
+            setOpen(!open)
+            const response = await NewOwnerProfileData(formData, Data._id);
+            console.log(response, "ownerr  responseeeee99");
+            if (response.data.success) {
+                toast.success("Profile Updated Successfully!")
+            } else {
+                toast.error("Error while updating profile!")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
-
-        <div>
+        <>
             <button
                 onClick={handleOpen}
-                className="select-none rounded-lg bg-gradient-to-tr from-gray-900 to-gray-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md hover:from-gray-800 hover:to-gray-700 focus:outline-none focus:ring focus:border-gray-700 transition-all hover:shadow-lg hover:ring-gray-700 hover:border-gray-700 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                className="border-2 border-black text-black hover:bg-black hover:text-white font-bold py-1 px-4 rounded"
             >
                 Edit Profile
             </button>
             {open && (
-                <div className="pointer-events-none fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 opacity-0 backdrop-blur-sm transition-opacity duration-300">
-                    <div className="relative m-4 w-2/5 min-w-[40%] max-w-[40%] rounded-lg bg-white font-sans text-base font-light leading-relaxed text-blue-gray-500 antialiased shadow-2xl">
-                        <div className="flex items-center p-4 font-sans text-2xl antialiased font-semibold leading-snug text-blue-gray-900">
-                            It's a simple dialog.
+                <div
+                    className={`z-20 fixed inset-0 overflow-y-auto ${open ? "block" : "hidden"}`}
+                >
+                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div
+                            className="fixed inset-0 transition-opacity"
+                            aria-hidden="true"
+                        >
+                            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
                         </div>
-                        <div className="relative p-4 font-sans text-base antialiased font-light leading-relaxed border-t border-b border-t-blue-gray-100 border-b-blue-gray-100 text-blue-gray-500">
-                            The key to more success is to have a lot of pillows. Put it this way, it took me
-                            twenty-five years to get these plants, twenty-five years of blood, sweat, and tears, and
-                            I'm never giving up, I'm just getting started. I'm up to something. Fan luv.
-                        </div>
-                        <div className="flex flex-wrap items-center justify-end p-4 text-blue-gray-500">
-                            <button
-                                className="px-6 py-3 mr-1 font-sans text-xs font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="middle none center rounded-lg bg-gradient-to-tr from-green-600 to-green-400 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md hover:from-green-700 hover:to-green-500 transition-all hover:shadow-lg hover:text-white active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                            >
-                                Confirm
-                            </button>
+                        <span
+                            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true"
+                        >
+                            &#8203;
+                        </span>
+                        <div
+                            className="inline-block align-bottom bg-white rounded-lg text-left  shadow-xl h-[26rem] transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="modal-headline"
+                        >
+                            <div className="bg-black text-white py-2 uppercase font-semibod font-mono px-4 rounded-t">
+                                Edit Profile
+                            </div>
+                            <div className="mb-4 p-2">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">
+                                    Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="border rounded-md px-4 py-2 w-full"
+                                />
+                            </div>
+
+                            <div className="mb-4 p-2">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="border rounded-md px-4 py-2 w-full"
+                                />
+                            </div>
+
+                            <div className="mb-6 p-2 ">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">
+                                    Mobile
+                                </label>
+                                <input
+                                    type="text"
+                                    name="mobile"
+                                    value={formData.mobile}
+                                    onChange={handleChange}
+                                    className="border rounded-md px-4 py-2 w-full"
+                                />
+                            </div>
+
+                            <div className="flex justify-end gap-2 p-2">
+                                <button
+                                    onClick={handleOpen}
+                                    className="border-2 border-black hover:text-white hover:bg-black hover:border-2 hover:border-black font-bold text-black px-2 rounded"
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    onClick={handleSave}
+                                    className="bg-black hover:text-black hover:bg-white hover:border-2 hover:border-black font-bold text-white px-3 rounded"
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
-        </div>
+        </>
     )
 }
 

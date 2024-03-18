@@ -8,6 +8,7 @@ import { LogoutIcon } from '@heroicons/react/solid';
 import { useSelector } from 'react-redux';
 import { FaFunnelDollar, FaHome, FaLock, FaMailBulk, FaMobile, FaUpload, FaUser } from 'react-icons/fa';
 import EditOwnerProfile from './EditOwnerProfile';
+import ResetPassword from './ResetPassword';
 
 
 function Profile() {
@@ -35,10 +36,14 @@ function Profile() {
     }
     const [isOpen, setIsOpen] = useState(false);
     const [open, setOpen] = useState(false);
-    const [resetOpen, setResetopen] = useState(false);
     const [owner, setOwner] = useState([]);
     const [imagePreview, setImagePreview] = useState('');
     const [profileData, setProfileData] = useState([])
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const handleEditModalToggle = () => {
+        setIsEditModalOpen(!isEditModalOpen);
+    };
     const [details, SetDetails] = useState({
         imageUrl: null,
     });
@@ -185,19 +190,11 @@ function Profile() {
         }
     };
 
-    const handleReset = () => {
-        setResetopen(!resetOpen)
-    }
-
-    const handleResetPassword = () => {
-
-    }
-
     return (
         <>
             <div className='flex justify-center items-center'>
 
-                <div className='border-2  mt-20 w-[80%] h-[37rem]'>
+                <div className='border-2  mt-20 w-[90%] h-[37rem]'>
                     <div className='flex items-center justify-between p-4 text-black relative border-b-2 border-black ml-4 w-[95%]'>
                         <h1 className='font-bold text-xl relative flex flex-row gap-2 h-4'><FaUser />Profile</h1>
                     </div>
@@ -260,24 +257,15 @@ function Profile() {
                                                 </div>
                                             </div>
                                             <div className=''>
-                                                {/* <EditOwnerProfile Data={owner} className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white' /> */}
+                                            <EditOwnerProfile Data={owner} />
                                             </div>
                                             <div className=' border-b-2 border-gray-400 w-full'></div>
 
                                             <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                                 <div className='flex flex-row gap-[10%]'>
-
-                                                    <label onClick={handleReset} className='font-semibold mt-4 font-mono flex flex-row gap-2 hover:underline'>
-                                                        <FaLock />ResetPassword
-                                                    </label>
-                                                    {resetOpen ?
-                                                        <div className="flex flex-row gap-2">
-                                                            <input type="text" className='w-auto outline-double rounded-md px-1' />
-                                                            <button onClick={handleResetPassword} className='px-3 rounded-md bg-black text-white transition-all duration-300 ease-in-out hover:transform hover:scale-105'>
-                                                                Reset
-                                                            </button>
-                                                        </div>
-                                                        : ""}
+                                                    <div className='flex flex-row gap-[10%]'>
+                                                        <ResetPassword />
+                                                    </div>
                                                 </div>
                                                 <div className='border-b-2 w-full'></div>
                                             </div>
@@ -295,9 +283,9 @@ function Profile() {
                                     <Link to='/owner/bookings' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                                         Bookings
                                     </Link>
-                                    <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
+                                    {/* <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                                         Notifications
-                                    </Link>
+                                    </Link> */}
                                     <Link to='/owner/enquiry' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
                                         Enquiry
                                     </Link>
@@ -314,6 +302,7 @@ function Profile() {
                                             View KYC
                                         </button>
                                     )}
+
                                     <h1 className='flex flex-row ml-2 py-2 font-bold '>
                                         <FaUser className='w-10 h-5' /> Accounts
                                     </h1>
