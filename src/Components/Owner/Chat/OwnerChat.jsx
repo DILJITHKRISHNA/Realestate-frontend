@@ -157,10 +157,21 @@ const OwnerChat = () => {
   //   }, 500);
   // };
 
-  // function isURL(text) {
-  //   const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-  //   return urlRegex.test(text);
-  // }
+  function isURL(text) {
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+    return urlRegex.test(text);
+  }
+
+
+  const validateVideoChat = (sendedId) => {
+    const id = sendedId.includes(owner.id);
+    if (id) {
+      navigate(`/owner/${owner.id}`);
+    } else {
+      toast.error("Invalid chat link!");
+    }
+  };
+
 
 
   return (
@@ -227,7 +238,17 @@ const OwnerChat = () => {
             {messages && messages.length > 0 ? (
               messages.map((message) => (
                 <div className={` ${message.senderId === owner.id ? "ml-[78%] text-center text-md " : "text-center text-md bg-transparent border-2 border-white ml-2"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`} key={message.id}>
-                  <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
+                  {isURL(message.text) ? (
+                    <span onClick={() =>
+                      validateVideoChat(message.text)
+                    } className="text-blue-500 underline hover:text-amber-950">
+                      {message.text}
+                    </span>
+                  ) : (
+                   
+                    <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
+                   
+                  )}
                   <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                 </div>
               ))

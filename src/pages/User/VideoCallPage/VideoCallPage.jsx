@@ -1,12 +1,12 @@
 import React from 'react'
-import VideoCall from '../../../Components/User/Chat/VideoCall/VIdeoCall'
 import HeaderNav from '../../../Components/User/Header/HeaderNav'
+import VideoCall from '../../../Components/User/Chat/VideoCall/VideoCall'
 
 function VideoCallPage() {
   return (
     <div>
       <HeaderNav/>
-      <VideoCall/>
+      <VideoCall/> 
     </div>
   )
 }

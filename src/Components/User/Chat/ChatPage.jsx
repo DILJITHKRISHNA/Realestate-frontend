@@ -26,6 +26,7 @@ const ChatPage = () => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const socket = useRef()
+  
   // const [refresh, setRefresh] = useState(false)
   const scroll = useRef();
 
@@ -98,12 +99,12 @@ const ChatPage = () => {
       getCurrentUser();
     }
   }, []);
-
+ 
   const handeleChange = (newMessage) => {
     setNewMessage(newMessage);
   }
   const handleSend = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     try {
       const texts = {
@@ -166,7 +167,7 @@ const ChatPage = () => {
     }
     messageGet()
 
-  }, [messages])
+  }, [messages, selectedUser])
 
   // useEffect(() => {
   //   if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
@@ -174,21 +175,30 @@ const ChatPage = () => {
   //   }
   // }, [receiveMessage])
 
-  const HandleVideoCall = () => {
-    try {
-      if (selectedUser._id && user.id) {
-        const VideoData = [selectedUser._id, user.id]
-        if (VideoData.length >= 1) {
-          setTimeout(() => {
-            window.open(`/videocall/${user.id}`, { state: { data: VideoData } });
+  // const HandleVideoCall = () => {
+  //   try {
+  //     if (selectedUser._id && user.id) {
+  //       const VideoData = [selectedUser._id, user.id]
+  //       if (VideoData.length >= 1) {
+  //         setTimeout(() => {
+  //           window.open(`/videocall/${user.id}`, { state: { data: VideoData } });
 
-          }, 1000);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //         }, 1000);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const HandleVideoCall = () => {
+    const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
+    const joinId = `http://localhost:5173/owner/${receiverId}`;
+    setRoomUrl(joinId);
+    setTimeout(() => {
+      navigate(`/videocall`, { state: { receiverId } });
+    }, 500);
+  };
 
   function isURL(text) {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -207,6 +217,8 @@ const ChatPage = () => {
       selectedUser._id && user._id === selectedUser._id
     );
   };
+
+
 
   return (
     <>
@@ -280,9 +292,10 @@ const ChatPage = () => {
                 messages.map((message) => (
                   <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`}>
                     {isURL(message.text) ? (
-                      <a href={message.text} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline hover:text-amber-950">
-                        Video chat link sent
-                      </a>
+                      <span    className="text-blue-500 underline hover:text-amber-950">
+                        Video call sended
+                      </span>
+                      
                     ) : (
                       <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
 

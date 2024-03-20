@@ -57,14 +57,14 @@ function UserRoute() {
         <Route path="/propertyeach" element={<SingleProperty />} />
       </Route>
 
-      <Route path="/videocall/:currentUser" element={<ProtectRoutes />}>
+      <Route path="/videocall" element={<ProtectRoutes />}>
         <Route index element={<VideoCallPage />} />
       </Route>
 
       <Route path="/chat" element={<ProtectRoutes />}>
         <Route index element={<Chat />} />
       </Route>
-      <Route path="*" element={<ErrorPage />} />
+      <Route path="*" element={<ErrorPage />} /> 
     </Routes>
   );
 }

@@ -32,7 +32,7 @@ function OwnerRoute() {
           <Route path='/chat' element={<Chat />} />
           <Route path='/enquiry' element={<Enquiry />} />
         </Route>
-          <Route path='/ownervideocall' element={<VideoCallPage />} />
+          <Route path='/:senderId' element={<VideoCallPage />} />
           <Route path="*" element={<ErrorPage/>}/>
       </Route>
     </Routes>

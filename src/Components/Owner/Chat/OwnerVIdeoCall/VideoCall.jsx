@@ -5,63 +5,58 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 function VideoCall() {
-    const { currentUser } = useParams();
+    const { senderId } = useParams();
     const owner = useSelector(state => state.owner.OwnerInfo);
-    const current = useLocation();
-    const data = current.state?.data || "";
-    const receiverDetails = data[1];
-    const senderDetails = data[0];
+    // const data = current.state?.data || "";
+    // const receiverDetails = data[1];
+    // const senderDetails = data[0];
 
-    let roomId, receiverId;
-    if (!data) {
-        const queryParams = new URLSearchParams(location.search);
-        roomId = queryParams.get("roomId");
-        receiverId = queryParams.get("receiverId");
-    } else {
-        roomId = senderDetails.toString();
-        receiverId = receiverDetails.toString();
-    }
+    // let roomId, receiverId;
+    // if (!data) {
+    //     const queryParams = new URLSearchParams(location.search);
+    //     roomId = queryParams.get("roomId");
+    //     receiverId = queryParams.get("receiverId");
+    // } else {
+    //     roomId = senderDetails.toString();
+    //     receiverId = receiverDetails.toString();
+    // }
 
-    console.log("Data:", current);
-    console.log("Room ID:", roomId);
-    console.log("Receiver ID:", receiverId);
-    useEffect(() => {
+    // console.log("Data:", current);
+    // console.log("Room ID:", roomId);
+    // console.log("Receiver ID:", receiverId);
+    // useEffect(() => {
     
-        if (roomId) { 
-            const element = document.getElementById("videoCallContainer");
-            myMeeting(element, roomId); 
-        }
-    }, [roomId, currentUser, owner, receiverId]);
+    //     if (roomId) { 
+    //         const element = document.getElementById("videoCallContainer");
+    //         myMeeting(element, roomId); 
+    //     }
+    // }, [roomId, senderId, owner, receiverId]);
 
-    let myMeeting = async (element, roomId) => { 
-        if (owner.id === currentUser) {
+    let myMeeting = async (element) => { 
+        if (owner.id === senderId) {
             const appID = 1717884966;
             const serverSecret = "22ba1f10b154c4f2f937f4ecf9fea8c6";
             const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
                 appID,
                 serverSecret,
-                receiverId,
+                senderId,
                 Date.now().toString(),
                 owner.username
             );
             const zp = ZegoUIKitPrebuilt.create(kitToken);
             zp.joinRoom({
                 container: element,
+                sharedLinks: [
+                  {
+                    name: "Copy Link",
+                    url: `http://localhost:5173/owner/${senderId}`,
+                  },
+                ],
                 scenario: {
-                    mode: ZegoUIKitPrebuilt.OneONoneCall,
+                  mode: ZegoUIKitPrebuilt.OneONoneCall,
                 },
                 showScreenSharingButton: true,
-                sharedLinks: [
-                    {
-                        name: 'Personal link',
-                        url:
-                            window.location.protocol + '//' +
-                            window.location.host + window.location.pathname +
-                            '?roomID=' +
-                            roomId,
-                    },
-                ],
-            });
+              });
         } else {
             toast.error("Invalid user Link!");
         }
@@ -69,7 +64,7 @@ function VideoCall() {
 
     return (
         <div className="mt-[3rem]">
-            <div id="videoCallContainer" className="w-screen h-screen" />
+            <div id="videoCallContainer" className="w-screen h-screen" ref={myMeeting} />
         </div>
     );
 }
