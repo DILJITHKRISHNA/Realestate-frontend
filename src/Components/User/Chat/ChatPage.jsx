@@ -2,15 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaCog, FaCommentDots, FaSearch, FaSignOutAlt, FaVideo } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { FetchProfileData, addMessages, getMessages, userChats } from '../../../Api/UserApi';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
 import io from 'socket.io-client'
 import HeaderNav from '../Header/HeaderNav';
+import { toast } from 'react-toastify';
 
 
 const ChatPage = () => {
   const user = useSelector(state => state.user.userInfo)
+  const navigate = useNavigate()
   const [userData, setUserData] = useState(null)
   const [profile, setProfile] = useState([])
   const [messages, setMessages] = useState([])
@@ -20,9 +22,16 @@ const ChatPage = () => {
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
   const [chats, setChats] = useState(null)
+  const [roomUrl, setRoomUrl] = useState(null)
+  const [typing, setTyping] = useState(false);
+  const [istyping, setIsTyping] = useState(false);
   const socket = useRef()
-  const [refresh, setRefresh] = useState(false)
+  // const [refresh, setRefresh] = useState(false)
+  const scroll = useRef();
 
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     socket.current = io('http://localhost:5000', {
@@ -33,6 +42,8 @@ const ChatPage = () => {
       setOnlineUsers(users);
       console.log(onlineUsers, "online userss");
     })
+    socket.current.on("typing", () => setIsTyping(true));
+    socket.current.on("stop typing", () => setIsTyping(false));
     socket.current.on('connect_error', (error) => {
       console.error('Socket connection error:', error);
     });
@@ -49,7 +60,6 @@ const ChatPage = () => {
     if (selectedUser) {
       fetchMessages()
     }
-    console.log('kkkkkkkkkkkkkkkkkk')
   }, [selectedUser])
 
   useEffect(() => {
@@ -98,13 +108,14 @@ const ChatPage = () => {
     try {
       const texts = {
         senderId: user.id,
-        text: newMessage,
+        text: (newMessage && newMessage) || (roomUrl && roomUrl),
         chatId: selectedUser._id
       };
 
       const data = await addMessages(texts);
       setMessages(data.data);
       setNewMessage("");
+      setRoomUrl('')
     } catch (error) {
       console.log('Error sending message:', error);
     }
@@ -121,6 +132,27 @@ const ChatPage = () => {
     }
   }, [sendMessage])
 
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value);
+
+    if (!selectedUser) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedUser._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedUser._id);
+        setTyping(false);
+      }
+    }, timerLength);
+  };
+
   useEffect(() => {
     // socket.current.on("receive-message", (data) => {
     //   console.log(data, '================1111111111111111111');
@@ -134,7 +166,6 @@ const ChatPage = () => {
     }
     messageGet()
 
-    console.log('theeeeeeeeeeeeeee')
   }, [messages])
 
   // useEffect(() => {
@@ -144,8 +175,38 @@ const ChatPage = () => {
   // }, [receiveMessage])
 
   const HandleVideoCall = () => {
-    alert("Connecting....")
+    try {
+      if (selectedUser._id && user.id) {
+        const VideoData = [selectedUser._id, user.id]
+        if (VideoData.length >= 1) {
+          setTimeout(() => {
+            window.open(`/videocall/${user.id}`, { state: { data: VideoData } });
+
+          }, 1000);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  function isURL(text) {
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+    const videoCallRegex = /^(ftp|http|https):\/\/videocall\.example\.com\/[^ "]+$/;
+    return urlRegex.test(text) || videoCallRegex.test(text);
+  }
+
+  useEffect(() => {
+    if (roomUrl) {
+      handleSend();
+    }
+  }, [roomUrl])
+
+  const isMessageSender = () => {
+    return (
+      selectedUser._id && user._id === selectedUser._id
+    );
+  };
 
   return (
     <>
@@ -205,7 +266,8 @@ const ChatPage = () => {
                 )}
               </h1>
               {selectedUser &&
-                <FaVideo onClick={HandleVideoCall} className="mr-5 w-6 h-6 mt-2 text-white" />
+
+                <FaVideo onClick={() => HandleVideoCall()} className="mr-5 w-6 h-6 mt-2 text-white" />
               }
             </div>
 
@@ -217,7 +279,14 @@ const ChatPage = () => {
               {messages && messages.length > 0 ? (
                 messages.map((message) => (
                   <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`}>
-                    <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
+                    {isURL(message.text) ? (
+                      <a href={message.text} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline hover:text-amber-950">
+                        Video chat link sent
+                      </a>
+                    ) : (
+                      <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
+
+                    )}
                     <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                   </div>
                 ))
@@ -228,6 +297,15 @@ const ChatPage = () => {
                 </div>
               )}
             </div>
+            {istyping && !isMessageSender(user, selectedUser) ? ( 
+              <div>
+                <p style={{ marginBottom: 8, marginLeft: 0, color: "gray" }}>
+                  Typing...
+                </p>
+              </div>
+            ) : (
+              <></>
+            )}
 
             {selectedUser && (
               <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[44rem]">
@@ -255,7 +333,7 @@ const ChatPage = () => {
           </div>
         </div>
 
-      </div>
+      </div >
     </>
   );
 };

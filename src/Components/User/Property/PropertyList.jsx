@@ -82,12 +82,12 @@ function PropertyList({ filtered }) {
     return (
         <>
             <div className='flex flex-wrap  gap-16'>
-                {FilteredProperties.map((data, index) => (
-                    <div key={data._id} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer">
+                {FilteredProperties && FilteredProperties.map((data, index) => (
+                    <div key={index} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer">
                         <div>
                             <div className="relative" onClick={() => handleClick(data._id)}>
                                 <img
-                                    key={index}
+                                    // key={index}
                                     src={data.imageUrls[0]}
                                     className="w-[100%] h-72 p-4 object-contain rounded-3xl"
                                     alt="ui/ux review check"

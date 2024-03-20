@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaCog, FaCommentDots, FaSearch, FaSignOutAlt, FaVideo } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { addMessages, getMessages, ownerChats } from '../../../Api/UserApi';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
 import io from 'socket.io-client'
@@ -10,6 +10,7 @@ import { getOwner } from '../../../Api/OwnerApi';
 
 
 const OwnerChat = () => {
+  const navigate = useNavigate()
   const owner = useSelector(state => state.owner.OwnerInfo)
   const [ownerData, setOwnerData] = useState(null)
   const [profile, setProfile] = useState([])
@@ -33,7 +34,7 @@ const OwnerChat = () => {
   // console.log(onlineUsers,"99000^^^^");
   useEffect(() => {
     const fetchMessages = async () => {
-      
+
       const response = await getMessages(selectedUser._id)
       console.log(response.data, "0099");
       if (response.data) {
@@ -112,7 +113,7 @@ const OwnerChat = () => {
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage)
     }
-  }, [sendMessage])
+  }, [sendMessage, messages])
 
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
@@ -127,6 +128,40 @@ const OwnerChat = () => {
   //     setMessages([...messages, receiveMessage]);
   //   }
   // }, [receiveMessage])
+
+
+  const HandleVideoCall = () => {
+    // try {
+    //   if (selectedUser._id && owner.id) {
+    //     const VideoData = [selectedUser._id, owner.id]
+    //     if (VideoData.length >= 1) {
+    //       setTimeout(() => {
+    //         // navigate('/owner/ownervideocall', {state: {data: VideoData}})
+    //         window.open(`/owner/ownervideocall`, { state: { data: VideoData } });
+
+    //       }, 1000);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  }
+
+  // const handleJoinRoom = () => {
+  //   const receiverId = selectedUser && selectedUser?.members.find((id) => id !== owner.id);
+  //   console.log(receiverId, "receiiver idd in handle join room");
+  //   const joinId = `${import.meta.env.VITE_OWNERURL}${receiverId}`;
+  //   setRoomUrl(joinId);
+  //   setTimeout(() => {
+  //     navigate(`/videocall`, { state: { receiverId } });
+  //   }, 500);
+  // };
+
+  // function isURL(text) {
+  //   const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+  //   return urlRegex.test(text);
+  // }
+
 
   return (
     <>
@@ -183,7 +218,7 @@ const OwnerChat = () => {
                 )}
               </h1>
               {selectedUser ?
-                <FaVideo className="mr-5 w-6 h-6 mt-2 text-white" />
+                <FaVideo onClick={HandleVideoCall} className="mr-5 w-6 h-6 mt-2 text-white" />
                 : ""}
             </div>
             {selectedUser ?

@@ -105,7 +105,7 @@ function PropertyPage() {
               >
                 <option value="" disabled>Select Property Type</option>
                 {category.map((data, index) => (
-                  <option value={data.category}>{data.category}</option>
+                  <option key={index} value={data.category}>{data.category}</option>
                 ))}
               </select>
             </div>

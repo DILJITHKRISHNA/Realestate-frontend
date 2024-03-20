@@ -198,3 +198,14 @@ export async function NewOwnerProfileData(formData, id) {
         console.log(error);
     }
 }
+
+export async function FetchOwnerProperty(id) {
+    console.log(id,'get propertyyy');
+    try {
+        const response = await ownerRequest.get(`/owner/getownerproperty/${id}`);
+        console.log(response," response in owner fetch property apiiiiii");
+        return response
+    } catch (error) {
+        console.log(error);
+    }
+}  

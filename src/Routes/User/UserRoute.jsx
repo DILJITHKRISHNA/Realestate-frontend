@@ -17,6 +17,8 @@ import Reserve from '../../pages/User/ReservePage/Reserve.jsx';
 import Enquiry from '../../pages/User/EnquiryListPage/Enquiry.jsx';
 import WalletHistory from '../../pages/User/WalletHistory/WalletHistory.jsx';
 import Chat from '../../pages/User/ChatPage/Chat.jsx'
+import VideoCallPage from '../../pages/User/VideoCallPage/VideoCallPage.jsx';
+import ErrorPage from '../../pages/User/ErrorPage/ErrorPage.jsx';
 
 function UserRoute() {
   return (
@@ -33,13 +35,14 @@ function UserRoute() {
         <Route path="/profile" element={<ProtectRoutes />}>
           <Route index element={<ProfilePage />} />
         </Route>
+
         <Route path="/success" element={<ProtectRoutes />}>
           <Route index element={<Success />} />
         </Route>
         <Route path="/history" element={<ProtectRoutes />}>
           <Route index element={<History />} />
         </Route>
-      
+
         <Route path="/reserve" element={<ProtectRoutes />}>
           <Route index element={<Reserve />} />
         </Route>
@@ -49,14 +52,19 @@ function UserRoute() {
         <Route path="/wallethistory" element={<ProtectRoutes />}>
           <Route index element={<WalletHistory />} />
         </Route>
-
         <Route path="/bookproperty" element={<Booking />} />
         <Route path="/property" element={<Property />} />
         <Route path="/propertyeach" element={<SingleProperty />} />
       </Route>
+
+      <Route path="/videocall/:currentUser" element={<ProtectRoutes />}>
+        <Route index element={<VideoCallPage />} />
+      </Route>
+
       <Route path="/chat" element={<ProtectRoutes />}>
-          <Route index element={<Chat />} />
-        </Route>
+        <Route index element={<Chat />} />
+      </Route>
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }

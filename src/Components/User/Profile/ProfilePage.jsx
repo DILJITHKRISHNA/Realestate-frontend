@@ -133,7 +133,7 @@ function ProfilePage() {
             <div className='gap-8 sm:gap-10 mt-5 flex flex-col sm:flex-row justify-center mx-auto '>
                 <div className='shadow-md shadow-black w-full h-[40%] sm:w-[60%] md:w-[40%] lg:w-[70%] ml-0 sm:ml-4 md:ml-12 lg:ml-36 rounded-lg flex flex-row sm:flex-col '>
                     <div className='flex flex-col '>
-                        <div className='border-2 border-gray-400 w-full h-10 rounded-md bg-black sm:w-full'>
+                        <div className='border-2 border-gray-400 w-[22rem] h-10 rounded-md bg-black sm:w-full'>
                         </div>
 
                         <h1 className='absolute lg:ml-9 lg:mt-16 uppercase font-semibold font-mono'>Profile Photo</h1>

@@ -11,6 +11,7 @@ import CategoryPage from '../../pages/Admin/CategoryPage/CategoryPage.jsx'
 import Kyc from '../../pages/Admin/OwnerKyc/Kyc.jsx'
 import AdminProtect from './Protect/AdminProtect.jsx'
 import BookingList from '../../pages/Admin/BookingList/BookingList.jsx'
+import ErrorPage from '../../pages/Admin/AdminErrorPage/ErrorPage.jsx'
 
 function AdminRoute() {
   return (
@@ -29,7 +30,8 @@ function AdminRoute() {
           <Route path="/kyclist" element={<Kyc />}></Route>
           <Route path="/bookinglist" element={<BookingList />}></Route>
         </Route>
-          <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </div>
   )
