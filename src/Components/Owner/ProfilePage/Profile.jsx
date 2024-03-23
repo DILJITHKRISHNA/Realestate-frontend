@@ -239,19 +239,19 @@ function Profile() {
                                         <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0'>
                                             <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                                 <div className='flex flex-col'>
-                                                    <label className='font-semibold font-mono flex flex-row gap-2'>
+                                                    <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
                                                         <FaUser />Fullname: {owner.username}
                                                     </label>
                                                 </div>
                                                 <div className='flex flex-col'>
-                                                    <label className='font-semibold font-mono flex flex-row gap-2'>
+                                                    <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
                                                         <FaMailBulk />Email: {owner.email}
                                                     </label>
                                                 </div>
                                             </div>
                                             <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                                 <div className='flex flex-col'>
-                                                    <label className='font-semibold font-mono flex flex-row gap-2'>
+                                                    <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
                                                         <FaMobile />Mobile: {owner.mobile}
                                                     </label>
                                                 </div>
@@ -339,12 +339,6 @@ function Profile() {
                                                         autoFocus
                                                         className=" mt-2 w-[36%] px-4 py-2 mb-4 border bg-black rounded-md bg-transparent border-black focus:outline-none focus:border-black text-black"
                                                     />
-                                                    <div className="z-10 ml-4 order-first sm:order-last mt-0 mb-auto flex justify-center ">
-                                                        <input
-                                                            type="file"
-                                                            onChange={(e) => handleFileInputChange(e)}
-                                                        />
-                                                    </div>
                                                 </div>
                                                 <label className='font-medium'>Email</label>
                                                 <input
@@ -449,13 +443,12 @@ function Profile() {
                                                     <div className="mb-6 ">
                                                         <button
                                                             onClick={closeModal}
-                                                            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                                            className="bg-white border-2 border-black text-black px-4 py-2 rounded-md"
                                                         >
-                                                            Cancel
+                                                            Close
                                                         </button>
                                                     </div>
-                                                    <button className='bg-black rounded-lg text-white font-bold w-20 h-10' onClick={closeModal}>ADD</button>
-
+                                                    <button type='submit' className='bg-black rounded-lg text-white font-bold w-20 h-10'>ADD</button>
                                                 </div>
                                             </div>
                                         </form>

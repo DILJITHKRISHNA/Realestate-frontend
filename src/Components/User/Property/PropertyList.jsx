@@ -21,7 +21,7 @@ function PropertyList({ filtered }) {
         try {
             const response = await PaginateProperty(currentPage);
             setPropertiesToDisplay(response.data.PropertyData);
-            console.log(response.data,"dtttt ");
+            console.log(response.data, "dtttt ");
             setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('Error fetching properties:', error);
@@ -62,6 +62,7 @@ function PropertyList({ filtered }) {
     const handleClick = async (id) => {
         navigate(`/propertyeach`, { state: { id } })
     }
+
     const FilteredProperties = filtered && filtered.length > 0 ? filtered : propertiesToDisplay;
 
     useEffect(() => {
@@ -81,24 +82,29 @@ function PropertyList({ filtered }) {
 
     return (
         <>
-            <div className='flex flex-wrap  gap-16'>
+            <div className='flex flex-wrap gap-16'>
                 {FilteredProperties && FilteredProperties.map((data, index) => (
-                    <div key={index} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg cursor-pointer">
+                    <div key={index} id={data.id} className="w-full h-auto max-w-[26rem] shadow-lg ">
                         <div>
-                            <div className="relative" onClick={() => handleClick(data._id)}>
+                            <div className='relative'>
                                 <img
-                                    // key={index}
                                     src={data.imageUrls[0]}
-                                    className="w-[100%] h-72 p-4 object-contain rounded-3xl"
-                                    alt="ui/ux review check"
+                                    className="w-full h-72 object-cover rounded-3xl"
+                                    alt="Property"
+                                    // onClick={handleClick}
                                 />
-                                <div className="absolute inset-0 h-full w-full" />
-                                <button className="absolute top-4 right-24 mt-2 mr-2 bg-black border-2 shadow-md shadow-black text-white px-1">
-                                    For Rent
-                                </button>
-                                <button className="absolute top-4 right-4 border-2 shadow-md mt-2 mr-2 bg-green-700  shadow-green-700 text-white px-1">
-                                    verified
-                                </button>
+                                <div className="absolute inset-0 flex items-center justify-between">
+                                    <div className="absolute top-4 right-24">
+                                        <button className="bg-black border-2 shadow-md shadow-black text-white px-1">
+                                            For Rent
+                                        </button>
+                                    </div>
+                                    <div className="absolute top-4 right-4">
+                                        <button className="border-2 shadow-md bg-green-700 shadow-green-700 text-white px-1">
+                                            Verified
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <input type="radio" className="ml-5 appearance-none bg-green-700 border-2 border-white w-4 h-4 rounded-full checked:bg-green-500 checked:border-green-500" />
                             <span className='ml-2 font-bold p-1'>{data.type}</span>
@@ -133,7 +139,7 @@ function PropertyList({ filtered }) {
                             </div>
                         </div>
                         <div className="pt-3">
-                            <button onClick={() => handleClick(data._id)} className="bg-black text-white px-4 py-2 w-full cursor-progress font-bold">
+                            <button onClick={() => handleClick(data._id)} className="bg-black text-white px-4 py-2 w-full font-bold  transition-transform transform hover:scale-105">
                                 View
                             </button>
                         </div>

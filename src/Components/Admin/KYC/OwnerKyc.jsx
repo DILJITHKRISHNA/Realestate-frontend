@@ -110,7 +110,6 @@ function OwnerKyc() {
                                         <th className="px-5 py-3">City</th>
                                         <th className="px-5 py-3">Country</th>
                                         <th className="px-5 py-3">State</th>
-                                        <th className="px-5 py-3">Photo</th>
                                         <th className="px-5 py-3">Approval</th>
                                         <th className="px-5 py-3">Status</th>
                                     </tr>
@@ -149,9 +148,6 @@ function OwnerKyc() {
                                             </td>
                                             <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <p className="whitespace-no-wrap">{kyc.state}</p>
-                                            </td>
-                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                                <img src='https://th.bing.com/th/id/OIP.4cmK9d36bF0F7-V-SaVPnAHaG_?rs=1&pid=ImgDetMain' className="whitespace-no-wrap w-12 h-12" />
                                             </td>
                                             {kyc.is_pending === true ? (
 

@@ -150,7 +150,7 @@ export async function FetchCategory() {
 export async function PaginateProperty(currentPage, id) {
     console.log(id, "PaginateProperty ");
     try {
-        const res = await ownerRequest.get(`/properties/${currentPage}`);
+        const res = await ownerRequest.get(`/properties/${currentPage}/${id}`);
         console.log(res, "res in PaginateProperty apii");
         return res
     } catch (error) {

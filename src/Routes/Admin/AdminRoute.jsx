@@ -19,9 +19,9 @@ function AdminRoute() {
       <Routes>
         <Route element={<AdminProtect />}>
 
-          <Route element={<AdminLayout />}>
+          {/* <Route element={<AdminLayout />}>
+          </Route> */}
             <Route path="/" element={<Home />}></Route>
-          </Route>
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/category" element={<CategoryPage />}></Route>
           <Route path="/property" element={<Property />}></Route>

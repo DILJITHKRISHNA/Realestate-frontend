@@ -78,7 +78,7 @@ function Header() {
                     <Link to='/owner'>
                         <div className="flex items-center">
                             <img src={VarletLogo} alt="Logo" className="h-12 w-12 animate-pulse" />
-                            <span className="ml-2 text-white font-bold animate-pulse">AURORA</span>
+                            <span className="ml-2 flex flex-col text-white font-mono animate-pulse">REAL <span>HOME</span></span>
                         </div>
                     </Link>
                     <div className="text-white flex items-center text-md font-semibold leading-6 p-3 flex-wrap sm:text-xl gap-6">

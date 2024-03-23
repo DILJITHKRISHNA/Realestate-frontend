@@ -53,16 +53,18 @@ function EnquiryList() {
         FetchReservations()
     }, [])
     useEffect(() => {
-        const id = userData?.filter((item)=>setChatId(item._id))
+        const id = userData?.filter((item) => setChatId(item._id))
+        console.log(enquiryData,"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
         const data = enquiryData.find((item) => setOwnerID(item.OwnerRef))
     }, [enquiryData, userData])
-
+    console.log(enquiryData, "enquyiryy dataaa");
     const HandleCreateChat = async (e) => {
         e.preventDefault()
         try {
+            
             const res = await createUserChat(selector.id, ownerId)
             console.log(res, "response in creating chat");
-            if (res.data) {
+            if (res.status  === 200) {
                 toast.success("Chat created!")
                 setTimeout(() => {
                     navigate('/chat')

@@ -10,7 +10,6 @@ function ReserveProperty() {
     const propertyId = location.state.propertyId;
     const navigate = useNavigate()
     const userId = useSelector(state => state.user.userInfo.id)
-    const ownerId = useSelector(state => state.user.OwnerInfo.id)
     const [open, setOpen] = useState(false)
     const [about, setAbout] = useState(false)
     const [property, setProperty] = useState([]);
@@ -24,13 +23,14 @@ function ReserveProperty() {
     const handleOpen = () => {
         setOpen(!open)
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if (payment.name.trim() === '' || payment.contact.trim() === "" || payment.email.trim() === "" || payment.interest.trim() === '') {
                 toast.error("All fields are required!")
             } else {
-
+                const ownerId = property.ownerRef
                 const result = await PropertyReserve(propertyId, payment, userId, ownerId);
                 console.log(result, "result in reserving property");
                 if (result.data.success) {
@@ -58,10 +58,9 @@ function ReserveProperty() {
 
     useEffect(() => {
         const getPropertyData = async () => {
-            const res = await FetchData();
+            const res = await FetchData(propertyId);
             const Details = res.data.data;
-            const propertyData = Details.find((item) => item._id === propertyId);
-            setProperty(propertyData);
+            setProperty(Details);
         };
         getPropertyData();
     }, [propertyId]);
@@ -116,7 +115,7 @@ function ReserveProperty() {
                                         value={payment.interest}
                                         onChange={handleClick}
                                         name='interest'
-                                        placeholder='Interest'
+                                        placeholder='High, Medium or Low'
                                         className='border p-2 w-full border-amber-900'
                                     />
                                 </div>
@@ -171,7 +170,9 @@ function ReserveProperty() {
 
                             </div>
                             <div className='mb-2'>
-                                <FaInfoCircle className='' onClick={handleAbout} />
+                                <span className='flex flex-row items-center gap-2'>
+                                    <FaInfoCircle className='' onClick={handleAbout} />About Enquiry ...
+                                </span>
                                 {about ?
                                     <p className='text-gray-600'>Reserving a property means that others can also reserve the property
                                         and there is a chance that someone will beat you to the booking process.

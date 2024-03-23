@@ -70,7 +70,7 @@ function PropertyPage() {
   }, [])
   const fetchProperties = async () => {
     try {
-      const response = await PaginateProperty(currentPage);
+      const response = await PaginateProperty(currentPage, selector.id);
       console.log(response, "resppppp in ownere paginate");
       const datas = response.data.PropertyData
       const filteredData = datas.filter((item) => item.ownerRef === selector.id)
@@ -211,25 +211,27 @@ function PropertyPage() {
       {propertiesToDisplay.length !== 0 ? (
         <div className="pagination flex justify-center gap-4 mr-20 p-10">
           {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={`
+            index + 1 <= totalPages && (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={`
             bg-white text-gray-800 font-semibold py-2 px-4 border border-lime-300 rounded-full 
             transition-all duration-300 hover:bg-gray-200 focus:outline-none  focus:border-lime-400
             ${currentPage === index + 1 ? 'bg-lime-100 text-black hover:bg-lime-400' : ''}
-        `}
-            >
-              {index + 1}
-            </button>
+          `}
+              >
+                {index + 1}
+              </button>
+            )
           ))}
         </div>
       ) : (
         <div className='flex justify-center mt-[10%] '>
-
           <h1 className='text-4xl font-extrabold'><span className='text-lime-400'>No</span> Properties Found!</h1>
         </div>
       )}
+
 
     </>
   )

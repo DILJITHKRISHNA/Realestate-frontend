@@ -172,19 +172,19 @@ function ProfilePage() {
                             <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0'>
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                     <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2'>
+                                        <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
                                             <FaUser />Fullname: {profileData.username}
                                         </label>
                                     </div>
                                     <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2'>
-                                            <FaMailBulk />Email: {profileData.email}
+                                        <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
+                                            <FaMailBulk/>Email: {profileData.email}
                                         </label>
                                     </div>
                                 </div>
                                 <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
                                     <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2'>
+                                        <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
                                             <FaMobile />Mobile: {profileData.mobile}
                                         </label>
                                     </div>

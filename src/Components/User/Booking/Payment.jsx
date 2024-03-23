@@ -80,12 +80,24 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
                         navigate('/success')
                     }, 2000);
                 } else {
-                    toast.error("please add the required fields..")
+                    toast.error("please add the required fields..",{
+                        position: "top-right",
+                        autoClose: 2000,
+                        style: {
+                            marginTop: "50px",
+                        },
+                    })
                 }
             }
 
             if (error) {
                 console.error(error);
+                toast.error(error.message, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    style: {
+                        marginTop: "50px",
+                    },})
             } else {
                 console.log('Payment successful:', paymentIntent);
             }
