@@ -6,7 +6,7 @@ import { FaRegHeart } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
-function PropertyList({ filtered }) {
+function PropertyList({ filtered , propertyType, searchTitle, searchLocation, priceRange}) {
     const navigate = useNavigate()
     const selector = useSelector(state => state.user.userInfo.id)
     const [propertiesToDisplay, setPropertiesToDisplay] = useState([]);
@@ -19,7 +19,7 @@ function PropertyList({ filtered }) {
 
     const fetchProperties = async () => {
         try {
-            const response = await PaginateProperty(currentPage);
+            const response = await PaginateProperty(currentPage, propertyType, searchTitle, searchLocation, priceRange);
             setPropertiesToDisplay(response.data.PropertyData);
             console.log(response.data, "dtttt ");
             setTotalPages(response.data.totalPages);
@@ -53,7 +53,7 @@ function PropertyList({ filtered }) {
 
     useEffect(() => {
         fetchProperties()
-    }, [currentPage])
+    }, [currentPage, propertyType, searchTitle, searchLocation, priceRange])
 
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);

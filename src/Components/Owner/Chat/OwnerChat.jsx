@@ -215,7 +215,7 @@ const OwnerChat = () => {
         {/* Chat Display */}
 
         <div className="flex-1">
-          <div className="h-full overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
+          <div className="h-[50rem] overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
 
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
@@ -233,7 +233,7 @@ const OwnerChat = () => {
                 : ""}
             </div>
             {selectedUser ?
-              <div className="border-b-2 border-white mb-[40%]"></div>
+              <div className="border-b-2 border-white mb-[70%]"></div>
               : ""}
             {messages && messages.length > 0 ? (
               messages.map((message) => (
@@ -245,9 +245,9 @@ const OwnerChat = () => {
                       {message.text}
                     </span>
                   ) : (
-                   
+
                     <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
-                   
+
                   )}
                   <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                 </div>
@@ -260,7 +260,7 @@ const OwnerChat = () => {
             )}
             {selectedUser ?
 
-              <div className="absolute w-[67%] h-[12%] bg-[#132328] p-4 mt-[44rem]">
+              <div className="absolute w-[68%] h-[95px] bg-[#132328] p-4 mt-[705px]">
                 <div className="flex items-center mt-2">
                   <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
                   <InputEmoji

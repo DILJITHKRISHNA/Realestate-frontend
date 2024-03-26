@@ -181,10 +181,11 @@ export async function FetchProfileData(id) {
         console.log(error);
     }
 }
-export async function PaginateProperty(currentPage) {
-    console.log(currentPage, "PaginateProperty ");
+export async function PaginateProperty(currentPage, propertyType, searchTitle, searchLocation, priceRange) {
+   
     try {
-        const res = await userRequest.get(`/properties/${currentPage}`);
+        console.log(priceRange.min,"priceRange");
+        const res = await userRequest.get(`/properties/${currentPage}/${propertyType}/${searchTitle}/${searchLocation}/${priceRange.min}/${priceRange.max}`);
         console.log(res, "res in PaginateProperty apii");
         return res
     } catch (error) {

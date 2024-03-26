@@ -21,7 +21,7 @@ function Header() {
     <>
       <div className="bg-gray-950 h-16 flex items-center justify-between px-4">
         <div className='w-[7%]  flex justify-start items-start p-3'>
-          <h1 className='text-white flex- flex-col flex justify-center'>REAL <span>HOME</span></h1>
+          <h1 className='text-white flex- flex-col flex justify-center'>AURORA</h1>
           <Link to='/'>
             <img src={logo} alt="" className='w-6 h-6'/>
           </Link>
