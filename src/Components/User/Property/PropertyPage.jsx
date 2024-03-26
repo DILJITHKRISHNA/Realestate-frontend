@@ -12,6 +12,7 @@ function PropertyPage() {
   const [loadData, SetLoadData] = useState([])
   const [category, setCategory] = useState([])
 
+  
 
   useEffect(() => {
     const getCat = async () => {

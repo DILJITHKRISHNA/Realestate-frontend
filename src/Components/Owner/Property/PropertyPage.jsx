@@ -211,7 +211,7 @@ function PropertyPage() {
       {propertiesToDisplay.length !== 0 ? (
         <div className="pagination flex justify-center gap-4 mr-20 p-10">
           {Array.from({ length: totalPages }, (_, index) => (
-            index + 1 <= totalPages && (
+            index + 1 <= totalPages - 1 && (
               <button
                 key={index}
                 onClick={() => handlePageChange(index + 1)}

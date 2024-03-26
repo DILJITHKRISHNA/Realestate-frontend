@@ -113,95 +113,106 @@ export function ListPayment() {
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead>
-                                <tr className="bg-lime-300 text-center text-xs font-semibold uppercase tracking-widest text-white">
-                                    <th className="px-5 py-3">ID</th>
-                                    <th className="px-5 py-3">Payer</th>
-                                    <th className="px-5 py-3">Payment Date</th>
-                                    <th className="px-5 py-3">Payment Type</th>
-                                    <th className="px-5 py-3">Property Name</th>
-                                    <th className="px-5 py-3">Mobile</th>
-                                    <th className="px-5 py-3">Amount</th>
-                                    <th className="px-5 py-3">Status</th>
-                                    <th className="px-5 py-3">Cancel</th>
-                                    {/* <th className="px-5 py-3">Pay Rent</th> */}
-                                </tr>
-                            </thead>
-                            {filteredHistory.map((data, index) => (
 
+                            {filteredHistory.length !== 0 ?
+                                <thead>
+                                    <tr className="bg-lime-300 text-center text-xs font-semibold uppercase tracking-widest text-white">
+                                        <th className="px-5 py-3">ID</th>
+                                        <th className="px-5 py-3">Payer</th>
+                                        <th className="px-5 py-3">Payment Date</th>
+                                        <th className="px-5 py-3">Payment Type</th>
+                                        <th className="px-5 py-3">Property Name</th>
+                                        <th className="px-5 py-3">Mobile</th>
+                                        <th className="px-5 py-3">Amount</th>
+                                        <th className="px-5 py-3">Status</th>
+                                        <th className="px-5 py-3">Cancel</th>
+                                    </tr>
+                                </thead>
+                                : ""}
+                            {filteredHistory.length === 0 ? (
                                 <tbody className="text-black font-semibold font-mono text-center">
-                                    <tr key={index}>
-                                        <td className=" border-gray-200 bg-white px-5 py-5 text-sm">
-                                            <p className="whitespace-no-wrap">{index + 1}</p>
+                                    <tr>
+                                        <td colSpan="9" className="border-gray-200 bg-white px-5 py-5 text-2xl">
+                                            No Payment History
                                         </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            <div className="flex items-center">
-                                                <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" >{data.username}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            <div className="flex items-center">
-                                                <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" >{formattedDates[index]}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            <div className="flex items-center">
-                                                <div className="ml-6">
-                                                    <p className="whitespace-no-wrap  font-extrabold" >{data.payment_type}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            <div className="flex items-center">
-                                                <div className="ml-6">
-                                                    <PropertyAbout propertyId={data.property_id} className="whitespace-no-wrap" />
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            <div className="flex items-center">
-                                                <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" >{data.mobile}</p>
-                                                </div>
-                                            </div>
-                                        </td>
+                                    </tr>
+                                </tbody>
+                            ) : (
+                                filteredHistory.map((data, index) => (
 
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            <div className="flex items-center">
-                                                <div className="ml-6">
-                                                    <p className="whitespace-no-wrap" >₹ {data.Rent}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            {data.is_canceled === false ? (
+                                    <tbody className="text-black font-semibold font-mono text-center">
+                                        <tr key={index}>
+                                            <td className=" border-gray-200 bg-white px-5 py-5 text-sm">
+                                                <p className="whitespace-no-wrap">{index + 1}</p>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
-                                                    <div className=" flex flex-row ">
-                                                        <HiOutlineCheckCircle className=' w-6 h-5 text-green-900 animate-pulse' />
-                                                        <p className="whitespace-no-wrap text-green-600" >{data.bookingStatus}</p>
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap" >{data.username}</p>
                                                     </div>
                                                 </div>
-                                            ) : (
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
-                                                    <div className=" flex flex-row ">
-                                                        <HiMiniXCircle className=' w-6 h-5 text-red-900 animate-pulse' />
-                                                        <p className="whitespace-no-wrap text-red-600" >Canceled</p>
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap" >{formattedDates[index]}</p>
                                                     </div>
                                                 </div>
-                                            )}
-                                        </td>
-                                        <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
-                                            {data.is_canceled === false ?
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
                                                 <div className="flex items-center">
-                                                    <button onClick={() => handleClick(data._id, data.property_id)} className="border-2 border-lime-400 text-lime-400 p-1 ml-4 hover:bg-lime-400 hover:text-white">Cancel</button>
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap  font-extrabold" >{data.payment_type}</p>
+                                                    </div>
                                                 </div>
-                                                : ""}
-                                        </td>
-                                        {/* <td className="">
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <div className="flex items-center">
+                                                    <div className="ml-6">
+                                                        <PropertyAbout propertyId={data.property_id} className="whitespace-no-wrap" />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <div className="flex items-center">
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap" >{data.mobile}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                <div className="flex items-center">
+                                                    <div className="ml-6">
+                                                        <p className="whitespace-no-wrap" >₹ {data.Rent}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                {data.is_canceled === false ? (
+                                                    <div className="flex items-center">
+                                                        <div className=" flex flex-row ">
+                                                            <HiOutlineCheckCircle className=' w-6 h-5 text-green-900 animate-pulse' />
+                                                            <p className="whitespace-no-wrap text-green-600" >{data.bookingStatus}</p>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center">
+                                                        <div className=" flex flex-row ">
+                                                            <HiMiniXCircle className=' w-6 h-5 text-red-900 animate-pulse' />
+                                                            <p className="whitespace-no-wrap text-red-600" >Canceled</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </td>
+                                            <td className=" border-gray-200 bg-white px-1 py-5 text-sm">
+                                                {data.is_canceled === false ?
+                                                    <div className="flex items-center">
+                                                        <button onClick={() => handleClick(data._id, data.property_id)} className="border-2 border-lime-400 text-lime-400 p-1 ml-4 hover:bg-lime-400 hover:text-white">Cancel</button>
+                                                    </div>
+                                                    : ""}
+                                            </td>
+                                            {/* <td className="">
                                             <button >PayNow</button>
                                             {clientSecret  && data.is_canceled === false && (
                                                 <Elements stripe={StripePromise} options={options}>
@@ -209,9 +220,10 @@ export function ListPayment() {
                                                 </Elements>
                                             )}
                                         </td> */}
-                                    </tr>
-                                </tbody>
-                            ))}
+                                        </tr>
+                                    </tbody>
+                                ))
+                            )}
                         </table>
                     </div>
                     {/* {users.map((userData)=>( */}

@@ -20,13 +20,13 @@ const ChatPage = () => {
   const [newMessage, setNewMessage] = useState('')
   const [selectedUser, setSelectedUser] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
-  const [receiveMessage, setReceiveMessage] = useState(null);
+  const [lastSentMessage, setLastSentMessage] = useState('');
   const [chats, setChats] = useState(null)
   const [roomUrl, setRoomUrl] = useState(null)
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const socket = useRef()
-  
+
   // const [refresh, setRefresh] = useState(false)
   const scroll = useRef();
 
@@ -99,7 +99,7 @@ const ChatPage = () => {
       getCurrentUser();
     }
   }, []);
- 
+
   const handeleChange = (newMessage) => {
     setNewMessage(newMessage);
   }
@@ -115,6 +115,7 @@ const ChatPage = () => {
 
       const data = await addMessages(texts);
       setMessages(data.data);
+      setLastSentMessage(newMessage);
       setNewMessage("");
       setRoomUrl('')
     } catch (error) {
@@ -288,17 +289,30 @@ const ChatPage = () => {
             }
 
             <div className="messages-container flex-1 relative">
+              {/* Display the last sent message */}
+              {lastSentMessage && (
+                <div className={`message text-md bg-transparent border-2 border-white ml-2 mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
+                  {isURL(lastSentMessage.text) ? (
+                    <span className="text-blue-500 underline hover:text-amber-950">
+                      Video call sent
+                    </span>
+                  ) : (
+                    <h1 className="text-white px-2 text-md font-semibold">{lastSentMessage.text}</h1>
+                  )}
+                  <span className='text-white font-extralight text-sm ml-2'>{format(lastSentMessage.createdAt)}</span>
+                </div>
+              )}
+
+              {/* Map over all messages */}
               {messages && messages.length > 0 ? (
                 messages.map((message) => (
-                  <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`}>
+                  <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
                     {isURL(message.text) ? (
-                      <span    className="text-blue-500 underline hover:text-amber-950">
-                        Video call sended
+                      <span className="text-blue-500 underline hover:text-amber-950">
+                        Video call sent
                       </span>
-                      
                     ) : (
                       <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
-
                     )}
                     <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                   </div>
@@ -310,7 +324,8 @@ const ChatPage = () => {
                 </div>
               )}
             </div>
-            {istyping && !isMessageSender(user, selectedUser) ? ( 
+
+            {istyping && !isMessageSender(user, selectedUser) ? (
               <div>
                 <p style={{ marginBottom: 8, marginLeft: 0, color: "gray" }}>
                   Typing...

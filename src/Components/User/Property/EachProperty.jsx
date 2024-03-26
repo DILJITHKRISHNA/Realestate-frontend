@@ -8,6 +8,7 @@ import BookProperty from '../Booking/BookProperty';
 import PropertyVideo from './PropertyVideo';
 import PropertyShare from './PropertyShare';
 import PropertyReview from './PropertyReview';
+import MapContainer from '../MapContainer/MapContainer';
 
 function EachProperty() {
   const location = useLocation()
@@ -85,7 +86,7 @@ function EachProperty() {
               />
             ))}
           </div>
-          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-[20rem] lg:w-[calc(60%-4rem)] lg:ml-8 ml-[5rem] flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-[24rem] lg:w-[calc(60%-4rem)] lg:ml-8 ml-[6rem] flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
             <div>
               <h5 className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {property.type}
@@ -185,11 +186,15 @@ function EachProperty() {
                 <li className='mt-6 font-mono'>Country: {property.country}</li>
                 <li className='mt-6 font-mono'>City: {property.city}</li>
               </ul>
-              <div className='flex justify-center mt-auto'>
-                <button className='mt-4 border-2 border-lime-400 text-lime-400 px-2 font-mono hover:text-white hover:bg-lime-400'>Contact</button>
+              <div className='flex justify-center mt-32'>
+                <button className=' border-2 border-lime-400 text-lime-400 px-2 font-mono hover:text-white hover:bg-lime-400'>Contact</button>
               </div>
             </div>
           </div>
+        </div>
+        <div className='w-full mt-10'>
+          <h1 className='ml-24 text-lg font-semibold'>Here you can check where the property located:</h1>
+          <MapContainer propertyId={property._id}/>
         </div>
         {/* <PropertyReview property={property}/> */}
         <ToastContainer />
