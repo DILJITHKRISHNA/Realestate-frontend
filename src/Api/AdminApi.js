@@ -173,3 +173,13 @@ export async function PaginateProperty(currentPage) {
         console.log(error);
     }
 }
+export async function GetCount() {
+    console.log("GetCount ");
+    try {
+        const res = await adminRequest.get('/getcount');
+        console.log(res, "res in GetCount apii");
+        return res
+    } catch (error) {
+        console.log(error);
+    }
+}

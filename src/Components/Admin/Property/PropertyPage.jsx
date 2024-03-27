@@ -54,7 +54,7 @@ function PropertyPage() {
 
   useEffect(() => {
     fetchProperties()
-  }, [currentPage])
+  }, [currentPage, propertiesToDisplay])
 
   const handleClick = (propertyId) => {
     setOpenPropertyId(propertyId);
@@ -145,7 +145,7 @@ function PropertyPage() {
                     <td className="border-gray-200 bg-white px-5 py-5 text-sm">{data.Rent}</td>
                     <td
                       className={`border-gray-200 bg-white px-5 py-5 text-sm ${data.is_verified === true ? 'text-lime-400 font-bold' : 'text-red-700 font-bold'}`}>
-                      {data.is_pending === true && data.is_verified === false ? (
+                      {data.is_pending === true ? (
                         <span className='text-amber-900'>Pending</span>
                       ) : (
                         <span>{data.is_verified === true ? "Approved" : "Rejected"}</span>

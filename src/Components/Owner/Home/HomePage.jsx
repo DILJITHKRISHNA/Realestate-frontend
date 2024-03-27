@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { FetchOwnerProperty } from '../../../Api/OwnerApi'
+import { Bar } from 'react-chartjs-2';
+
 
 function HomePage() {
   const owner = useSelector(state => state.owner.OwnerInfo)
@@ -19,6 +21,54 @@ function HomePage() {
     getProperty()
   }, [])
 
+  const data1 = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'Property',
+        data: [10, 20, 30, 40, 50, 60, 70],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const data2 = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'Booked',
+        data: [5, 10, 15, 20, 25, 30, 35],
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const data3 = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'Reserved',
+        data: [3, 6, 9, 12, 15, 18, 21],
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+
   return (
     <>
       <div className='flex justify-center '>
@@ -30,57 +80,19 @@ function HomePage() {
           <a href='/owner/property' className='bg-black text-white py-1 rounded-xl px-4 lg:text-2xl font-semibold transform hover:scale-105 transition-transform'>Visit</a>
         </div>
       </div>
-      <div className='mt-10 flex sm:flex-row flex-col justify-around p-2 gap-4 ml-4'>
-        <div className='w-[20rem] h-[20rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
-          <table className='w-full'>
-            <thead className='bg-black'>
-              <tr className='text-white'>
-                <th className="p-2 pr-4">Property</th>
-                <th className="p-2">Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='text-white '>
-                <td className='p-2 pl-10'>sdfsd</td>
-                <td className='p-2 pl-10'>fgd</td>
-              </tr>
-            </tbody>
-          </table>
+      <div className='mt-10 flex sm:flex-row flex-col justify-around p-2 gap-4 ml-6 lg:ml-2'>
+        <div className='w-[30rem] h-[18rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
+          <Bar data={data1} options={options} />
         </div>
-        <div className='w-[20rem] h-[20rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
-          <table className='w-full'>
-            <thead className='bg-black'>
-              <tr className='text-white'>
-                <th className="p-2 pr-4">Booked</th>
-                <th className="p-2">Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='text-white'>
-                <td className='p-2 pl-10'>sdfsd</td>
-                <td className='p-2 pl-10'>fgd</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className='w-[30rem] h-[18rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
+          <Bar data={data2} options={options} />
         </div>
-        <div className='w-[20rem] h-[20rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
-          <table className='w-full'>
-            <thead className='bg-black'>
-              <tr className='text-white'>
-                <th className="p-2 pr-4">Reserved</th>
-                <th className="p-2 pr-4">Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className='text-white'>
-                <td className='p-2 pl-10'>sdfsd</td>
-                <td className='p-2 pl-10'>fgd</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className='w-[30rem] h-[18rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
+          <Bar data={data3} options={options} />
         </div>
         <ToastContainer />
       </div>
+
       {/* <div className='flex justify-center gap-2 bg-white h-screen text-center relative mt-16'>
           <h1 className='absolute font-extrabold text-lg flex gap-2'><span className='font-medium'>AURORA</span>OWNER HOME</h1>
           <div className='absolute border-2 border-black w-[80%] h-[80%] mt-10' style={{ zIndex: 1 }}>

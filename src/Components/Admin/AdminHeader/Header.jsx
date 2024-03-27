@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../assets/Logo/VarletLogo.png';
-import DarkLight from '../Dark&Light/DarkLight';
-import Sidebar from '../AdminSidebar/Sidebar';
 import { BellIcon, UserCircleIcon, LogoutIcon } from '@heroicons/react/solid';
 function Header() {
 
   const navigate = useNavigate()
+  const [isHovered, setIsHovered] = useState(false);
+
 
   const handleClick = () => {
     try {
@@ -23,7 +23,7 @@ function Header() {
         <div className='w-[7%]  flex justify-start items-start p-3'>
           <h1 className='text-white flex- flex-col flex justify-center'>AURORA</h1>
           <Link to='/'>
-            <img src={logo} alt="" className='w-6 h-6'/>
+            <img src={logo} alt="" className='' />
           </Link>
         </div>
         <div className="flex items-center">
@@ -40,8 +40,11 @@ function Header() {
           </Link>
 
           <button onClick={handleClick}>
-            <div className="mr-4">
+            <div className="mr-4 relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
               <LogoutIcon className="h-6 w-6 text-white hover:text-yellow-100" />
+              <span className={`absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-${isHovered ? '100' : '0'} pointer-events-none transition-opacity duration-300`}>
+                Logout
+              </span>
             </div>
           </button>
         </div>
