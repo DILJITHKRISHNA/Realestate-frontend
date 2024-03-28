@@ -1,4 +1,5 @@
 import React from 'react'
+import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 
 
 import { Typography } from "@material-tailwind/react";
@@ -26,7 +27,7 @@ function Footer() {
             <div className="mx-auto w-full max-w-7xl px-8">
                 <div className="p-4 grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
                     <Typography variant="h5" className="mb-6 w-[15%] h-[20%] text-white">
-                        <img src="/src/assets/Logo/VarLetLogo.png" alt="" />
+                        <img src={VarletLogo} alt="" />
                         <span className='text-md font-mono text-nowrap ml-2'>Copyright © Varlet UI {currentYear}</span>
                     </Typography>
                     <div className="grid grid-cols-3 justify-between gap-4 text-white ">

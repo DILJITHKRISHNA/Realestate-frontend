@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../assets/Logo/VarletLogo.png';
 import { BellIcon, UserCircleIcon, LogoutIcon } from '@heroicons/react/solid';
+
 function Header() {
 
   const navigate = useNavigate()
-  const [isHovered, setIsHovered] = useState(false);
-
 
   const handleClick = () => {
     try {
@@ -40,11 +39,8 @@ function Header() {
           </Link>
 
           <button onClick={handleClick}>
-            <div className="mr-4 relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+            <div className="mr-4 relative">
               <LogoutIcon className="h-6 w-6 text-white hover:text-yellow-100" />
-              <span className={`absolute top-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-${isHovered ? '100' : '0'} pointer-events-none transition-opacity duration-300`}>
-                Logout
-              </span>
             </div>
           </button>
         </div>
