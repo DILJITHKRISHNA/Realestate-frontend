@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { OwnerLogin } from '../../../Api/OwnerApi.js'
 import { ToastContainer, toast } from 'react-toastify'
 import { setOwnerDetails } from '../../../Redux/OwnerSlice/ownerSlice.jsx'
-import {VarletLogo} from '../../../assets/Logo/VarletLogo.png'
+import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 
 function LoginPage() {
 

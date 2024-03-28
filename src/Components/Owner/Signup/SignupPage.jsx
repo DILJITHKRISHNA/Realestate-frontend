@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setOwnerDetails } from '../../../Redux/OwnerSlice/ownerSlice.jsx';
 import { ToastContainer, toast } from 'react-toastify';
-import {VarletLogo} from '../../../assets/Logo/VarletLogo.png'
+import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 
 
 function SignupPage() {
