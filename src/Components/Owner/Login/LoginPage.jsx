@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { OwnerLogin } from '../../../Api/OwnerApi.js'
 import { ToastContainer, toast } from 'react-toastify'
 import { setOwnerDetails } from '../../../Redux/OwnerSlice/ownerSlice.jsx'
+import {VarletLogo} from '../../../assets/Logo/VarletLogo.png'
 
 function LoginPage() {
 
@@ -86,7 +87,7 @@ function LoginPage() {
           <div className="absolute w-full md:w-[60%] lg:w-[60%] h-[80%] flex flex-col md:flex-row items-center justify-between border-8 border-black ">
             <div className="w-full md:w-[50%] h-[90%] flex items-center justify-center">
               <img
-                src="/src/assets/Logo/VarletLogo.png"
+                src={VarletLogo}
                 alt="Logo"
                 className="w-[70%] h-[75%] animate-pulse"
               />
