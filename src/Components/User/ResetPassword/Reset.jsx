@@ -4,6 +4,8 @@ import { NewPassword } from '../../../Api/UserApi'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { setUserDetails } from '../../../Redux/UserSlice/userSlice'
 import { useSelector } from 'react-redux'
+import VarletLogo from '../../../assets/Logo/VarletLogo.png'
+
 
 function Reset() {
     const emailSelector = useSelector((state) => state.user)
@@ -64,9 +66,9 @@ function Reset() {
                 <div className="absolute w-full md:w-[60%] lg:w-[60%] h-[80%] flex flex-col md:flex-row items-center justify-between border-8 border-black ">
                     <div className="w-full md:w-[50%] h-[90%] flex items-center justify-center">
                         <img
-                            src="/src/assets/Logo/VarletLogo.png"
+                            src={VarletLogo}
                             alt="Logo"
-                            className="w-[70%] h-[75%] animate-pulse"
+                            className="w-[40%] lg:w-[70%] h-[75%] animate-pulse"
                         />
                     </div>
                     <div className="w-full md:w-[50%] text-white flex flex-col justify-center items-center p-4">

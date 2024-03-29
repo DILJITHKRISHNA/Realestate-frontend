@@ -106,7 +106,7 @@ const OwnerChat = () => {
 
   useEffect(() => {
     const receiverId = selectedUser?.members.find(member => member)?._id;
-    setSendMessage({ messages, receiverId })
+    setSendMessage({receiverId })
   }, [selectedUser, messages]);
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const OwnerChat = () => {
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
       console.log(data, '================');
-      setMessages(data.messages);
+      setMessages( data.messages);
     })
   }, [messages])
 

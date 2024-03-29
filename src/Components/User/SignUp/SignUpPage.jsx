@@ -33,11 +33,11 @@ function SignUpPage() {
                             Accept: 'application/json'
                         }
                     })
-                    console.log(response.data,"laaaaaaaaaaa");
+                    console.log(response.data, "laaaaaaaaaaa");
                     const result = await userRegisterGoogle(response.data)
-        
+
                     navigate('/')
-                    console.log(result.token,"tokkkk");
+                    console.log(result.token, "tokkkk");
                 }
             } catch (error) {
                 console.log(error);
@@ -53,7 +53,7 @@ function SignUpPage() {
         password: '',
     })
 
-    if(SignupUser.username === Number){
+    if (SignupUser.username === Number) {
         toast.error("username should be characters")
     }
 
@@ -108,7 +108,7 @@ function SignUpPage() {
                         <img
                             src={VarletLogo}
                             alt="Logo"
-                            className="w-[70%] h-[75%] animate-pulse"
+                            className="w-[40%] lg:w-[70%] h-[75%] animate-pulse"
                         />
                     </div>
                     <div className="w-full md:w-[50%] text-white flex flex-col justify-center items-center p-4">

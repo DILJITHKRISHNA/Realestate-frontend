@@ -67,6 +67,16 @@ export async function ownerRegisterGoogle(ownerData) {
         console.log(error);
     }
 }
+export async function OwnerGoogleLogin(ownerGoogleEmail) {
+    console.log(ownerGoogleEmail, "login google woener apiii");
+    try {
+        const response = await ownerRequest.get(`/owner/ownerLoginWithGoogle/${ownerGoogleEmail}`);
+        console.log(response,"responsi inn api");
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export async function GetKyc() {
     try {

@@ -40,7 +40,10 @@ function SignupPage() {
               is_google: true
             }
             ))
-          navigate('/owner/')
+          toast.success("Successfully logged in");
+          setTimeout(() => {
+            navigate('/owner/')
+          }, 1000);
           console.log(result.token, "tokkkk");
         }
       } catch (error) {
@@ -185,7 +188,7 @@ function SignupPage() {
           </div>
         </div>
       </>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   )
 }

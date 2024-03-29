@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
+import VarletLogo from '../../../assets/Logo/VarletLogo.png'
+
 function OtpPage() {
 
     const selector = useSelector(state => state.user)
@@ -55,7 +57,7 @@ function OtpPage() {
     };
 
     //resend Otp
-    const [countdown, setCountdown] = useState(60); 
+    const [countdown, setCountdown] = useState(60);
 
     useEffect(() => {
         let timer;
@@ -71,12 +73,12 @@ function OtpPage() {
         };
     }, [countdown]);
 
-    const handleResendOtp = async() => {
+    const handleResendOtp = async () => {
         try {
-            const response = await resendOTp({email: email});
-            console.log(response,"Ress in resend otppp");
+            const response = await resendOTp({ email: email });
+            console.log(response, "Ress in resend otppp");
             setCountdown(60);
-            if(response.data.success){
+            if (response.data.success) {
                 toast("Otp Re-Sended Successfully")
             }
         } catch (error) {
@@ -97,9 +99,9 @@ function OtpPage() {
                 <div className="absolute w-[60%] h-[70%] flex items-center justify-between border-8 border-black">
                     <div className="w-[50%] h-[90%] flex items-center justify-center">
                         <img
-                            src="/src/assets/Logo/VarletLogo.png"
+                            src={VarletLogo}
                             alt="Logo"
-                            className="w-[70%] h-[75%] animate-pulse"
+                            className="w-[40%] lg:w-[70%] h-[75%] animate-pulse"
                         />
                     </div>
                     <div className="w-[50%] text-white flex justify-center items-center">

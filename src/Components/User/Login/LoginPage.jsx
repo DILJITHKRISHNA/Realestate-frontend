@@ -55,7 +55,10 @@ function LoginPage() {
                         id: response.data._id,
                         is_google: true
                     }))
-                    navigate('/')
+                    toast.success("Successfully logged in");
+                    setTimeout(() => {
+                        navigate('/')
+                    }, 1000);
                     console.log(result.token, "tokkkk");
 
                 }
@@ -138,7 +141,7 @@ function LoginPage() {
                 <>
                     {!isOpn ? (
                         <div className="relative flex h-screen bg-black justify-center items-center">
-                            <div className='w-full md:w-[40%] lg:w-[30%] '>
+                            <div className='w-full md:w-[40%] lg:w-[30%]'>
                                 <img
                                     className="absolute inset-0 w-full h-full object-cover opacity-30"
                                     src="https://images.unsplash.com/photo-1502814151-947a9877a776?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGRhcmslMjBsaXZpbmclMjByb29tfGVufDB8fDB8fHww"
@@ -150,7 +153,7 @@ function LoginPage() {
                                     <img
                                         src={VarletLogo}
                                         alt="Logo"
-                                        className="w-[70%] h-[75%] animate-pulse"
+                                        className="w-[40%] lg:w-[70%] h-[75%] animate-pulse"
                                     />
                                 </div>
                                 <div className="w-full md:w-[50%] text-white flex flex-col justify-center items-center p-4">

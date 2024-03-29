@@ -125,7 +125,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
-    setSendMessage({ messages, receiverId })
+    setSendMessage({ ...messages, receiverId })
   }, [selectedUser, messages]);
 
   useEffect(() => {
