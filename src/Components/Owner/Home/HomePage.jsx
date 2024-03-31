@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { FetchOwnerProperty } from '../../../Api/OwnerApi'
 import { Bar } from 'react-chartjs-2';
+import BGImage from '../../../assets/images/BackgroundImg.jpg'
 
 
 function HomePage() {
@@ -75,7 +76,7 @@ function HomePage() {
         <h3 className='absolute font-extrabold flex text-white text-xxl text-2xl mb-20 sm:text-5xl w-[80%] h-[20rem] font-mono justify-center items-center text-center animate-pulse gap-2'>
           <span className='text-white '>CONNECT WITH PEOPLE WHO BARELY INTERESTED IN YOUR PROPERTY.</span>
         </h3>
-        <img className='2xl:mt-[20%] object-cover w-full lg:h-screen h-[40rem]' src="/src/assets/images/BackgroundImg.jpg" alt="" />
+        <img className='2xl:mt-[20%] object-cover w-full lg:h-screen h-[40rem]' src={BGImage} alt="" />
         <div className='absolute  mt-[15rem] flex flex-col'   >
           <a href='/owner/property' className='bg-black text-white py-1 rounded-xl px-4 lg:text-2xl font-semibold transform hover:scale-105 transition-transform'>Visit</a>
         </div>
