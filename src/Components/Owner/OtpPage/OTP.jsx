@@ -2,7 +2,7 @@ import React from 'react'
 import { OwnerverifyOtp } from '../../../Api/OwnerApi'
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import VarletLogo from '../../../assets/Logo/VarletLogo.png'
+// import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 
 function OTP() {
     const navigate = useNavigate()
@@ -48,7 +48,7 @@ function OTP() {
                     <div className="absolute w-[60%] h-[70%] flex items-center justify-between border-8 border-black">
                         <div className="w-[50%] h-[90%] flex items-center justify-center">
                             <img
-                                src={VarletLogo}
+                                // src={VarletLogo}
                                 alt="Logo"
                                 className="w-[70%] h-[75%] animate-pulse"
                             />
