@@ -2,7 +2,7 @@ import React from 'react'
 import { OwnerverifyOtp } from '../../../Api/OwnerApi'
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import varletLogo from '../../../assets/Logo/varletLogo.png'
+import varletLogo from '../../../assets/Logo/VarletLogo.png'
 
 function OTP() {
     const navigate = useNavigate()
