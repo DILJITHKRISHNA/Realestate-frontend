@@ -81,7 +81,7 @@ function HomePage() {
           <a href='/owner/property' className='bg-black text-white py-1 rounded-xl px-4 lg:text-2xl font-semibold transform hover:scale-105 transition-transform'>Visit</a>
         </div>
       </div>
-      <div className='mt-10 flex sm:flex-row flex-col justify-around p-2 gap-4 ml-6 lg:ml-2'>
+      {/* <div className='mt-10 flex sm:flex-row flex-col justify-around p-2 gap-4 ml-6 lg:ml-2'>
         <div className='w-[30rem] h-[18rem] border-2 border-black bg-white shadow-md shadow-amber-900'>
           <Bar data={data1} options={options} />
         </div>
@@ -92,7 +92,7 @@ function HomePage() {
           <Bar data={data3} options={options} />
         </div>
         <ToastContainer />
-      </div>
+      </div> */}
 
       {/* <div className='flex justify-center gap-2 bg-white h-screen text-center relative mt-16'>
           <h1 className='absolute font-extrabold text-lg flex gap-2'><span className='font-medium'>AURORA</span>OWNER HOME</h1>
