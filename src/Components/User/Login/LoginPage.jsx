@@ -47,17 +47,21 @@ function LoginPage() {
                         }
                     })
                     const result = await userRegisterGoogle(response.data)
-                    localStorage.setItem("token", result.data.UserToken);
-                    dispatch(setUserDetails({
-                        email: result.data.GoogleData.email,
-                        username: result.data.GoogleData.username,
-                        id: result.data.GoogleData._id,
-                        is_google: true
-                    }))
-                    toast.success("Successfully logged in");
-                    setTimeout(() => {
-                        navigate('/')
-                    }, 1000);
+                    console.log(result.data,"result .dataaaaaaaaaaaaa");
+                    if (result.data.success) {
+
+                        localStorage.setItem("token", result.data.UserToken);
+                        dispatch(setUserDetails({
+                            email: result.data.user.email,
+                            username: result.data.user.username,
+                            id: result.data.user._id,
+                            is_google: true
+                        }))
+                        toast.success("Successfully logged in");
+                        setTimeout(() => {
+                            navigate('/')
+                        }, 1000);
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -126,7 +130,7 @@ function LoginPage() {
             console.error('Login failed:', error.message);
             toast.error("Error during login. Please try again.");
             setLoading(false);
-        } 
+        }
     };
 
 
