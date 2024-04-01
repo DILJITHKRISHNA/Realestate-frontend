@@ -12,6 +12,7 @@ function HeaderNav() {
   const userSelector = useSelector((state) => state.user)
   const id = userSelector.userInfo.id
   const UserGoogleData = userSelector.userInfo
+  console.log(UserGoogleData.username,"nameeee");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [storedToken, setStoredToken] = useState('')
   const [profileImg, setProfileImg] = useState('')
@@ -31,7 +32,6 @@ function HeaderNav() {
     }
     profile()
   }, [id])
-
 
   return (
     <>
@@ -62,7 +62,7 @@ function HeaderNav() {
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-yellow-300 transform origin-bottom scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
                   <span className='flex flex-row gap-2 items-center'>
 
-                    {UserGoogleData.username}
+                    {UserGoogleData?.username}
                   </span>
                 </a>
               </li>

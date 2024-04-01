@@ -77,16 +77,6 @@ export async function userRegisterGoogle(userData) {
         console.log(error);
     }
 }
-export async function userLoginGoogle(userData) {
-    console.log(userData, "dtataaa apiii");
-    try {
-        const response = await userRequest.post("/userLoginWithGoogle", userData);
-        console.log(response, "rip");
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export async function FetchData(id) {
     console.log("entert to fetch dataaa in apiii");

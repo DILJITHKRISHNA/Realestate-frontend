@@ -5,6 +5,8 @@ import { Image } from 'cloudinary-react';
 import { FaRegHeart } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import Loading from '../../Loading/Loading';
+
 
 function PropertyList({ filtered, propertyType, searchTitle, searchLocation, priceRange }) {
     const navigate = useNavigate()
@@ -14,6 +16,7 @@ function PropertyList({ filtered, propertyType, searchTitle, searchLocation, pri
     const [totalPages, setTotalPages] = useState(1);
     const [category, setCategory] = useState([])
     const [isWishlisted, setWishlisted] = useState(false);
+
 
 
 

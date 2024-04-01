@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { userLogin, userLoginGoogle } from '../../../Api/UserApi';
+import { userLogin, userRegisterGoogle } from '../../../Api/UserApi';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -40,27 +40,24 @@ function LoginPage() {
         const FetchData = async () => {
             try {
                 if (user) {
-                    setLoading(true);
                     const response = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
                             Authorization: `Bearer ${user.access_token}`,
                             Accept: 'application/json'
                         }
                     })
-                    console.log(response.data, "laaaaaaaaaaa");
-                    const result = await userLoginGoogle(response.data)
+                    const result = await userRegisterGoogle(response.data)
+                    localStorage.setItem("token", result.data.UserToken);
                     dispatch(setUserDetails({
-                        email: response.data.email,
-                        username: response.data.name,
-                        id: response.data._id,
+                        email: result.data.GoogleData.email,
+                        username: result.data.GoogleData.username,
+                        id: result.data.GoogleData._id,
                         is_google: true
                     }))
                     toast.success("Successfully logged in");
                     setTimeout(() => {
                         navigate('/')
                     }, 1000);
-                    console.log(result.token, "tokkkk");
-
                 }
             } catch (error) {
                 console.log(error);

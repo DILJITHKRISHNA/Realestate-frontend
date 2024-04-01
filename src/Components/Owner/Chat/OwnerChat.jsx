@@ -34,7 +34,6 @@ const OwnerChat = () => {
   // console.log(onlineUsers,"99000^^^^");
   useEffect(() => {
     const fetchMessages = async () => {
-
       const response = await getMessages(selectedUser._id)
       console.log(response.data, "0099");
       if (response.data) {

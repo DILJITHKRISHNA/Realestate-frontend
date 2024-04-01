@@ -15,7 +15,7 @@ import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 function SignUpPage() {
     const navigate = useNavigate()
     const [user, SetUser] = useState([])
-
+    const dispatch = useDispatch();
     const GoogleRegister = useGoogleLogin({
         onSuccess: (codeResponse) => SetUser(codeResponse),
         onError: () => toast.error("Google Authentication Failed")
@@ -33,11 +33,18 @@ function SignUpPage() {
                             Accept: 'application/json'
                         }
                     })
-                    console.log(response.data, "laaaaaaaaaaa");
                     const result = await userRegisterGoogle(response.data)
-
-                    navigate('/')
-                    console.log(result.token, "tokkkk");
+                    localStorage.setItem("token", result.data.UserToken);
+                    dispatch(setUserDetails({
+                        email: result.data.GoogleData.email,
+                        username: result.data.GoogleData.username,
+                        id: result.data.GoogleData._id,
+                        is_google: true
+                    }))
+                    toast.success("Successfully logged in");
+                    setTimeout(() => {
+                        navigate('/')
+                    }, 1000);
                 }
             } catch (error) {
                 console.log(error);
