@@ -21,7 +21,7 @@ function PropertyList({ filtered, propertyType, searchTitle, searchLocation, pri
         try {
             const response = await PaginateProperty(currentPage, propertyType, searchTitle, searchLocation, priceRange);
             setPropertiesToDisplay(response.data.PropertyData);
-            console.log(response.data, "dtttt ");
+            console.log(propertiesToDisplay, "dtttt ");
             setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('Error fetching properties:', error);

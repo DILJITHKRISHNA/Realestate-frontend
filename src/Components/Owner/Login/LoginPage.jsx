@@ -33,7 +33,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!ownerData.email || !ownerData.password) {
+    if (ownerData.email.trim() === '' || ownerData.password.trim() === '') {
       toast.error("Please provide both email and password");
       return;
     }
@@ -48,7 +48,7 @@ function LoginPage() {
       const response = await OwnerLogin(ownerData);
       const token = response.data.token;
 
-      if (!response.data.success) {
+      if (response.data.success === false) {
         toast.error("Owner not found. Please sign up.");
         return;
       }

@@ -182,9 +182,7 @@ export async function FetchProfileData(id) {
     }
 }
 export async function PaginateProperty(currentPage, propertyType, searchTitle, searchLocation, priceRange) {
-   
     try {
-        console.log(priceRange.min,"priceRange");
         const res = await userRequest.get(`/properties/${currentPage}/${propertyType}/${searchTitle}/${searchLocation}/${priceRange.min}/${priceRange.max}`);
         console.log(res, "res in PaginateProperty apii");
         return res

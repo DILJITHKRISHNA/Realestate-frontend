@@ -12,13 +12,21 @@ function PropertyPage() {
   const [loadData, SetLoadData] = useState([])
   const [category, setCategory] = useState([])
 
-  
+  useEffect(()=>{
+    const Getproperty = async () => {
+      const res = await FetchPropertyData()
+      console.log(res.data.data,"yessssssss");
+      if(res.data.success){
+        SetLoadData(res.data.data)
+      }
+    }
+    Getproperty()
+  },[])
 
   useEffect(() => {
     const getCat = async () => {
       try {
         const res = await FetchCategory()
-        console.log(res, "reddddddddddddddd");
         if (res.data.success) {
           setCategory(res.data.categoryList);
         }

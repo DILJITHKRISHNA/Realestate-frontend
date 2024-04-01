@@ -322,46 +322,53 @@ function AddDetails({ SetOpen }) {
                                         className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
                                     />
                                 </div>
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700">State</label>
-                                    <input
-                                        type="text"
-                                        name="state"
-                                        value={details.state}
-                                        onChange={handleClick}
-                                        placeholder="state"
-                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700">Balcony</label>
-                                    <input
-                                        type="text"
-                                        name="balconies"
-                                        value={details.balconies}
-                                        onChange={handleClick}
-                                        placeholder="balcony"
-                                        className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
-                                    />
-                                </div>
-                                <label className='mt-1'>Parking</label>
-                                <input
-                                    type="checkbox"
-                                    name="parking"
-                                    value={details.parking ? false : true}
-                                    onChange={handleClick}
-                                    className="mt-2 border rounded-md w-full focus:outline-none focus:border-blue-500 "
-                                />
-                                <label className='mt-1'>Furnished</label>
-                                <input
-                                    type="checkbox"
-                                    name="furnished"
-                                    value={details.furnished ? false : true}
-                                    onChange={handleClick}
-                                    className="mt-2 border rounded-md w-full focus:outline-none focus:border-blue-500 "
-                                />
-                            </div>
+                                <div className='flex flex-row gap-4'>
 
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium text-gray-700">State</label>
+                                        <input
+                                            type="text"
+                                            name="state"
+                                            value={details.state}
+                                            onChange={handleClick}
+                                            placeholder="state"
+                                            className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium text-gray-700">Balcony</label>
+                                        <input
+                                            type="text"
+                                            name="balconies"
+                                            value={details.balconies}
+                                            onChange={handleClick}
+                                            placeholder="balcony"
+                                            className="mt-1 p-2 border rounded-md w-full focus:outline-none focus:border-blue-500"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className='mt-1'>Parking</label>
+                                        <input
+                                            type="checkbox"
+                                            name="parking"
+                                            value={details.parking ? false : true}
+                                            onChange={handleClick}
+                                            className="mt-2 border rounded-md w-full focus:outline-none focus:border-blue-500 "
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+
+                                        <label className='mt-1'>Furnished</label>
+                                        <input
+                                            type="checkbox"
+                                            name="furnished"
+                                            value={details.furnished ? false : true}
+                                            onChange={handleClick}
+                                            className="mt-2 border rounded-md w-full focus:outline-none focus:border-blue-500 "
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">No. Of Floors</label>
                                 <input
