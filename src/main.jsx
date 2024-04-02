@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <GoogleOAuthProvider clientId={clientId}>
+        <GoogleOAuthProvider clientId='1086612982293-45aginbtqub1iibtq7md9ebe3claogrp.apps.googleusercontent.com'>
           {/* <QueryClientProvider clientId={quaryClient}> */}
           <App />
           {/* </QueryClientProvider> */}
