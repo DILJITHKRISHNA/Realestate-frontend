@@ -96,7 +96,7 @@ const OwnerChat = () => {
         chatId: selectedUser._id
       };
       const data = await addMessages(texts);
-      setMessages(data.data);
+      setMessages([...messages, data.data]);
       setNewMessage("");
     } catch (error) {
       console.log('Error sending message:', error);
@@ -117,7 +117,7 @@ const OwnerChat = () => {
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
       console.log(data, '================');
-      setMessages( data.messages);
+      setMessages([...messages, data.messages]);
     })
   }, [messages])
 
@@ -244,9 +244,7 @@ const OwnerChat = () => {
                       {message.text}
                     </span>
                   ) : (
-
                     <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
-
                   )}
                   <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
                 </div>
@@ -257,6 +255,7 @@ const OwnerChat = () => {
                 <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
               </div>
             )}
+
             {selectedUser ?
 
               <div className="absolute w-[68%] h-[95px] bg-[#132328] p-4 mt-[705px]">
