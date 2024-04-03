@@ -67,10 +67,10 @@ function EachProperty() {
   return (
     <>
       <div>
-        <div className="flex flex-col lg:flex-row ml-10">
+        <div className="flex flex-col lg:flex-row w-full ">
           {property.imageUrls && property.imageUrls.length > 0 && (
             <img
-              className="object-cover  object-center w-full lg:w-2/3 h-64 md:h-96 lg:h-full rounded-xl mt-[6rem] md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
+              className="object-cover  object-center w-96 sm:w-full lg:w-2/3 h-64 md:h-96 lg:h-full rounded-xl mt-[6rem] md:mt-24 lg:mt-24 md:ml-10 lg:ml-14"
               src={property.imageUrls[0]}
               alt="nature image"
             />
@@ -86,7 +86,7 @@ function EachProperty() {
               />
             ))}
           </div>
-          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-[24rem] lg:w-[calc(60%-4rem)] lg:ml-8 ml-[6rem] flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
+          <figcaption className="absolute mt-28 sm:top-2 left-1/3 transform -translate-x-1/2 w-[20rem] lg:w-[calc(60%-4rem)] lg:ml-8 ml-[3rem] flex justify-between rounded-xl border border-white bg-white/75 py-4 px-6 shadow-lg shadow-black/5 saturate-200 backdrop-blur-sm">
             <div>
               <h5 className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                 {property.type}
@@ -98,7 +98,17 @@ function EachProperty() {
             <PropertyVideo videoUrl={property.videoUrls} className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900" />
           </figcaption>
         </div>
-        <div className='mt-4 lg:mt-14 ml-4 lg:ml-16 w-full lg:w-[91%] h-screen flex flex-col lg:flex-row'>
+
+
+
+
+
+
+
+
+
+
+        <div className='mt-4 lg:mt-14  lg:ml-16 w-full lg:w-[91%] flex justify-between flex-col lg:flex-row'>
           <div className='w-full lg:w-[90%] p-8'>
             <h1 className='text-4xl font-bold font-custom'>{property.name}</h1>
             <span className='p-1 font-semibold'>{property.location}</span>
@@ -151,7 +161,7 @@ function EachProperty() {
             </div>
             <div className='mt-12 border-b-2 border-black'></div>
           </div>
-          <div className='mt-4 lg:mt-12 w-full lg:w-[40%] h-[77%] p-8  border-black shadow-md shadow-lime-200'>
+          <div className='mt-4 lg:mt-12 w-full lg:w-[40%] h-[77%] p-8 border-black shadow-md shadow-lime-200'>
             <h1 className='mt-2   font-bold text-lg bg-lime-400  w-[100%] text-white text-center'>MORE ABOUT</h1>
             <ul className='mt-4 uppercase'>
               <li className='mt-6 font-mono'>Property id: {property._id}</li>
@@ -171,10 +181,10 @@ function EachProperty() {
         </div>
 
 
-        <div className='border-2 border-lime-200 shadow-md shadow-lime-200 w-full lg:w-[89%] h-[60vh] mt-4 lg:ml-24 flex flex-col lg:flex-row'>
+        <div className='border-2 border-lime-200 shadow-md shadow-lime-200 w-full lg:w-[89%] sm:h-[60vh] mt-4 lg:ml-24 flex flex-col justify-between  lg:flex-row'>
           <div className='w-full lg:w-1/2 order-1 lg:order-1'>
             {property.imageUrls && property.imageUrls.length > 0 && (
-              <img src={property.imageUrls[1]} alt="" className='top-0 h-full w-full object-cover' />
+              <img src={property.imageUrls[1]} alt="" className='top-0 h-full w-full ' />
             )}
           </div>
           <div className='w-full lg:w-1/2 order-2 lg:order-2'>
@@ -192,8 +202,8 @@ function EachProperty() {
             </div>
           </div>
         </div>
-        <div className='w-full mt-10'>
-          <h1 className='ml-24 text-lg font-semibold'>Here you can check where the property located:</h1>
+        <div className='w-full pt-10 sm:mt-10'>
+          <h1 className='sm:ml-24 sm:text-lg text-[17px] font-semibold'>Here you can check where the property located:</h1>
           <MapContainer propertyId={property._id}/>
         </div>
         {/* <PropertyReview property={property}/> */}

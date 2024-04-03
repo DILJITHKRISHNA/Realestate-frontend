@@ -54,8 +54,8 @@ console.log(longitude,"lomngotude");
       };
     return (
         <>
-            <div className="flex relative flex-col items-center h-screen w-screen mt-10">
-                <div className="absolute left-0 top-0 h-full w-[90%] ml-16">
+            <div className="flex relative flex-col items-center sm:h-screen h-[20rem] w-[23rem] sm:w-screen mt-10">
+                <div className="absolute left-0 top-0 h-full sm:w-[90%] w-[23rem] sm:ml-16 ">
                     {isLoaded && (
                         <GoogleMap
                             center={defaultCenter}
