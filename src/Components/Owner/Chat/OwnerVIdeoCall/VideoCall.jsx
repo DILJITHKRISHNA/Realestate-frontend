@@ -49,7 +49,8 @@ function VideoCall() {
                 sharedLinks: [
                   {
                     name: "Copy Link",
-                    url: `http://localhost:5173/owner/${senderId}`,
+                    url: `https://varlet-frontend.vercel.app/owner/${senderId}`,
+                    // url: `http://localhost:5173/owner/${senderId}`,
                   },
                 ],
                 scenario: {

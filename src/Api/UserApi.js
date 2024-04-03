@@ -237,10 +237,10 @@ export async function PropertyReserve(propertyId, reserveData, userId, ownerId) 
         console.log(error);
     }
 }
-export async function FetchEnquiry() {
+export async function FetchEnquiry(userId) {
     console.log( "FetchEnquiry ");
     try {
-        const res = await userRequest.get('/enquiry');
+        const res = await userRequest.get(`/enquiry/${userId}`);
         console.log(res, "res in FetchEnquiry apii");
         return res
     } catch (error) {

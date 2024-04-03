@@ -39,7 +39,7 @@ function EnquiryList() {
     useEffect(() => {
         const FetchReservations = async () => {
             try {
-                const res = await FetchEnquiry()
+                const res = await FetchEnquiry(selector.id)
                 const data = res.data.enquiryData
                 const details = data.find((item) => item.UserRef === selector.id)
                 console.log(res, "res in enquiry fetching ");
@@ -58,6 +58,7 @@ function EnquiryList() {
         const data = enquiryData.find((item) => setOwnerID(item.OwnerRef))
     }, [enquiryData, userData])
     console.log(enquiryData, "enquyiryy dataaa");
+
     const HandleCreateChat = async (e) => {
         e.preventDefault()
         try {

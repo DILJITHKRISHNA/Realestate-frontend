@@ -77,13 +77,9 @@ export function EditProfile({ Data }) {
                             <label className="block text-gray-700 text-sm font-bold mb-2">
                                 Email
                             </label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="border rounded-md px-4 py-2 w-full"
-                            />
+                            <div className="border rounded-md px-4 py-2 w-full text-gray-400">
+                                {Data.email}
+                            </div>
                         </div>
 
                         <div className="mb-6">
