@@ -40,7 +40,7 @@ function Wishlist() {
 
     return (
         <>
-            <button className="sm:h-10 sm:w-44 pr-4 lg:pr-4 text-black rounded-md font-mono hover:underline" onClick={handleDrawer}>
+            <button className="sm:h-10 sm:w-44 mr-[14rem] lg:pr-4 text-black rounded-md font-mono hover:underline" onClick={handleDrawer}>
                 Saved
             </button>
             {openRight && (
