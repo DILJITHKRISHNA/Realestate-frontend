@@ -207,19 +207,23 @@ const OwnerChat = () => {
             className="w-full px-2 py-1 rounded-md bg-transparent border-2 border-white"
             placeholder="Search Here"
           />
-          {ownerData && ownerData.map((data, index) => (
-            <ul key={index} className="mt-4" >
-              <li
-                onClick={() => setSelectedUser(data)}
+          {ownerData && ownerData.length > 0 ? (
+             ownerData && ownerData.map((data, index) => (
+              <ul key={index} className="mt-4" >
+                <li
+                  onClick={() => setSelectedUser(data)}
 
-                className={`cursor-pointer flex flex-row gap-2 text-lg mt-2 items-center text-white font-bold p-2 rounded hover:bg-gray-300 transition-all duration-300`}
-              >
-                <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
-                {data?.members[0]?.username}
-              </li>
-              <hr />
-            </ul>
-          ))}
+                  className={`cursor-pointer flex flex-row gap-2 text-lg mt-2 items-center text-white font-bold p-2 rounded hover:bg-gray-300 transition-all duration-300`}
+                >
+                  <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
+                  {data?.members[0]?.username}
+                </li>
+                <hr />
+              </ul>
+            ))
+          ) : (
+            <p className='text-center mt-10 text-white font-extrabold'>No conversations</p>
+          )}
         </div>
 
         {/* Chat Display */}
