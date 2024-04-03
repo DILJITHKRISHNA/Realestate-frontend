@@ -24,7 +24,7 @@ const OwnerChat = () => {
   const socket = useRef()
 
   useEffect(() => {
-    socket.current = io('https://aurora.varlet.online' || 'http://localhost:5000')
+    socket.current = io(import.meta.env.BACKEND_URL || 'http://localhost:5000')
     socket.current.emit("new-user-add", owner.id)
     socket.current.on('get-users', (owners) => {
       setOnlineUsers(owners);

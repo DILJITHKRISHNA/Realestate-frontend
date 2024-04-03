@@ -35,7 +35,7 @@ const ChatPage = () => {
   }, [messages]);
 
   useEffect(() => {
-    socket.current = io('https://aurora.varlet.online'||'http://localhost:5000', {
+    socket.current = io(import.meta.env.BACKEND_URL ||'http://localhost:5000', {
       withCredentials: true,
     })
     socket.current.emit("new-user-add", user.id)
