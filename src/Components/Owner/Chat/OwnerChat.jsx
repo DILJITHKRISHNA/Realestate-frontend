@@ -105,7 +105,7 @@ const OwnerChat = () => {
 
   useEffect(() => {
     const receiverId = selectedUser?.members.find(member => member)?._id;
-    setSendMessage({receiverId })
+    setSendMessage({ receiverId })
   }, [selectedUser, messages]);
 
   useEffect(() => {
@@ -115,10 +115,21 @@ const OwnerChat = () => {
   }, [sendMessage, messages])
 
   useEffect(() => {
-    socket.current.on("receive-message", (data) => {
-      console.log(data, '================');
-      setMessages([...messages, data.messages]);
-    })
+    // socket.current.on("receive-message", (data) => {
+    //   console.log(data, '================');
+    //   setMessages([...messages, data.messages]);
+    // })
+
+    const fetchMessages = async () => {
+      const response = await getMessages(selectedUser._id)
+      console.log(response.data, "0099");
+      if (response.data) {
+        setMessages(response.data)
+      }
+    }
+    if (selectedUser) {
+      fetchMessages()
+    }
   }, [messages])
 
 
@@ -236,7 +247,7 @@ const OwnerChat = () => {
               : ""}
             {messages && messages.length > 0 ? (
               messages.map((message) => (
-                <div className={` ${message.senderId === owner.id ? "ml-[78%] text-center text-md " : "text-center text-md bg-transparent border-2 border-white ml-2"} mb-4 p-3 bg-[#132328] w-[20%]  rounded-full`} key={message.id}>
+                <div className={` ${message.senderId === owner.id ? "ml-[78%] text-center text-md " : "text-center text-md bg-transparent border-2 border-white ml-2"} mb-[10%] p-3 bg-[#132328] w-[20%]  rounded-full`} key={message.id}>
                   {isURL(message.text) ? (
                     <span onClick={() =>
                       validateVideoChat(message.text)
@@ -244,6 +255,7 @@ const OwnerChat = () => {
                       {message.text}
                     </span>
                   ) : (
+
                     <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
                   )}
                   <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>

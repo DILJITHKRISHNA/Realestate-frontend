@@ -306,7 +306,7 @@ const ChatPage = () => {
               {/* Map over all messages */}
               {messages && messages.length > 0 ? (
                 messages.map((message) => (
-                  <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
+                  <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-[10%] p-3 bg-[#132328] w-[20%] rounded-full`}>
                     {isURL(message.text) ? (
                       <span className="text-blue-500 underline hover:text-amber-950">
                         Video call sent
