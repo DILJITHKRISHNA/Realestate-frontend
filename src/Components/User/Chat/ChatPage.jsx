@@ -35,7 +35,7 @@ const ChatPage = () => {
   }, [messages]);
 
   useEffect(() => {
-    socket.current = io(import.meta.env.BACKEND_URL ||'http://localhost:5000', {
+    socket.current = io(import.meta.env.BACKEND_URL || 'http://localhost:5000', {
       withCredentials: true,
     })
     socket.current.emit("new-user-add", user.id)
@@ -225,7 +225,7 @@ const ChatPage = () => {
     <>
       <HeaderNav />
       <div className="flex flex-col md:flex-row h-screen mt-16 bg-white">
-        <div className="md:w-[7%] h-[50rem] bg-black flex flex-col justify-between">
+        <div className="md:w-[7%] h-[856px] bg-black flex flex-col justify-between">
           <img
             src={profile?.imageUrls}
             alt="image2"
@@ -240,7 +240,7 @@ const ChatPage = () => {
         </div>
 
         {/* User Listing Sidebar */}
-        <div className="w-full h-[50rem] md:w-1/4 bg-[#132328] p-4">
+        <div className="w-full h-[856px] md:w-1/4 bg-[#132328] p-4">
           <input
             className="w-full px-2 py-1 rounded-md bg-transparent border-2 border-white"
             placeholder="Search Here"
@@ -266,23 +266,23 @@ const ChatPage = () => {
         {/* Chat Display */}
 
         <div className="flex-1">
-          <div className="h-[50rem] overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
-            <div className="flex flex-row justify-between">
-              <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
-                {selectedUser && (
-                  <div className='flex felx-col gap-2'>
-                    <img src={selectedUser?.members[0]?.imageUrls} alt='image of user in header' className='w-8 h-8 rounded-full' />
-                    <h4 className="flex flex-col">
-                      {selectedUser?.members[0]?.username}
-                    </h4>
-                  </div>
-                )}
-              </h1>
-              {selectedUser &&
+          <div className="flex flex-row justify-between bg-[#132328]">
+            <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
+              {selectedUser && (
+                <div className='flex felx-col gap-2'>
+                  <img src={selectedUser?.members[0]?.imageUrls} alt='image of user in header' className='w-8 h-8 rounded-full' />
+                  <h4 className="flex flex-col">
+                    {selectedUser?.members[0]?.username}
+                  </h4>
+                </div>
+              )}
+            </h1>
+            {selectedUser &&
 
-                <FaVideo onClick={() => HandleVideoCall()} className="mr-5 w-6 h-6 mt-2 text-white" />
-              }
-            </div>
+              <FaVideo onClick={() => HandleVideoCall()} className="mr-5 w-6 h-6 mt-2 text-white" />
+            }
+          </div>
+          <div className="h-[50rem] overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
 
             {selectedUser &&
               <div className="border-b-2 border-white mb-[40%]"></div>
