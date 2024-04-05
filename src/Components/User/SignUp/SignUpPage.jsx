@@ -126,7 +126,7 @@ function SignUpPage() {
                                 name="username"
                                 value={SignupUser.username}
                                 onChange={handleClick}
-                                placeholder="Fullname"
+                                placeholder="Full Name"
                                 autoFocus
                                 className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                             />
@@ -163,7 +163,7 @@ function SignUpPage() {
                                 Sign Up
                             </button>
                             <Link className="text-center" to='/login'>
-                                Already Have Account? <strong>LOGIN</strong>
+                                Already Have Account? <strong>LOG IN</strong>
                             </Link>
                         </form>
                         <div

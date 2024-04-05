@@ -30,6 +30,11 @@ const ChatPage = () => {
   // const [refresh, setRefresh] = useState(false)
   const scroll = useRef();
 
+
+  const selectedUserMessages = messages.filter(message => message.senderId === selectedUser?.members[0]?._id);
+  const lastMessage = selectedUserMessages[selectedUserMessages.length - 1];
+
+
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);

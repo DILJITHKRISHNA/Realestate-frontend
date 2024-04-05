@@ -46,7 +46,7 @@ function PropertyPage() {
 
   return (
     <>
-      <div className='sm:hidden flex justify-center mr-5'>
+      <div className=' sm:hidden flex justify-center mr-5'>
 
         <div className='w-[20rem] h-[28rem] mt-20  bg-black  rounded-2xl '>
           <div className='p-6 mt-2 gap-1'>
@@ -113,53 +113,12 @@ function PropertyPage() {
             </section>
 
           </div>
-          {/* Inside your PropertyPage component */}
-          {/* <div className='ml-6 flex flex-col w-[85%] mt-2'>
-              <label className='text-white font-jura'>Number of Bedrooms</label>
-              <input
-                type="number"
-                min="0"
-                onChange={(e) => setNumBedrooms(e.target.value)}
-                className='mt-4 h-8 rounded-lg p-2'
-                placeholder='Number of Bedrooms'
-              />
-            </div>
-            <div className='ml-6 flex flex-col w-[85%] mt-2'>
-              <label className='text-white font-jura'>Number of Bathrooms</label>
-              <input
-                type="number"
-                min="0"
-                onChange={(e) => setNumBathrooms(e.target.value)}
-                className='mt-4 h-8 rounded-lg p-2'
-                placeholder='Number of Bathrooms'
-              />
-            </div>
-            <div className='ml-6 flex flex-col w-[85%] mt-2'>
-              <label className='text-white font-jura'>Minimum Square Footage</label>
-              <input
-                type="number"
-                min="0"
-                onChange={(e) => setMinSqFootage(e.target.value)}
-                className='mt-4 h-8 rounded-lg p-2'
-                placeholder='Minimum Square Footage'
-              />
-            </div>
-            <div className='ml-6 flex flex-col w-[85%] mt-2'>
-              <label className='text-white font-jura'>Maximum Square Footage</label>
-              <input
-                type="number"
-                min="0"
-                onChange={(e) => setMaxSqFootage(e.target.value)}
-                className='mt-4 h-8 rounded-lg p-2'
-                placeholder='Maximum Square Footage'
-              />
-            </div> */}
         </div>
       </div>
 
       {loadData ? (
 
-        <div className='flex flex-wrap mt-16'>
+        <div className=' flex flex-wrap mt-16'>
 
           <div className='w-[85%] sm:mt-[29rem] lg:h-auto h-full ml-4 lg:mt-8 rounded-2xl p-2 '>
             <PropertyList propertyType={propertyType} searchTitle={searchTitle} searchLocation={searchLocation} priceRange={priceRange} />
