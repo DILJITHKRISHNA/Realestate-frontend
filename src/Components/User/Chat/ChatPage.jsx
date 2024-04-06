@@ -106,7 +106,7 @@ const ChatPage = () => {
     setNewMessage(newMessage);
   }
   const handleSend = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
     try {
       const texts = {
@@ -292,18 +292,18 @@ const ChatPage = () => {
 
             <div className="messages-container flex-1 relative">
               {/* Display the last sent message */}
-              {lastSentMessage && (
+              {/* {messages && (
                 <div className={`message text-md bg-transparent border-2 border-white ml-2 mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
-                  {isURL(lastSentMessage.text) ? (
+                  {isURL(messages.text) ? (
                     <span className="text-blue-500 underline hover:text-amber-950">
                       Video call sent
                     </span>
                   ) : (
-                    <h1 className="text-white px-2 text-md font-semibold">{lastSentMessage.text}</h1>
+                    <h1 className="text-white px-2 text-md font-semibold">{messages.text}</h1>
                   )}
-                  <span className='text-white font-extralight text-sm ml-2'>{format(lastSentMessage.createdAt)}</span>
+                  <span className='text-white font-extralight text-sm ml-2'>{format(messages.createdAt)}</span>
                 </div>
-              )}
+              )} */}
 
               {/* Map over all messages */}
               {messages && messages.length > 0 ? (
