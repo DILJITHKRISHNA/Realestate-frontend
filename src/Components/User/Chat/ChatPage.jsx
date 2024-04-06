@@ -196,7 +196,7 @@ const ChatPage = () => {
 
   const HandleVideoCall = () => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
-    const joinId = `http://localhost:5173/owner/${receiverId}`;
+    const joinId = `https://varlet-frontend.vercel.app/owner/${receiverId}`;
     setRoomUrl(joinId);
     setTimeout(() => {
       navigate(`/videocall`, { state: { receiverId } });
@@ -291,7 +291,6 @@ const ChatPage = () => {
             }
 
             <div className="messages-container flex-1 relative">
-              {/* Display the last sent message */}
               {/* {messages && (
                 <div className={`message text-md bg-transparent border-2 border-white ml-2 mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
                   {isURL(messages.text) ? (
@@ -305,7 +304,6 @@ const ChatPage = () => {
                 </div>
               )} */}
 
-              {/* Map over all messages */}
               {messages && messages.length > 0 ? (
                 messages.map((message) => (
                   <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-[10%] p-3 bg-[#132328] w-[20%] rounded-full`}>
