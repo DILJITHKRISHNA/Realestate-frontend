@@ -192,7 +192,6 @@ const ChatPage = () => {
   //   }
   // }
 
- 
   const HandleVideoCall = () => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
     const joinId = `https://varlet-frontend.vercel.app/owner/${receiverId}`;
@@ -291,7 +290,7 @@ const ChatPage = () => {
 
             <div className="messages-container flex-1 relative">
               {/* Display the last sent message */}
-              {/* {lastSentMessage && (
+              {lastSentMessage && (
                 <div className={`message text-md bg-transparent border-2 border-white ml-2 mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
                   {isURL(lastSentMessage.text) ? (
                     <span className="text-blue-500 underline hover:text-amber-950">
@@ -302,7 +301,7 @@ const ChatPage = () => {
                   )}
                   <span className='text-white font-extralight text-sm ml-2'>{format(lastSentMessage.createdAt)}</span>
                 </div>
-              )} */}
+              )}
 
               {/* Map over all messages */}
               {messages && messages.length > 0 ? (
