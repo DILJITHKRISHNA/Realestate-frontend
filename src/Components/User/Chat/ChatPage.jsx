@@ -114,7 +114,7 @@ const ChatPage = () => {
         text: (newMessage && newMessage) || (roomUrl && roomUrl),
         chatId: selectedUser._id
       };
-
+console.log(roomUrl,"room urlll");
       const data = await addMessages(texts);
       setMessages(data.data);
       setLastSentMessage(newMessage);
@@ -199,7 +199,7 @@ const ChatPage = () => {
     const joinId = `https://varlet-frontend.vercel.app/owner/${receiverId}`;
     setRoomUrl(joinId);
     setTimeout(() => {
-      navigate(`/videocall`, { state: { receiverId } });
+      window.open(`/videocall`, { state: { receiverId } });
     }, 500);
   };
 
