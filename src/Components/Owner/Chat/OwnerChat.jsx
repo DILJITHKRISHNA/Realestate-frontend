@@ -175,10 +175,11 @@ const OwnerChat = () => {
 
   const validateVideoChat = (sendedId) => {
     const id = sendedId.includes(owner.id);
+    console.log(id, 'is this owner id');
     if (id) {
       navigate(`/owner/${owner.id}`);
     } else {
-      toast.error("Invalid chat link!");
+      ("Invalid chat link!");
     }
   };
 

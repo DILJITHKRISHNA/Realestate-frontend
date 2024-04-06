@@ -30,8 +30,6 @@ const ChatPage = () => {
   // const [refresh, setRefresh] = useState(false)
   const scroll = useRef();
 
-
-
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -106,7 +104,7 @@ const ChatPage = () => {
     setNewMessage(newMessage);
   }
   const handleSend = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     try {
       const texts = {
@@ -114,7 +112,7 @@ const ChatPage = () => {
         text: (newMessage && newMessage) || (roomUrl && roomUrl),
         chatId: selectedUser._id
       };
-console.log(roomUrl,"room urll");
+
       const data = await addMessages(texts);
       setMessages(data.data);
       setLastSentMessage(newMessage);
@@ -194,6 +192,7 @@ console.log(roomUrl,"room urll");
   //   }
   // }
 
+ 
   const HandleVideoCall = () => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
     const joinId = `https://varlet-frontend.vercel.app/owner/${receiverId}`;
@@ -291,19 +290,21 @@ console.log(roomUrl,"room urll");
             }
 
             <div className="messages-container flex-1 relative">
-              {/* {messages && (
+              {/* Display the last sent message */}
+              {/* {lastSentMessage && (
                 <div className={`message text-md bg-transparent border-2 border-white ml-2 mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
-                  {isURL(messages.text) ? (
+                  {isURL(lastSentMessage.text) ? (
                     <span className="text-blue-500 underline hover:text-amber-950">
                       Video call sent
                     </span>
                   ) : (
-                    <h1 className="text-white px-2 text-md font-semibold">{messages.text}</h1>
+                    <h1 className="text-white px-2 text-md font-semibold">{lastSentMessage.text}</h1>
                   )}
-                  <span className='text-white font-extralight text-sm ml-2'>{format(messages.createdAt)}</span>
+                  <span className='text-white font-extralight text-sm ml-2'>{format(lastSentMessage.createdAt)}</span>
                 </div>
               )} */}
 
+              {/* Map over all messages */}
               {messages && messages.length > 0 ? (
                 messages.map((message) => (
                   <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-[10%] p-3 bg-[#132328] w-[20%] rounded-full`}>
