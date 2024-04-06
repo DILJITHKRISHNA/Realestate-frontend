@@ -74,7 +74,7 @@ function EachProperty() {
               src={property.imageUrls[0]}
               alt="nature image"
             />
-          )}
+          )} 
 
           <div className='flex flex-col justify-between'>
             {property.imageUrls && property.imageUrls.slice(1, 4).map((imageUrl, index) => (
