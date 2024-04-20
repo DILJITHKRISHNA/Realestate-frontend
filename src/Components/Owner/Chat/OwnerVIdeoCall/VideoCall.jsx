@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 
 function VideoCall() {
     const { senderId } = useParams();
+    console.log(senderId,"senderidd");
     const owner = useSelector(state => state.owner.OwnerInfo);
     // const data = current.state?.data || "";
     // const receiverDetails = data[1];

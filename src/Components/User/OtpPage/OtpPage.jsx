@@ -96,12 +96,12 @@ function OtpPage() {
                         alt="Background"
                     />
                 </div>
-                <div className="absolute w-[60%] h-[70%] flex items-center justify-between border-8 border-black">
+                <div className="absolute lg:w-[60%] w-[90%] h-[70%] flex flex-col lg:flex-row items-center justify-between border-8 border-black">
                     <div className="w-[50%] h-[90%] flex items-center justify-center">
                         <img
                             src={VarletLogo}
                             alt="Logo"
-                            className="w-[40%] lg:w-[70%] h-[75%] animate-pulse"
+                            className="w-[100%] lg:w-[70%] h-[75%] animate-pulse"
                         />
                     </div>
                     <div className="w-[50%] text-white flex justify-center items-center">
@@ -109,7 +109,7 @@ function OtpPage() {
                             <div>
                                 <div className="w-[80%]">
                                     <h1 className="text-center pb-3 font-bold text-4xl pl-5 text-white animate-pulse mr-2">OTP Verification</h1>
-                                    <div className="flex justify-between mb-4">
+                                    <div className="flex justify-between mb-4 gap-5 lg:gap-0">
                                         <input
                                             type="text"
                                             name="first"
