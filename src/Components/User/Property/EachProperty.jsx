@@ -99,15 +99,6 @@ function EachProperty() {
           </figcaption>
         </div>
 
-
-
-
-
-
-
-
-
-
         <div className='mt-4 lg:mt-14  lg:ml-16 w-full lg:w-[91%] flex justify-between flex-col lg:flex-row'>
           <div className='w-full lg:w-[90%] p-8'>
             <h1 className='text-4xl font-bold font-custom'>{property.name}</h1>
@@ -196,9 +187,7 @@ function EachProperty() {
                 <li className='mt-6 font-mono'>Country: {property.country}</li>
                 <li className='mt-6 font-mono'>City: {property.city}</li>
               </ul>
-              <div className='flex justify-center mt-32'>
-                <button className=' border-2 border-lime-400 text-lime-400 px-2 font-mono hover:text-white hover:bg-lime-400'>Contact</button>
-              </div>
+             
             </div>
           </div>
         </div>

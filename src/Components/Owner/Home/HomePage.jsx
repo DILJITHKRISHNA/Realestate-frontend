@@ -74,7 +74,7 @@ function HomePage() {
     <>
       <div className='flex justify-center '>
         <h3 className='absolute font-extrabold flex text-white text-xxl text-2xl mb-20 sm:text-5xl w-[80%] h-[20rem] font-mono justify-center items-center text-center animate-pulse gap-2'>
-          <span className='text-white '>CONNECT WITH PEOPLE WHO BARELY INTERESTED IN YOUR PROPERTY.</span>
+          <span className='text-white '>CONNECT WITH PEOPLE WHO INTERESTED IN YOUR PROPERTY.</span>
         </h3>
         <img className='2xl:mt-[20%] object-cover w-full lg:h-screen h-[40rem]' src={BGImage} alt="" />
         <div className='absolute  mt-[15rem] flex flex-col'   >
