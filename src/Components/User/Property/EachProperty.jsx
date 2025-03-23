@@ -208,7 +208,7 @@ function EachProperty() {
         {/* Map section */}
         <div className='w-full px-2 sm:px-6 lg:px-8 pt-6 sm:pt-10 mt-6 sm:mt-8'>
           <h1 className='text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4'>Here you can check where the property is located:</h1>
-          <div className='w-[107%] -ml-6 sm:-ml-8 lg:-ml-10'>
+          <div className='w-[102%] -ml-2 sm:-ml-4 lg:-ml-6 transition-all duration-300'>
             <MapContainer propertyId={property._id}/>
           </div>
         </div>
