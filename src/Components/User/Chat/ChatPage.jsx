@@ -27,13 +27,6 @@ const ChatPage = () => {
   const [istyping, setIsTyping] = useState(false);
   const socket = useRef()
 
-  // const [refresh, setRefresh] = useState(false)
-  const scroll = useRef();
-
-  useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
   useEffect(() => {
     socket.current = io(import.meta.env.BACKEND_URL || 'http://localhost:5000', {
       withCredentials: true,
@@ -104,8 +97,6 @@ const ChatPage = () => {
     setNewMessage(newMessage);
   }
   const handleSend = async (e) => {
-    // e.preventDefault();
-
     try {
       const texts = {
         senderId: user.id,
@@ -117,7 +108,7 @@ const ChatPage = () => {
       setMessages(data.data);
       setLastSentMessage(newMessage);
       setNewMessage("");
-      setRoomUrl('')
+      setRoomUrl('');
     } catch (error) {
       console.log('Error sending message:', error);
     }
@@ -156,10 +147,6 @@ const ChatPage = () => {
   };
 
   useEffect(() => {
-    // socket.current.on("receive-message", (data) => {
-    //   console.log(data, '================1111111111111111111');
-    //   setMessages(data.messages);
-    // })
     const messageGet = async () => {
       const response = await getMessages(selectedUser._id)
       if (response.data) {
@@ -169,28 +156,6 @@ const ChatPage = () => {
     messageGet()
 
   }, [messages, selectedUser])
-
-  // useEffect(() => {
-  //   if (receiveMessage !== null && receiveMessage?.chatId === selectedUser?._id) {
-  //     setMessages([...messages, receiveMessage]);
-  //   }
-  // }, [receiveMessage])
-
-  // const HandleVideoCall = () => {
-  //   try {
-  //     if (selectedUser._id && user.id) {
-  //       const VideoData = [selectedUser._id, user.id]
-  //       if (VideoData.length >= 1) {
-  //         setTimeout(() => {
-  //           window.open(`/videocall/${user.id}`, { state: { data: VideoData } });
-
-  //         }, 1000);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   const HandleVideoCall = () => {
     const receiverId = chats && chats[0]?.members?.find((member) => member !== user.id)
@@ -224,144 +189,140 @@ const ChatPage = () => {
   return (
     <>
       <HeaderNav />
-      <div className="flex flex-col md:flex-row h-screen mt-16 bg-white">
-        <div className="md:w-[7%] h-[856px] bg-black flex flex-col justify-between">
+      <div className="flex flex-col md:flex-row h-[calc(100vh-64px)] mt-16 bg-white">
+        {/* Sidebar with user profile */}
+        <div className="md:w-[7%] w-full h-[60px] md:h-full bg-black flex md:flex-col flex-row justify-between items-center md:items-start">
           <img
             src={profile?.imageUrls}
             alt="image2"
-            className="rounded-full w-12 h-12 ml-6 mt-4"
+            className="rounded-full w-10 h-10 md:w-12 md:h-12 ml-4 md:ml-6 md:mt-4"
           />
-          <h1>
+          <div className="flex md:flex-col flex-row gap-4 mr-4 md:mr-0 md:mt-auto md:mb-10">
             <Link to='/' >
-              <FaSignOutAlt className='text-white mb-10 ml-8 w-8 h-8' />
+              <FaSignOutAlt className='text-white w-6 h-6 md:w-8 md:h-8 md:ml-8' />
             </Link>
-            <FaCog className='text-white mb-10 ml-8 w-8 h-8' />
-          </h1>
+            <FaCog className='text-white w-6 h-6 md:w-8 md:h-8 md:ml-8' />
+          </div>
         </div>
 
         {/* User Listing Sidebar */}
-        <div className="w-full h-[856px] md:w-1/4 bg-[#132328] p-4">
-          <input
-            className="w-full px-2 py-1 rounded-md bg-transparent border-2 border-white"
-            placeholder="Search Here"
-          />
-          {userData && userData.length > 0 ? (
-            userData.map((data, index) => (
-              <ul key={index} className="mt-4">
-                <li
-                  onClick={() => setSelectedUser(data)}
-                  className={`cursor-pointer flex flex-row gap-2 text-lg mt-2 items-center text-white font-bold p-2 rounded hover:bg-gray-300 transition-all duration-300`}
-                >
-                  <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
-                  {data?.members[0]?.username}
-                </li>
-                <hr />
-              </ul>
-            ))
-          ) : (
-            <p className='text-center mt-10 text-white font-extrabold'>No conversations</p>
-          )}
+        <div className="w-full md:w-1/4 h-[300px] md:h-full bg-[#132328] p-4">
+          <div className="relative mb-4">
+            <input
+              className="w-full px-4 py-2 rounded-md bg-transparent border-2 border-white text-white pr-10"
+              placeholder="Search Here"
+            />
+            <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white" />
+          </div>
+          <div className="h-[calc(100%-4rem)] overflow-y-auto">
+            {userData && userData.length > 0 ? (
+              userData.map((data, index) => (
+                <ul key={index} className="mt-2">
+                  <li
+                    onClick={() => setSelectedUser(data)}
+                    className={`cursor-pointer flex flex-row gap-2 text-lg items-center text-white font-bold p-2 rounded hover:bg-gray-300 hover:bg-opacity-20 transition-all duration-300 ${selectedUser?._id === data._id ? 'bg-gray-300 bg-opacity-20' : ''}`}
+                  >
+                    <img src={data?.members[0]?.imageUrls} alt='image1' className='rounded-full w-8 h-8' />
+                    <span className="truncate">{data?.members[0]?.username}</span>
+                  </li>
+                  <hr className="opacity-20" />
+                </ul>
+              ))
+            ) : (
+              <div className='text-center mt-10 text-white font-extrabold flex flex-col items-center'>
+                <p>No conversations</p>
+                <FaCommentDots className='text-white w-10 h-10 mt-4' />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Chat Display */}
-
-        <div className="flex-1">
-          <div className="flex flex-row justify-between bg-[#132328]">
-            <h1 className="text-2xl px-2 font-bold mb-4 text-white flex flex-row gap-4 mt-2">
-              {selectedUser && (
-                <div className='flex felx-col gap-2'>
-                  <img src={selectedUser?.members[0]?.imageUrls} alt='image of user in header' className='w-8 h-8 rounded-full' />
-                  <h4 className="flex flex-col">
-                    {selectedUser?.members[0]?.username}
-                  </h4>
-                </div>
-              )}
-            </h1>
-            {selectedUser &&
-
-              <FaVideo onClick={() => HandleVideoCall()} className="mr-5 w-6 h-6 mt-2 text-white" />
-            }
-          </div>
-          <div className="h-[50rem] overflow-y-auto flex flex-col justify-between bg-[#2c5b63] rounded shadow">
-
-            {selectedUser &&
-              <div className="border-b-2 border-white mb-[40%]"></div>
-            }
-
-            <div className="messages-container flex-1 relative">
-              {/* Display the last sent message */}
-              {lastSentMessage && (
-                <div className={`message text-md bg-transparent border-2 border-white ml-2 mb-4 p-3 bg-[#132328] w-[20%] rounded-full`}>
-                  {isURL(lastSentMessage.text) ? (
-                    <span className="text-blue-500 underline hover:text-amber-950">
-                      Video call sent
-                    </span>
-                  ) : (
-                    <h1 className="text-white px-2 text-md font-semibold">{lastSentMessage.text}</h1>
-                  )}
-                  <span className='text-white font-extralight text-sm ml-2'>{format(lastSentMessage.createdAt)}</span>
-                </div>
-              )}
-
-              {/* Map over all messages */}
-              {messages && messages.length > 0 ? (
-                messages.map((message) => (
-                  <div key={message.id} className={`message ${message.senderId !== user.id ? "text-center text-md bg-transparent border-2 border-white ml-2" : "ml-[78%] text-center text-md"} mb-[10%] p-3 bg-[#132328] w-[20%] rounded-full`}>
-                    {isURL(message.text) ? (
-                      <span className="text-blue-500 underline hover:text-amber-950">
-                        Video call sent
-                      </span>
-                    ) : (
-                      <h1 className="text-white px-2 text-md font-semibold">{message.text}</h1>
-                    )}
-                    <span className='text-white font-extralight text-sm ml-2'>{format(message.createdAt)}</span>
+        <div className="flex-1 h-full flex flex-col bg-[#2c5b63]">
+          {selectedUser ? (
+            <>
+              <div className="flex flex-row justify-between bg-[#132328] p-3">
+                <h1 className="text-xl md:text-2xl font-bold text-white flex items-center gap-4">
+                  <div className='flex items-center gap-3'>
+                    <img src={selectedUser?.members[0]?.imageUrls} alt='user' className='w-8 h-8 rounded-full' />
+                    <span className="truncate">{selectedUser?.members[0]?.username}</span>
                   </div>
-                ))
-              ) : (
-                <div className="no-messages text-white mb-[50%] text-center">
-                  <p className='font-extrabold'>No messages yet</p>
-                  <FaCommentDots className='text-white w-14 h-14 ml-[47%] mt-4 text-center' />
+                </h1>
+                <FaVideo onClick={() => HandleVideoCall()} className="w-6 h-6 text-white cursor-pointer hover:text-gray-300" />
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-6 messages-container">
+                {messages && messages.length > 0 ? (
+                  messages.map((message, index) => (
+                    <div 
+                      key={message.id}
+                      className={`message max-w-[80%] md:max-w-[60%] lg:max-w-[40%] mb-4 ${
+                        message.senderId !== user.id 
+                          ? "ml-0" 
+                          : "ml-auto"
+                      }`}
+                    >
+                      <div className={`p-3 rounded-lg ${
+                        message.senderId !== user.id
+                          ? "bg-[#132328] border-2 border-white border-opacity-20"
+                          : "bg-[#132328]"
+                      }`}>
+                        {isURL(message.text) ? (
+                          <span className="text-blue-500 underline hover:text-amber-950">
+                            Video call sent
+                          </span>
+                        ) : (
+                          <h1 className="text-white text-sm md:text-base font-semibold break-words">{message.text}</h1>
+                        )}
+                        <span className='block text-white text-xs mt-1 opacity-60'>{format(message.createdAt)}</span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-white text-center">
+                    <p className='font-extrabold mb-4'>No messages yet</p>
+                    <FaCommentDots className='w-14 h-14' />
+                  </div>
+                )}
+              </div>
+
+              {istyping && !isMessageSender(user, selectedUser) && (
+                <div className="px-4 py-2 bg-[#132328] bg-opacity-50">
+                  <p className="text-gray-300 text-sm">Typing...</p>
                 </div>
               )}
-            </div>
 
-            {istyping && !isMessageSender(user, selectedUser) ? (
-              <div>
-                <p style={{ marginBottom: 8, marginLeft: 0, color: "gray" }}>
-                  Typing...
-                </p>
-              </div>
-            ) : (
-              <></>
-            )}
-
-            {selectedUser && (
-              <div className="absolute w-[68%] h-[95px] bg-[#132328] p-4 mt-[705px]">
-                <div className="flex items-center">
-                  <div className='mt-1 px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md'>+</div>
-
-                  <div className=' w-[80rem]'>
+              <div className="bg-[#132328] p-4 border-t border-gray-700">
+                <div className="flex items-center gap-2">
+                  <button className='px-3 py-1 text-white font-extrabold bg-[#2c5b63] rounded-md hover:bg-opacity-80'>+</button>
+                  <div className='flex-1'>
                     <InputEmoji
-                      type="text"
                       value={newMessage}
                       onChange={handeleChange}
                       placeholder="Type your message..."
-                      className="border p-2 rounded"
+                      theme="dark"
+                      borderColor="rgba(255,255,255,0.1)"
                     />
                   </div>
                   <button
                     onClick={handleSend}
-                    className="bg-[#132328] text-white p-2 roundedborder-2 border-white hover:border-2 hover:bg-[#2c5b63] hover:text-white rounded-md transition-all duration-100"
+                    className="px-4 py-2 bg-[#132328] text-white border-2 border-white rounded-md hover:bg-[#2c5b63] transition-all duration-300"
                   >
                     Send
                   </button>
                 </div>
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center h-full text-white">
+              <div className="text-center">
+                <FaCommentDots className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                <p className="text-xl font-semibold">Select a chat to start messaging</p>
+              </div>
+            </div>
+          )}
         </div>
-
-      </div >
+      </div>
     </>
   );
 };

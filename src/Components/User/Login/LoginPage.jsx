@@ -8,7 +8,6 @@ import { setUserDetails } from '../../../Redux/UserSlice/userSlice';
 import ForgotPass from '../ForgotPassword/ForgotPass';
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios';
-import Switch from 'react-switch';
 import Loading from '../../Loading/Loading';
 import VarletLogo from '../../../assets/Logo/VarletLogo.png'
 
@@ -77,7 +76,7 @@ function LoginPage() {
     })
 
 
-    const handleOnclick = (e) => {
+    const handleOnchange = (e) => {
         e.preventDefault();
         const { name, value } = e.target;
         setLoginUser({
@@ -164,7 +163,7 @@ function LoginPage() {
                                             type="text"
                                             name="email"
                                             value={loginUser.email}
-                                            onChange={handleOnclick}
+                                            onChange={handleOnchange}
                                             placeholder="Email Address"
                                             autoFocus
                                             className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
@@ -173,7 +172,7 @@ function LoginPage() {
                                             type="password"
                                             name="password"
                                             value={loginUser.password}
-                                            onChange={handleOnclick}
+                                            onChange={handleOnchange}
                                             placeholder="Password"
                                             className="w-full px-4 py-2 mb-4 border bg-black rounded-md bg-transparent focus:outline-none focus:border-white text-white"
                                         />

@@ -8,11 +8,17 @@ function HomeBanner() {
   return (
     <>
 
-      <div className='flex justify-center items-center'>
-        <h3 className='absolute font-extrabold text-white text-4xl sm:text-8xl w-[80%] font-mono text-center animate-pulse'>INTR<span className='text-black'>ODUCING</span > A N<span className='text-black' >EW</span> HOMELAND</h3>
-        <img className='2xl:mt-[20%]  object-contain max-w-full max-h-full' src={Banner} alt="" />
+      <div className="flex flex-col justify-center items-center relative w-full min-h-screen overflow-hidden">
+        <h3 className="absolute font-extrabold text-white text-3xl sm:text-6xl lg:text-8xl w-[90%] max-w-7xl font-mono text-center animate-pulse leading-tight">
+          INTR<span className="text-black">ODUCING</span> A N<span className="text-black">EW</span> HOMELAND
+        </h3>
+        <img
+          className="sm:mt-24 lg:mt-14 w-full h-auto max-h-[90vh] object-cover"
+          src={Banner}
+          alt="Banner"
+        />
         <ToastContainer />
-      </div >
+      </div>
       <HomeCards />
     </>
 

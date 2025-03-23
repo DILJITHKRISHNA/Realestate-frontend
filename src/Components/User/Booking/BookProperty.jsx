@@ -33,7 +33,7 @@ function BookProperty() {
     relocationDate: ''
   });
 
-  useEffect(() => {
+  useEffect(() => { 
     if (propertyId) {
       const fetchPaymentIntent = async () => {
         try {

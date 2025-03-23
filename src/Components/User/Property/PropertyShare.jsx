@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { ShareProperty } from '../../../Api/UserApi'
 import { ToastContainer, toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faShare } from '@fortawesome/free-solid-svg-icons'
 
 function PropertyShare({ propertyId }) {
 
@@ -51,8 +53,9 @@ function PropertyShare({ propertyId }) {
         <>
             <button
                 onClick={handleOpen}
-                className="mt-12 font-mono border-2 border-lime-400 text-lime-400 px-4 py-1 hover:text-white hover:bg-lime-400"
+                className="w-24 sm:w-28 h-10 font-mono border-2 border-lime-400 text-lime-400 text-sm sm:text-base hover:text-white hover:bg-lime-400 rounded-md whitespace-nowrap flex items-center justify-center gap-2"
             >
+                <FontAwesomeIcon icon={faShare} size="sm" />
                 Share
             </button>
             <div
