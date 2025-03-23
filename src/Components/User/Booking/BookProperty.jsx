@@ -154,128 +154,198 @@ function BookProperty() {
 
   return (
     <>
-      <div className='flex justify-center items-center h-screen'>
-        <div className='flex flex-col lg:flex-row w-[80%] border-2 border-black mt-16'>
-          <div className='flex flex-col justify-center w-full lg:w-full p-8'>
-            <h3 className='text-xl mb-8 text-white font-mono font-semibold uppercase w-auto bg-amber-900 p-1 text-center'>Details</h3>
+      <div className='min-h-screen py-20 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='bg-white rounded-lg shadow-lg overflow-hidden'>
+            <div className='flex flex-col lg:flex-row'>
+              {/* Form Section */}
+              <div className='w-full lg:w-1/2 p-6 sm:p-8'>
+                <h3 className='text-lg sm:text-xl font-semibold bg-amber-900 text-white py-2 px-4 rounded-md text-center mb-6'>
+                  DETAILS
+                </h3>
 
+                <form onSubmit={handleSubmit} className='space-y-4'>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Name</label>
+                    <input
+                      type='text'
+                      name='name'
+                      value={payment.name}
+                      onChange={handleClick}
+                      placeholder='Full name'
+                      className='w-full border border-amber-900 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                    />
+                  </div>
 
-            <form onSubmit={handleSubmit}>
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Contact</label>
+                    <input
+                      type='text'
+                      name='contact'
+                      value={payment.contact}
+                      onChange={handleClick}
+                      placeholder='Contact number'
+                      className='w-full border border-amber-900 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                    />
+                  </div>
 
-              <div className='mb-auto'>
-                <label >Name</label>
-                <input
-                  type='text'
-                  name='name'
-                  value={payment.name}
-                  onChange={handleClick}
-                  placeholder='Fullname'
-                  className='border p-2 w-full border-amber-900 ' />
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Email</label>
+                    <input
+                      type='email'
+                      name='email'
+                      value={payment.email}
+                      onChange={handleClick}
+                      placeholder='Email address'
+                      className='w-full border border-amber-900 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                    />
+                  </div>
+
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>Re-Location Date</label>
+                    <input
+                      type='date'
+                      name='relocationDate'
+                      value={payment.relocationDate}
+                      onChange={handleClick}
+                      min={currentDate.toISOString().split('T')[0]}
+                      className='w-full border border-amber-900 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500'
+                    />
+                  </div>
+
+                  <div className='pt-4'>
+                    <h3 className='text-lg font-semibold text-amber-900 mb-4'>PAYMENT TYPE</h3>
+                    <div className='bg-black p-4 rounded-md flex justify-center items-center'>
+                      <FaStripe className='text-white w-12 h-8' />
+                    </div>
+                  </div>
+                </form>
               </div>
-              <div className='mb-4'>
-                <label >Contact</label>
-                <input type='text'
-                  value={payment.contact}
-                  onChange={handleClick}
-                  name='contact'
-                  placeholder='Contact'
-                  className='border p-2 w-full border-amber-900' />
-              </div>
 
-              <div className='mb-4'>
-                <label >Email</label>
-                <input
-                  type='email'
-                  name='email'
-                  value={payment.email}
-                  onChange={handleClick}
-                  placeholder='Email'
-                  className='border p-2 w-full border-amber-900' />
-              </div>
-              <div className='mb-4'>
-                <label>Re-Location</label>
-                <input
-                  type='date'
-                  value={payment.relocationDate}
-                  onChange={handleClick}
-                  name='relocationDate'
-                  min={currentDate.toISOString().split('T')[0]}
-                  className='border p-2 w-full border-amber-900'
-                />
-              </div>
-              <h3 className='text-xl mb-auto text-amber-900 font-mono font-semibold uppercase'>Payment Type </h3>
+              {/* Property Details Section */}
+              <div className='w-full lg:w-1/2 p-6 sm:p-8 bg-gray-50'>
+                <div className='space-y-6'>
+                  {/* Property Preview */}
+                  <div className='flex flex-col sm:flex-row items-start gap-4'>
+                    <img
+                      src={property.imageUrls?.[0]}
+                      alt='Property Preview'
+                      className='w-full sm:w-32 h-auto rounded-lg object-cover'
+                    />
+                    <div className='flex-1 space-y-4'>
+                      <p className='text-lg font-semibold'>{property.name}</p>
+                      
+                      <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm'>
+                        <div className='flex flex-col'>
+                          <span className='text-amber-900'>Bedrooms</span>
+                          <span className='font-semibold'>{property.bedrooms}</span>
+                        </div>
+                        <div className='flex flex-col'>
+                          <span className='text-amber-900'>Bathrooms</span>
+                          <span className='font-semibold'>{property.bathrooms}</span>
+                        </div>
+                        <div className='flex flex-col'>
+                          <span className='text-amber-900'>Total Floor</span>
+                          <span className='font-semibold'>{property.FloorCount}</span>
+                        </div>
+                      </div>
 
+                      <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm'>
+                        <div className='flex flex-col'>
+                          <span className='text-amber-900'>Balcony</span>
+                          <span className='font-semibold'>{property.balcony}</span>
+                        </div>
+                        <div className='flex flex-col'>
+                          <span className='text-amber-900'>Parking</span>
+                          <span className='font-semibold'>{property.parking ? "Available" : "No"}</span>
+                        </div>
+                        <div className='flex flex-col'>
+                          <span className='text-amber-900'>Furnished</span>
+                          <span className='font-semibold'>{property.furnished ? "Yes" : "No"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              <div className="">
-                <div className=" w-auto border-2 border-gray-200 bg-black flex flex-row">
-                  <FaStripe className="ml-[40%] text-white" style={{ width: '50px', height: '40px' }} />
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className='w-full lg:w-auto p-8 mt-8'>
-            <div className='mb-6 lg:flex lg:flex-row'>
-              <img
-                src={property.imageUrls?.[0]}
-                alt='Property Preview'
-                className='mt-auto lg:w-[8%] h-auto lg:h-[10%] rounded-md'
-              />
-              <div className="lg:ml-10 flex flex-col">
-                <p className='text-md font-mono'>Name: {property.name}</p>
-                <div className='mt-auto border-b border-amber-900 w-auto'></div>
-                <div className='flex flex-row gap-10'>
-                  <h1 className='text-md font-mono text-amber-900'>Bedroom:0<span className='text-black font-semibold'>{property.bedrooms}</span></h1>
-                  <h1 className='text-md font-mono text-amber-900'>Bathroom:0<span className='text-black font-semibold'>{property.bathrooms}</span></h1>
-                  <h1 className='text-md font-mono text-amber-900'>Total Floor:0<span className='text-black font-semibold'>{property.FloorCount}</span></h1>
-                </div>
-
-                <div className='mt-2 border-b border-amber-900 w-auto '></div>
-                <div className='flex flex-row gap-10'>
-                  <h1 className='text-md font-mono text-amber-900'>balcony:0<span className='text-black font-semibold'>{property.balcony}</span></h1>
-                  <h1 className='text-md font-mono text-amber-900'>Parking:<span className='text-black font-semibold'>{property.parking === true ? "Available" : "No"}</span></h1>
-                  <h1 className='text-md font-mono text-amber-900'>Furnished:<span className='text-black font-semibold'>{property.furnished === true ? "Yes" : "No"}</span></h1>
+                  <div className='border-t border-amber-900 pt-6'>
+                    <div className='flex justify-between items-center mb-4'>
+                      <h2 className='text-xl font-semibold text-amber-900'>PROPERTY DETAILS</h2>
+                      <button 
+                        onClick={handleOpen}
+                        className='px-4 py-1 border-2 border-amber-900 text-amber-900 rounded-md hover:bg-amber-900 hover:text-white transition-colors duration-200'
+                      >
+                        Details
+                      </button>
+                    </div>
+                    
+                    <div className='space-y-3 text-sm'>
+                      <div className='flex flex-col'>
+                        <span className='text-amber-900'>Address</span>
+                        <span className='font-semibold'>{property.location}</span>
+                      </div>
+                      <div className='flex flex-col'>
+                        <span className='text-amber-900'>Country</span>
+                        <span className='font-semibold'>{property.country}</span>
+                      </div>
+                      <div className='flex flex-col'>
+                        <span className='text-amber-900'>City</span>
+                        <span className='font-semibold'>{property.city}</span>
+                      </div>
+                      <div className='flex flex-col'>
+                        <span className='text-amber-900'>State</span>
+                        <span className='font-semibold'>{property.state}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className='border-b border-amber-900 w-auto'></div>
-            <div className='ml6 mt-10 mb-12'>
-              <div className='flex flex-row justify-between'>
-                <h1 className='text-2xl font-semibold font-mono mb-2 text-amber-900 uppercase'>Property Details</h1>
-                <button onClick={handleOpen} className='mr-10 border-2 border-amber-900 text-amber-900 rounded-lg px-1 mt-1 hover:bg-amber-900 hover:text-white font-semibold'>Details</button>
-              </div>
-              <ul className='list-disc pl-3 space-y-4'>
-                <li className='mb-2 text-amber-900 font-mono'>Address: <span className='text-black font-semibold'>{property.location}</span></li>
-                <li className='mb-2 text-amber-900 font-mono'>Country: <span className='text-black font-semibold'>{property.country}</span></li>
-                <li className='mb-2 text-amber-900 font-mono'>City: <span className='text-black font-semibold'>{property.city}</span></li>
-                <li className='mb-2 text-amber-900 font-mono'>State: <span className='text-black font-semibold'>{property.state}</span></li>
-              </ul>
-              <div className='flex flex-row items-center mt-8 gap-2' onClick={handleWallet}>
-                <FaInfoCircle className='' />
-                <p className='font-extralight'>Pay through wallet</p>
-              </div>
-              {walletOpen ?
-                <div className='flex flex-row gap-4 mt-2'>
-                  <h1 className='font-bold'>Your wallet: <span className='text-amber-900'>₹{user.wallet}</span></h1>
-                  <button onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)} className='border-2 border-black px-4 rounded-md hover:bg-black hover:text-white'>Pay Now</button>
+
+            {/* Book Now Button Section */}
+            <div className='p-6 bg-gray-50 border-t border-gray-200'>
+              <div className='max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4'>
+                <div className='flex items-center gap-2 text-gray-600 cursor-pointer' onClick={handleWallet}>
+                  <FaWallet className='w-5 h-5' />
+                  <span className='text-sm'>Pay through wallet</span>
+                  {user && <span className='text-amber-900 font-semibold'>(₹{user.wallet})</span>}
                 </div>
-                : ""}
-            </div>
-            <div className='mt-auto border-b border-amber-900 w-auto mb-5'></div>
-            { clientSecret ? (
-              <div onClick={handleSubmit}
-                className='mb-20 w-auto border-2 border-gray-200 bg-black flex flex-row hover:bg-black'
-                style={{ cursor: 'pointer' }}
-              >
-                <FaStripe className=" ml-[40%] text-white" style={{ width: '30px', height: '39px' }} />
-                <Elements stripe={StripePromise} options={options}>
-                  <Payment setCount={setCount} name={payment.name} Rent={rent} contact={payment.contact} email={payment.contact} re_location={payment.relocationDate} propertyId={propertyId} clientSecret={clientSecret} />
-                </Elements>
+
+                {walletOpen && (
+                  <div className='flex items-center gap-4'>
+                    <button 
+                      onClick={() => handlePaymentWallet(payment.name, payment.contact, payment.email, payment.relocationDate)}
+                      className='w-48 px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2'
+                    >
+                      <FaWallet className='w-5 h-5' />
+                      Pay with Wallet
+                    </button>
+                  </div>
+                )}
+
+                {clientSecret && (
+                  <div className='flex-shrink-0'>
+                    <Elements stripe={StripePromise} options={options}>
+                      <div className='w-48 bg-black text-white rounded-md hover:bg-gray-800 transition-colors'>
+                        <Payment 
+                          setCount={setCount} 
+                          name={payment.name} 
+                          Rent={rent} 
+                          contact={payment.contact} 
+                          email={payment.email} 
+                          re_location={payment.relocationDate} 
+                          propertyId={propertyId} 
+                          clientSecret={clientSecret} 
+                        />
+                      </div>
+                    </Elements>
+                  </div>
+                )}
               </div>
-            ) : ""}
+            </div>
           </div>
         </div>
-        <ToastContainer />
       </div>
+      <ToastContainer />
 
       {/* modal */}
       <div
@@ -345,8 +415,7 @@ function BookProperty() {
       </div>
       {/* modal */}
     </>
-
-  )
+  );
 }
 
-export default BookProperty
+export default BookProperty;

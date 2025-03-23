@@ -119,131 +119,158 @@ function ProfilePage() {
 
     return (
         <>
-            <div className='mt-20 sm:mt-16 md:mt-24 lg:mt-32 lg:ml-36 items-center p-2 w-full sm:w-[80%] lg:w-[60%] mx-auto'>
-                <div className='flex flex-col sm:flex-row'>
+            <div className="min-h-screen bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    {/* Profile Header */}
+                    <div className="mb-8">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-gray-900">
+                            <FaUser className="w-6 h-6" />
+                            My Profile
+                        </h1>
+                    </div>
 
-                    <h1 className='text-start font-bold text-xl flex flex-row items-center gap-2'>
-                        <FaUser className='' />
-                        My Profile
-                    </h1>
-                </div>
-            </div>
+                    {/* Main Content */}
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* Left Section - Profile Details */}
+                        <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div className="bg-black h-12 w-full"></div>
+                            
+                            <div className="p-6">
+                                <h2 className="text-xl font-semibold mb-6">Profile Photo</h2>
+                                
+                                <div className="flex flex-col md:flex-row gap-8">
+                                    {/* Profile Image Upload */}
+                                    <form onSubmit={handleUploadImage} className="flex flex-col items-center">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            name="imageUrls"
+                                            onChange={handleFileInputChange}
+                                            className="hidden"
+                                            id="imageInput"
+                                        />
+                                        <div className="relative">
+                                            <img
+                                                src={imagePreview || profileData.imageUrls}
+                                                alt="Profile"
+                                                className="w-32 h-32 rounded-full object-cover transition-transform hover:scale-105"
+                                            />
+                                            <label 
+                                                htmlFor="imageInput" 
+                                                className="mt-4 block text-center px-4 py-2 border-2 border-black rounded-md font-semibold hover:bg-black hover:text-white transition-colors cursor-pointer"
+                                            >
+                                                Change Image
+                                            </label>
+                                            <button 
+                                                type="submit" 
+                                                className="absolute top-0 right-0 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+                                            >
+                                                <FaUpload className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </form>
 
+                                    {/* Profile Information */}
+                                    <div className="flex-1 space-y-6">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md">
+                                                <FaUser className="w-5 h-5 text-gray-600" />
+                                                <div>
+                                                    <div className="text-sm text-gray-600">Full Name</div>
+                                                    <div className="font-semibold">{profileData.username}</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md">
+                                                <FaMailBulk className="w-5 h-5 text-gray-600" />
+                                                <div>
+                                                    <div className="text-sm text-gray-600">Email</div>
+                                                    <div className="font-semibold">{profileData.email}</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md">
+                                                <FaMobile className="w-5 h-5 text-gray-600" />
+                                                <div>
+                                                    <div className="text-sm text-gray-600">Mobile</div>
+                                                    <div className="font-semibold">{profileData.mobile}</div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-            <div className='gap-8 sm:gap-10 mt-5 flex flex-col sm:flex-row justify-center mx-auto '>
-                <div className='shadow-md shadow-black w-full h-[40%] sm:w-[60%] md:w-[40%] lg:w-[70%] ml-0 sm:ml-4 md:ml-12 lg:ml-36 rounded-lg flex flex-row sm:flex-col '>
-                    <div className='flex flex-col '>
-                        <div className='border-2 border-gray-400 w-[22rem] h-10 rounded-md bg-black sm:w-full'>
+                                        <div className="pt-4 space-y-4">
+                                            <EditProfile Data={profileData} className="w-full" />
+                                            <div className="border-t border-gray-200"></div>
+                                            <ResetPassword />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <h1 className='absolute lg:ml-9 lg:mt-16 uppercase font-semibold font-mono'>Profile Photo</h1>
-                        <div className='flex flex-col sm:flex-row gap-6 mt-10 ml-8'>
-                            <form onSubmit={handleUploadImage} className="flex flex-col items-center">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    name='imageUrls'
-                                    onChange={handleFileInputChange}
-                                    style={{ display: 'none' }}
-                                    id="imageInput"
-                                />
-                                <div className="relative mt-4">
-                                    {imagePreview ?
-                                        <img
-                                            src={imagePreview}
-                                            alt="Preview"
-                                            className='rounded-full w-32 h-32 transition-transform transform hover:scale-105'
-                                        />
-                                        :
-                                        <img
-                                            src={profileData.imageUrls}
-                                            alt="Preview"
-                                            className='rounded-full w-32 h-32 transition-transform transform hover:scale-105'
-                                        />}
-                                    <label htmlFor="imageInput" className='button uppercase font-semibold font-mono border-2 border-black px-2 rounded-md hover:bg-black hover:text-white'>
-                                        Change Image
-                                    </label>
-                                    <button type="submit" className='absolute top-0 right-0 bg-white p-2 rounded-full'>
-                                        <FaUpload />
-                                    </button>
-                                </div>
-                            </form>
+                        {/* Right Section - Navigation */}
+                        <div className="w-full lg:w-1/3">
+                            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                                <div className="bg-black h-3 w-full"></div>
+                                
+                                <div className="p-6 space-y-6">
+                                    {/* My Bookings Section */}
+                                    <div>
+                                        <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+                                            <FaUser className="w-5 h-5" />
+                                            My Bookings
+                                        </h2>
+                                        <nav className="space-y-3">
+                                            <Link to="/history" className="block text-gray-600 hover:text-black hover:underline">
+                                                My Bookings
+                                            </Link>
+                                            <Link to="/wallethistory" className="block text-gray-600 hover:text-black hover:underline">
+                                                Wallet History
+                                            </Link>
+                                            <Link to="/enquiry" className="block text-gray-600 hover:text-black hover:underline">
+                                                My Enquiries
+                                            </Link>
+                                        </nav>
+                                    </div>
 
-                            <div className='flex flex-col gap-8 sm:gap-12 ml-0 sm:ml-4 md:ml-16 lg:ml-12 lg:mt-0'>
-                                <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
-                                    <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
-                                            <FaUser />Fullname: {profileData.username}
-                                        </label>
+                                    {/* Property Management Section */}
+                                    <div>
+                                        <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+                                            <FaHome className="w-5 h-5" />
+                                            Property Management
+                                        </h2>
+                                        <Wishlist className="block text-gray-600 hover:text-black hover:underline" />
                                     </div>
-                                    <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
-                                            <FaMailBulk/>Email: {profileData.email}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
-                                    <div className='flex flex-col'>
-                                        <label className='font-semibold font-mono flex flex-row gap-2 text-[1rem]'>
-                                            <FaMobile />Mobile: {profileData.mobile}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className=''>
-                                    <EditProfile Data={profileData} className='rounded-full border-2 border-black p-2 font-bold hover:bg-black hover:text-white' />
-                                </div>
-                                <div className=' border-b-2 border-gray-400 w-full'></div>
 
-                                <div className='flex flex-col gap-6 sm:gap-10 w-full sm:w-64'>
-                                    <div className='flex flex-row gap-[10%]'>
-
-                                        <ResetPassword />
+                                    {/* Wallet Section */}
+                                    <div>
+                                        <h2 className="flex items-center gap-2 text-lg font-semibold mb-4">
+                                            <FaFunnelDollar className="w-5 h-5" />
+                                            Wallet & Refunds
+                                        </h2>
+                                        <div className="text-gray-600">
+                                            Wallet Balance: <span className="font-semibold text-amber-900">₹{profileData.wallet}</span>
+                                        </div>
                                     </div>
-                                    <div className='border-b-2 w-full'></div>
+
+                                    {/* Logout Button */}
+                                    <div className="pt-4 border-t border-gray-200">
+                                        <button 
+                                            onClick={handleClick}
+                                            className="w-full px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+                                        >
+                                            Log Out
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='border-b-2 border-black hidden sm:block '></div>
-                <div className='flex flex-col w-full sm:w-[40%] gap-8 sm:gap-10'>
-                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[8%] md:w-[70%] lg:mr-10 rounded-md flex justify-center bg-black'></div>
-                    <div className='shadow-md shadow-black w-full sm:w-[60%] h-[90%] md:w-[70%] rounded-2xl flex flex-col gap-2'>
-                        <h1 className='flex flex-row ml-2 py-2 font-bold '>
-                            <FaUser className='w-10 h-5' /> My Bookings
-                        </h1>
-                        <Link to='/history' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
-                            My Bookings
-                        </Link>
-                        {/* <Link to='/notification' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
-                            Notifications
-                        </Link> */}
-                        <Link to='/wallethistory' className=' sm:h-10 sm:w-36 text-black rounded-md ml-14 font-mono hover:underline'>
-                            Wallet History
-                        </Link>
-                        <Link to='/enquiry' className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline'>
-                            My Enquiries
-                        </Link>
-                        <h1 className='flex flex-row ml-2 py-2 font-bold '>
-                            <FaHome className='w-10 h-5' /> Property Management
-                        </h1>
-                        <Wishlist className=' sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline' />
-                        <h1 className='flex flex-row ml-2 py-2 font-bold '>
-                            <FaFunnelDollar className='w-10 h-5' /> Refunds
-                        </h1>
-                        <h1
-                            className=' sm:h-10 sm:w-32 text-black rounded-md ml-14 font-mono hover:underline'>
-                            Wallet :<span className='font-bold text-amber-900'>₹{profileData.wallet}</span>
-                        </h1>
-                        <h1 className='sm:h-10 sm:w-28 text-black rounded-md ml-14 font-mono hover:underline' onClick={handleClick}>
-                            Log Out
-                        </h1>
-                    </div>
-                </div>
-                <ToastContainer />
             </div>
+            <ToastContainer />
         </>
-    )
+    );
 }
 
 export default ProfilePage

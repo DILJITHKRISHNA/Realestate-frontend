@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux"
-import { FaStripe } from "react-icons/fa";
+import { FaStripe, FaCreditCard } from "react-icons/fa";
 import { SuccessRequest } from "../../../Api/UserApi";
 import { ToastContainer, toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
@@ -107,55 +107,79 @@ function Payment({ clientSecret, name, contact, email, re_location, propertyId, 
     };
     return (
         <>
-            <Button onClick={handleOpen}>Pay Now</Button>
+            <Button 
+                onClick={handleOpen} 
+                className="w-full px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+            >
+                <FaCreditCard className="w-5 h-5" />
+                Pay with Card
+            </Button>
             {open && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-blur-sm">
-                    <div className="bg-white p-4 rounded-md shadow-md w-full max-w-md">
-                        <div className="flex justify-between">
-                            <div className="">
-                                <h5 className="text-blue-gray text-xl font-semibold">
-                                    Make Your Payment
-                                </h5>
-                                <p className="text-gray text-sm">
-                                    Choose which card you want to connect
-                                </p>
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-lg shadow-xl w-full max-w-[95%] sm:max-w-md mx-auto">
+                        <div className="p-4 sm:p-6">
+                            {/* Header */}
+                            <div className="flex justify-between items-start">
+                                <div className="pr-8">
+                                    <h5 className="text-lg sm:text-xl font-semibold text-gray-900">
+                                        Make Your Payment
+                                    </h5>
+                                    <p className="text-sm text-gray-600 mt-1">
+                                        Choose which card you want to connect
+                                    </p>
+                                </div>
+                                <button
+                                    className="text-gray-500 hover:text-gray-700 transition-colors"
+                                    onClick={handleOpen}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={2}
+                                        className="h-5 w-5"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
                             </div>
 
-                            <button
-                                className="text-blue-gray focus:outline-none  mt-2"
-                                onClick={handleOpen}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                    className="h-5 w-5"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
+                            {/* Rent Amount */}
+                            <div className="mt-6">
+                                <div className="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-md">
+                                    <h1 className="text-sm sm:text-base font-medium">Rent Amount</h1>
+                                    <span className="text-sm sm:text-base font-semibold">₹{Rent}</span>
+                                </div>
+                            </div>
 
-                        <div className="mt-6 flex flex-row justify-around space-x-72">
-                            <h1 className="flex">Rent</h1>
-                            <span>₹{Rent}</span>
-                        </div>
-                        <div className="border-b-2 border-gray-400"></div>
-                        <div className="mt-12">
-                            <PaymentElement />
-                        </div>
-                        <div className="w-auto flex justify-center mt-5" onClick={handleSubmit}>
-                            <button className="bg-blue-500 w-44 text-white font-semibold rounded-md">PAY</button>
-                        </div>
-                        <div className="w-full flex justify-center mt-10 gap-2">
-                            <FaStripe className="w-6 h-7" />
-                            <h1>Payments are secure and encrypted</h1>
+                            {/* Payment Element */}
+                            <div className="mt-8">
+                                <PaymentElement />
+                            </div>
+
+                            {/* Pay Button */}
+                            <div className="mt-8">
+                                <button 
+                                    onClick={handleSubmit}
+                                    className="w-full bg-black text-white py-3 px-4 rounded-md font-semibold text-sm sm:text-base hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <FaCreditCard className="w-5 h-5" />
+                                    PAY NOW
+                                </button>
+                            </div>
+
+                            {/* Secure Payment Note */}
+                            <div className="flex items-center justify-center gap-2 mt-6">
+                                <FaStripe className="w-5 h-6 sm:w-6 sm:h-7 text-gray-600" />
+                                <p className="text-xs sm:text-sm text-gray-600">
+                                    Payments are secure and encrypted
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <ToastContainer />
